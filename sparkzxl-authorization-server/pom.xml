@@ -34,17 +34,17 @@
             <artifactId>sparkzxl-user-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.sparkzxl</groupId>
             <artifactId>sparkzxl-oauth2-server-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.zparkzxl</groupId>
-            <artifactId>sparkzxl-authority</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.biezhi</groupId>
+            <artifactId>TinyPinyin</artifactId>
+            <version>2.0.3.RELEASE</version>
         </dependency>
     </dependencies>
     <build>
