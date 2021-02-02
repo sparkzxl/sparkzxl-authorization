@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>sparkzxl-authority</module>
         <module>sparkzxl-authorization-server</module>
         <module>sparkzxl-code-generator</module>
         <module>sparkzxl-gateway</module>
