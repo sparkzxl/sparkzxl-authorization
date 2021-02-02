@@ -40,4 +40,7 @@ public class CommonDictionary extends Entity<Long> {
     @TableField("status_")
     private Boolean status;
 
+    @ApiModelProperty(value = "租户code")
+    @TableField("tenant_code")
+    private String tenantCode;
 }

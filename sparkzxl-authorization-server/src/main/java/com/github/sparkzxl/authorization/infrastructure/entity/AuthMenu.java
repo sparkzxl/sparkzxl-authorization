@@ -56,4 +56,8 @@ public class AuthMenu extends TreeEntity<AuthMenu, Long> {
     @TableField("group_")
     private String group;
 
+    @ApiModelProperty(value = "租户code")
+    @TableField("tenant_code")
+    private String tenantCode;
+
 }

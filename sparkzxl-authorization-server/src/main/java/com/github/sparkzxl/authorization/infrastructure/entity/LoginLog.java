@@ -84,6 +84,10 @@ public class LoginLog extends SuperEntity<Long> {
     @TableField(value = "location", condition = LIKE)
     private String location;
 
+    @ApiModelProperty(value = "租户code")
+    @TableField("tenant_code")
+    private String tenantCode;
+
 
     @Builder
     public LoginLog(Long id, LocalDateTime createTime, Long createUser,
