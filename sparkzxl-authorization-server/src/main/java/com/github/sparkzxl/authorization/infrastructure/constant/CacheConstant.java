@@ -146,35 +146,6 @@ public class CacheConstant {
      */
     public static String DICTIONARY = "dictionary";
 
-    /**
-     * 用户登录的客户端 前缀： 用于记录用户在那几个设备上登录了
-     * 完整key: user_login_client:{userid} -> [client, client, ...] (Set)
-     */
-    public static String USER_LOGIN_CLIENT = "user_login_client";
-
-    /**
-     * 用户客户端token 前缀
-     * 完整key: user_client_token:{userid}:{client} -> token (String)
-     */
-    public static String USER_CLIENT_TOKEN = "user_client_token";
-
-    /**
-     * 用户token 前缀
-     * 完整key: user_token:{userid} -> token (String)
-     */
-    public static String USER_TOKEN = "user_token";
-
-    /**
-     * 用户token 前缀
-     * 完整key: token_user_id:{token} -> userid (Long)
-     */
-    public static String TOKEN_USER_ID = "token_user_id";
-
-    // 消息服务缓存 start
-    /**
-     * 用户注册 前缀
-     * 完整key: register:{注册类型}:{手机号}
-     */
-    public static String REGISTER_USER = "register";
+    public static String OAUTH_CLIENT_DETAILS = "oauth_client_details";
 
 }

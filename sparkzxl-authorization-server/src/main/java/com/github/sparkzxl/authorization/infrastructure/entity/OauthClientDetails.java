@@ -18,32 +18,29 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("auth_client_details")
+@TableName("oauth_client_details")
 @ApiModel(value = "OauthClientDetails对象", description = "")
-public class AuthClientDetails implements Serializable {
+public class OauthClientDetails implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 6504265519325579381L;
 
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
-
-    @TableField("app_key")
-    private String appKey;
-
-    @TableField("app_secret")
-    private String appSecret;
+    @TableId(value = "client_id", type = IdType.INPUT)
+    private String clientId;
 
     @TableField("resource_ids")
     private String resourceIds;
 
+    @TableField("client_secret")
+    private String clientSecret;
+
     @TableField("scope")
     private String scope;
 
-    @TableField("grant_types")
-    private String grantTypes;
+    @TableField("authorized_grant_types")
+    private String authorizedGrantTypes;
 
-    @TableField("redirect_url")
-    private String redirectUrl;
+    @TableField("web_server_redirect_uri")
+    private String webServerRedirectUri;
 
     @TableField("authorities")
     private String authorities;
@@ -57,9 +54,7 @@ public class AuthClientDetails implements Serializable {
     @TableField("additional_information")
     private String additionalInformation;
 
-    @TableField("auto_approve")
+    @TableField("autoapprove")
     private String autoApprove;
 
-    @TableField("enabled")
-    private boolean enabled;
 }
