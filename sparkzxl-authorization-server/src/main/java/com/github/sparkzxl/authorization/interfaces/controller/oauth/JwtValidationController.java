@@ -1,4 +1,4 @@
-package com.github.sparkzxl.authorization.interfaces.controller;
+package com.github.sparkzxl.authorization.interfaces.controller.oauth;
 
 import com.github.sparkzxl.jwt.service.JwtTokenService;
 import com.github.sparkzxl.log.annotation.WebLog;
@@ -21,11 +21,11 @@ import java.util.Map;
 @WebLog
 @Api(tags = "密钥管理")
 @Slf4j
-public class KeyPairController {
+public class JwtValidationController {
 
     private final JwtTokenService jwtTokenService;
 
-    public KeyPairController(JwtTokenService jwtTokenService) {
+    public JwtValidationController(JwtTokenService jwtTokenService) {
         this.jwtTokenService = jwtTokenService;
     }
 

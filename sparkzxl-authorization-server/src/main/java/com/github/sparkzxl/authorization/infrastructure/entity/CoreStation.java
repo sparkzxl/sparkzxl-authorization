@@ -23,7 +23,7 @@ import static com.github.sparkzxl.authorization.infrastructure.constant.Injectio
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("u_core_station")
+@TableName("core_station")
 @ApiModel(value = "CCoreStationDO对象", description = "岗位")
 public class CoreStation extends Entity<Long> {
 

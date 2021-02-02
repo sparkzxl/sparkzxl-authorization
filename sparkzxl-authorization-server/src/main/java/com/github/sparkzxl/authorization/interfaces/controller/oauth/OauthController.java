@@ -1,4 +1,4 @@
-package com.github.sparkzxl.authorization.interfaces.controller;
+package com.github.sparkzxl.authorization.interfaces.controller.oauth;
 
 import com.github.sparkzxl.core.entity.CaptchaInfo;
 import com.github.sparkzxl.log.annotation.WebLog;

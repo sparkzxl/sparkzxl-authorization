@@ -2,8 +2,12 @@ package com.github.sparkzxl.authorization.domain.service;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.github.sparkzxl.authorization.application.service.IAuthClientDetailsService;
 import com.github.sparkzxl.authorization.application.service.IAuthUserService;
 import com.github.sparkzxl.authorization.infrastructure.constant.CacheConstant;
+import com.github.sparkzxl.authorization.infrastructure.convert.AuthClientDetailsConvert;
+import com.github.sparkzxl.authorization.infrastructure.entity.AuthClientDetails;
 import com.github.sparkzxl.cache.template.CacheTemplate;
 import com.github.sparkzxl.core.context.BaseContextConstants;
 import com.github.sparkzxl.core.entity.AuthUserInfo;
@@ -13,6 +17,7 @@ import com.github.sparkzxl.core.support.ResponseResultStatus;
 import com.github.sparkzxl.core.support.SparkZxlExceptionAssert;
 import com.github.sparkzxl.core.utils.BuildKeyUtils;
 import com.github.sparkzxl.oauth.entity.AuthorizationRequest;
+import com.github.sparkzxl.oauth.entity.BaseClientDetails;
 import com.github.sparkzxl.oauth.entity.LoginStatus;
 import com.github.sparkzxl.oauth.enums.GrantTypeEnum;
 import com.github.sparkzxl.oauth.event.LoginEvent;
@@ -60,6 +65,8 @@ public class OauthServiceImpl implements OauthService {
     private IAuthUserService authUserService;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private IAuthClientDetailsService authClientDetailsService;
 
     @SneakyThrows
     @Override
@@ -169,5 +176,12 @@ public class OauthServiceImpl implements OauthService {
         }
         cacheTemplate.remove(cacheKey);
         return true;
+    }
+
+    @Override
+    public BaseClientDetails loadOauthClientDetails(String clientId) {
+        AuthClientDetails authClientDetails = authClientDetailsService.getOne(new LambdaQueryWrapper<AuthClientDetails>()
+                .eq(AuthClientDetails::getAppKey, clientId));
+        return AuthClientDetailsConvert.INSTANCE.convertBaseClientDetails(authClientDetails);
     }
 }

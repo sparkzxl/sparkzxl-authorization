@@ -19,7 +19,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("u_auth_user_role")
+@TableName("auth_user_role")
 @ApiModel(value = "CAuthUserRole对象", description = "角色分配账号角色绑定")
 public class UserRole implements Serializable {
 

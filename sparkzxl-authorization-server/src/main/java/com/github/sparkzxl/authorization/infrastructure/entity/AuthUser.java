@@ -30,7 +30,7 @@ import static com.github.sparkzxl.authorization.infrastructure.constant.Injectio
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("u_auth_user")
+@TableName("auth_user")
 @ApiModel(value = "AuthUser对象", description = "用户")
 public class AuthUser extends Entity<Long> {
 
