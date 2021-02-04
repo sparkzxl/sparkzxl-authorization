@@ -1,6 +1,6 @@
 server:
   shutdown: graceful
-  port: 8901
+  port: 8861
   undertow:
     buffer-size: 1024
     direct-buffers: on
@@ -14,10 +14,10 @@ spring:
     nacos:
       discovery:
         server-addr: 47.114.40.129:8848
-        namespace: c8fd4805-6e0c-4aff-9b7f-c08d0858c84d
+        namespace: 5d664600-38cc-4862-bf65-d1e24ca6ce59
       config:
         server-addr: 47.114.40.129:8848
-        namespace: c8fd4805-6e0c-4aff-9b7f-c08d0858c84d
+        namespace: 5d664600-38cc-4862-bf65-d1e24ca6ce59
         file-extension: yaml
         prefix: ${spring.application.name}
         shared-configs:
