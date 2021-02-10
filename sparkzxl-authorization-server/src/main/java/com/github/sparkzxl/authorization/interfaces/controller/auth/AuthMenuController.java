@@ -9,12 +9,15 @@ import com.github.sparkzxl.authorization.interfaces.dto.menu.AuthMenuSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.menu.AuthMenuUpdateDTO;
 import com.github.sparkzxl.database.base.controller.SuperCacheController;
 import com.github.sparkzxl.database.dto.DeleteDTO;
+import com.github.sparkzxl.database.entity.TreeEntity;
 import com.github.sparkzxl.database.mybatis.conditions.Wraps;
+import com.github.sparkzxl.database.mybatis.conditions.query.LbqWrapper;
 import com.github.sparkzxl.database.utils.TreeUtil;
 import com.github.sparkzxl.log.annotation.WebLog;
 import com.github.sparkzxl.web.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,8 +47,14 @@ public class AuthMenuController extends SuperCacheController<IAuthMenuService, L
 
     @ApiOperation(value = "查询系统所有的菜单", notes = "查询系统所有的菜单")
     @GetMapping("/tree")
-    public List<AuthMenu> allTree() {
-        List<AuthMenu> list = baseService.list(Wraps.<AuthMenu>lbQ().orderByAsc(AuthMenu::getSortValue));
+    public List<AuthMenu> allTree(@RequestParam(value = "label", required = false) String label) {
+        LbqWrapper<AuthMenu> authMenuLbqWrapper = Wraps.lbQ();
+        if (StringUtils.isNotEmpty(label)) {
+            authMenuLbqWrapper.likeLeft(TreeEntity::getLabel,label);
+
+        }
+        authMenuLbqWrapper.orderByAsc(AuthMenu::getSortValue);
+        List<AuthMenu> list = baseService.list(authMenuLbqWrapper);
         return TreeUtil.buildTree(list);
     }
 
