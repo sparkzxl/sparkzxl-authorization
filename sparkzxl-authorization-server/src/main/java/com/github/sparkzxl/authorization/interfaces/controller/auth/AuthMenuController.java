@@ -40,7 +40,8 @@ public class AuthMenuController extends SuperCacheController<IAuthMenuService, L
     @Override
     public boolean handlerSave(AuthMenuSaveDTO model) {
         model.setIsEnable(Convert.toBool(model.getIsEnable(), true));
-        model.setIsPublic(Convert.toBool(model.getIsPublic(), false));
+        model.setHidden(Convert.toBool(model.getHidden(), true));
+        model.setNoKeepAlive(Convert.toBool(model.getNoKeepAlive(), true));
         model.setParentId(Convert.toLong(model.getParentId(), 0L));
         return true;
     }

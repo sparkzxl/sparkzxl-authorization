@@ -17,19 +17,28 @@ public class AuthMenuUpdateDTO {
     @ApiModelProperty(value = "id")
     private Long id;
 
+    @ApiModelProperty(value = "菜单是否可见")
+    private Boolean hidden;
+
+    @ApiModelProperty(value = "自动进行重定向")
+    private String redirect;
+
+    @ApiModelProperty(value = "菜单缓存")
+    private Boolean noKeepAlive;
+
     @ApiModelProperty(value = "名称")
     private String label;
 
     @ApiModelProperty(value = "描述")
     private String describe;
 
-    @ApiModelProperty(value = "公共菜单 True是无需分配所有人就可以访问的")
-    private Boolean isPublic;
-
     @ApiModelProperty(value = "路径")
     private String path;
 
-    @ApiModelProperty(value = "组件")
+    @ApiModelProperty(value = "组件名称")
+    private String componentName;
+
+    @ApiModelProperty(value = "组件路径")
     private String component;
 
     @ApiModelProperty(value = "状态")
