@@ -58,7 +58,11 @@ public class AuthMenuRepository implements IAuthMenuRepository {
                 menuBasicInfo.setLabel(menu.getLabel());
                 menuBasicInfo.setIcon(menu.getIcon());
                 menuBasicInfo.setPath(menu.getPath());
+                menuBasicInfo.setRedirect(menu.getRedirect());
                 menuBasicInfo.setComponent(menu.getComponent());
+                menuBasicInfo.setComponentName(menu.getComponentName());
+                menuBasicInfo.setHidden(menu.isHidden());
+                menuBasicInfo.setNoKeepAlive(menu.isNoKeepAlive());
                 menuBasicInfo.setParentId(menu.getParentId());
                 menuBasicInfo.setSortValue(menu.getSortValue());
                 menuBasicInfos.add(menuBasicInfo);
