@@ -44,9 +44,6 @@ public class AuthMenuSaveDTO {
     @ApiModelProperty(value = "菜单图标")
     private String icon;
 
-    @ApiModelProperty(value = "分组")
-    private String group;
-
     @ApiModelProperty(value = "描述", example = "0")
     protected Long parentId;
 

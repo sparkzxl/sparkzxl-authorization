@@ -47,10 +47,7 @@ public class AuthMenuUpdateDTO {
     @ApiModelProperty(value = "菜单图标")
     private String icon;
 
-    @ApiModelProperty(value = "分组")
-    private String group;
-
-    @ApiModelProperty(value = "描述", example = "0")
+    @ApiModelProperty(value = "上级菜单id", example = "0")
     protected Long parentId;
 
     @ApiModelProperty(value = "排序值", example = "1")
