@@ -2,6 +2,7 @@ package com.github.sparkzxl.authorization.domain.service;
 
 import com.github.sparkzxl.authorization.application.service.IAuthUserService;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthUser;
+import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.core.entity.AuthUserInfo;
 import com.github.sparkzxl.oauth.entity.AuthUserDetail;
 import org.apache.commons.lang3.ObjectUtils;
@@ -32,12 +33,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         AuthUser authUser = authUserService.getByAccount(username);
         if (ObjectUtils.isNotEmpty(authUser)) {
             AuthUserInfo<Long> authUserInfo = authUserService.getAuthUserInfo(username);
-            return new AuthUserDetail<>(authUser.getId(),
+            AuthUserDetail<Long> authUserDetail = new AuthUserDetail<>(authUser.getId(),
                     authUser.getAccount(),
                     authUser.getPassword(),
                     authUser.getName(),
                     authUser.getStatus(),
                     authUserInfo.getAuthorityList());
+            authUserDetail.setTenant(authUser.getTenantCode());
+            BaseContextHandler.setTenant(authUser.getTenantCode());
+            return authUserDetail;
         }
         return null;
     }

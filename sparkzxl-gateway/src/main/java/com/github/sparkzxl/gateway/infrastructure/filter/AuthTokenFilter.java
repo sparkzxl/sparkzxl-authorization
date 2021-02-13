@@ -4,6 +4,7 @@ import com.github.sparkzxl.core.context.BaseContextConstants;
 import com.github.sparkzxl.core.entity.JwtUserInfo;
 import com.github.sparkzxl.gateway.filter.AbstractJwtAuthorizationFilter;
 import com.github.sparkzxl.jwt.service.JwtTokenService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -33,8 +34,9 @@ public class AuthTokenFilter extends AbstractJwtAuthorizationFilter {
     }
 
 
+    @SneakyThrows
     @Override
-    public JwtUserInfo getJwtUserInfo(String token) throws Exception {
+    public JwtUserInfo getJwtUserInfo(String token) {
         return jwtTokenService.getJwtUserInfo(token);
     }
 

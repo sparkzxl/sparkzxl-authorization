@@ -1,5 +1,6 @@
 package com.github.sparkzxl.authorization.infrastructure.mapper;
 
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthUser;
 import com.github.sparkzxl.authorization.infrastructure.entity.RoleResource;
 import com.github.sparkzxl.database.annonation.InjectionResult;
@@ -32,6 +33,7 @@ public interface AuthUserMapper extends SuperMapper<AuthUser> {
      * @param id 用户id
      * @return List<String>
      */
+    @InterceptorIgnore(tenantLine = "true")
     List<String> getAuthUserRoles(Long id);
 
 
@@ -40,6 +42,7 @@ public interface AuthUserMapper extends SuperMapper<AuthUser> {
      *
      * @return List<RoleResource>
      */
+    @InterceptorIgnore(tenantLine = "true")
     List<RoleResource> getRoleResourceList();
 
     /**
