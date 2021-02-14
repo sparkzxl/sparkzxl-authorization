@@ -2,8 +2,11 @@ package com.github.sparkzxl.authorization.domain.service;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.sparkzxl.authorization.application.service.IAuthUserService;
+import com.github.sparkzxl.authorization.application.service.ISpTenantService;
 import com.github.sparkzxl.authorization.infrastructure.constant.CacheConstant;
+import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
 import com.github.sparkzxl.cache.template.CacheTemplate;
 import com.github.sparkzxl.core.context.BaseContextConstants;
 import com.github.sparkzxl.core.entity.AuthUserInfo;
@@ -12,6 +15,7 @@ import com.github.sparkzxl.core.spring.SpringContextUtils;
 import com.github.sparkzxl.core.support.ResponseResultStatus;
 import com.github.sparkzxl.core.support.SparkZxlExceptionAssert;
 import com.github.sparkzxl.core.utils.BuildKeyUtils;
+import com.github.sparkzxl.core.utils.RequestContextHolderUtils;
 import com.github.sparkzxl.oauth.entity.AuthorizationRequest;
 import com.github.sparkzxl.oauth.entity.LoginStatus;
 import com.github.sparkzxl.oauth.enums.GrantTypeEnum;
@@ -59,11 +63,19 @@ public class OauthServiceImpl implements OauthService {
     @Autowired
     private IAuthUserService authUserService;
     @Autowired
+    private ISpTenantService tenantService;
+    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     @SneakyThrows
     @Override
     public OAuth2AccessToken getAccessToken(Principal principal, AuthorizationRequest authorizationRequest) {
+        checkTenantCode();
+        String captcha = authorizationRequest.getCaptchaCode();
+        if (StringUtils.isNotEmpty(captcha)) {
+            String captchaKey = authorizationRequest.getCaptchaKey();
+            checkCaptcha(captchaKey, captcha);
+        }
         Map<String, String> parameters = builderAccessTokenParameters(authorizationRequest);
         ResponseEntity<OAuth2AccessToken> oAuth2AccessTokenResponseEntity = tokenEndpoint.getAccessToken(principal, parameters);
         return loginEventAndBack(authorizationRequest, oAuth2AccessTokenResponseEntity);
@@ -91,6 +103,7 @@ public class OauthServiceImpl implements OauthService {
     @SneakyThrows
     @Override
     public OAuth2AccessToken postAccessToken(Principal principal, AuthorizationRequest authorizationRequest) {
+        checkTenantCode();
         String captcha = authorizationRequest.getCaptchaCode();
         if (StringUtils.isNotEmpty(captcha)) {
             String captchaKey = authorizationRequest.getCaptchaKey();
@@ -112,6 +125,18 @@ public class OauthServiceImpl implements OauthService {
         String authUserInfoKey = BuildKeyUtils.generateKey(BaseContextConstants.AUTH_USER_TOKEN, authUserInfo.getId());
         redisTemplate.opsForHash().put(authUserInfoKey, oAuth2AccessToken.getValue(), authUserInfo);
         redisTemplate.expire(authUserInfoKey, oAuth2AccessToken.getExpiresIn(), TimeUnit.SECONDS);
+    }
+
+    private void checkTenantCode() {
+        boolean success = true;
+        String tenantCode = RequestContextHolderUtils.getHeader(BaseContextConstants.JWT_KEY_TENANT);
+        if (StringUtils.isNotEmpty(tenantCode)) {
+            int count = tenantService.count(new LambdaQueryWrapper<SpTenant>().eq(SpTenant::getCode, tenantCode));
+            success = count > 0;
+        }
+        if (!success) {
+            SparkZxlExceptionAssert.businessFail("该租户不存在");
+        }
     }
 
     /**
