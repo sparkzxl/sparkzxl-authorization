@@ -6,6 +6,7 @@ import com.github.sparkzxl.authorization.domain.model.aggregates.RoleResource;
 import com.github.sparkzxl.authorization.domain.repository.IRoleAuthorityRepository;
 import com.github.sparkzxl.authorization.infrastructure.entity.RoleAuthority;
 import com.github.sparkzxl.authorization.infrastructure.mapper.RoleAuthorityMapper;
+import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -32,6 +33,7 @@ public class RoleAuthorityRepository implements IRoleAuthorityRepository {
 
     @Override
     public boolean saveRoleAuthorityBatch(Long roleId, Set<Long> resourceIds, Set<Long> menuIds) {
+        String tenantCode = BaseContextHandler.getTenant();
         List<RoleAuthority> roleAuthorities = Lists.newLinkedList();
         roleAuthorityMapper.delete(new LambdaUpdateWrapper<RoleAuthority>()
                 .eq(RoleAuthority::getRoleId, roleId));
@@ -41,6 +43,7 @@ public class RoleAuthorityRepository implements IRoleAuthorityRepository {
                 roleAuthority.setRoleId(roleId);
                 roleAuthority.setAuthorityId(authorityId);
                 roleAuthority.setAuthorityType("RESOURCE");
+                roleAuthority.setTenantCode(tenantCode);
                 roleAuthorities.add(roleAuthority);
             });
         }
@@ -50,6 +53,7 @@ public class RoleAuthorityRepository implements IRoleAuthorityRepository {
                 roleAuthority.setRoleId(roleId);
                 roleAuthority.setAuthorityId(menuId);
                 roleAuthority.setAuthorityType("MENU");
+                roleAuthority.setTenantCode(tenantCode);
                 roleAuthorities.add(roleAuthority);
             });
         }

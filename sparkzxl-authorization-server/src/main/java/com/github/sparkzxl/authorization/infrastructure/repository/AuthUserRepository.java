@@ -157,17 +157,19 @@ public class AuthUserRepository implements IAuthUserRepository {
         List<Long> authorityIds = roleAuthorities.stream().map(RoleAuthority::getAuthorityId).collect(Collectors.toList());
         Map<Long, Long> roleAuthorityIdMap =
                 roleAuthorities.stream().collect(Collectors.toMap(RoleAuthority::getAuthorityId, RoleAuthority::getRoleId));
-        // 获取用户资源列表
-        List<AuthResource> resourceList = authResourceMapper.selectBatchIds(authorityIds);
         List<ResourceBasicInfo> resourceBasicInfos = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(resourceList)) {
-            resourceList.forEach(resource -> {
-                ResourceBasicInfo resourceBasicInfo = new ResourceBasicInfo();
-                resourceBasicInfo.setCode(resource.getCode());
-                resourceBasicInfo.setName(resource.getName());
-                resourceBasicInfo.setRoleId(roleAuthorityIdMap.get(resource.getId()));
-                resourceBasicInfos.add(resourceBasicInfo);
-            });
+        if (CollectionUtils.isNotEmpty(authorityIds)){
+            // 获取用户资源列表
+            List<AuthResource> resourceList = authResourceMapper.selectBatchIds(authorityIds);
+            if (CollectionUtils.isNotEmpty(resourceList)) {
+                resourceList.forEach(resource -> {
+                    ResourceBasicInfo resourceBasicInfo = new ResourceBasicInfo();
+                    resourceBasicInfo.setCode(resource.getCode());
+                    resourceBasicInfo.setName(resource.getName());
+                    resourceBasicInfo.setRoleId(roleAuthorityIdMap.get(resource.getId()));
+                    resourceBasicInfos.add(resourceBasicInfo);
+                });
+            }
         }
         authUserBasicInfo.setResourceBasicInfos(resourceBasicInfos);
         return authUserBasicInfo;

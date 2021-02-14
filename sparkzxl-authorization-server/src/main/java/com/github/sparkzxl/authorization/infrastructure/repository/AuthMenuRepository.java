@@ -11,6 +11,7 @@ import com.github.sparkzxl.authorization.infrastructure.entity.UserRole;
 import com.github.sparkzxl.authorization.infrastructure.mapper.AuthMenuMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.RoleAuthorityMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.UserRoleMapper;
+import com.github.sparkzxl.core.tree.TreeUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,26 +49,28 @@ public class AuthMenuRepository implements IAuthMenuRepository {
         List<Long> menuIds = roleAuthorities.stream().filter(x -> "MENU".equals(x.getAuthorityType()))
                 .map(RoleAuthority::getAuthorityId).collect(Collectors.toList());
 
-        List<AuthMenu> menuList = authMenuMapper.selectBatchIds(menuIds);
-        menuList = menuList.stream().sorted(Comparator.comparing(AuthMenu::getSortValue)).collect(Collectors.toList());
-        List<MenuBasicInfo> menuBasicInfos = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(menuList)) {
-            menuList.forEach(menu -> {
-                MenuBasicInfo menuBasicInfo = new MenuBasicInfo();
-                menuBasicInfo.setId(menu.getId());
-                menuBasicInfo.setLabel(menu.getLabel());
-                menuBasicInfo.setIcon(menu.getIcon());
-                menuBasicInfo.setPath(menu.getPath());
-                menuBasicInfo.setRedirect(menu.getRedirect());
-                menuBasicInfo.setComponent(menu.getComponent());
-                menuBasicInfo.setComponentName(menu.getComponentName());
-                menuBasicInfo.setHidden(menu.isHidden());
-                menuBasicInfo.setNoKeepAlive(menu.isNoKeepAlive());
-                menuBasicInfo.setParentId(menu.getParentId());
-                menuBasicInfo.setSortValue(menu.getSortValue());
-                menuBasicInfos.add(menuBasicInfo);
-            });
-            return menuBasicInfos;
+        if (CollectionUtils.isNotEmpty(menuIds)) {
+            List<AuthMenu> menuList = authMenuMapper.selectBatchIds(menuIds);
+            menuList = menuList.stream().sorted(Comparator.comparing(AuthMenu::getSortValue)).collect(Collectors.toList());
+            List<MenuBasicInfo> menuBasicInfos = Lists.newArrayList();
+            if (CollectionUtils.isNotEmpty(menuList)) {
+                menuList.forEach(menu -> {
+                    MenuBasicInfo menuBasicInfo = new MenuBasicInfo();
+                    menuBasicInfo.setId(menu.getId());
+                    menuBasicInfo.setLabel(menu.getLabel());
+                    menuBasicInfo.setIcon(menu.getIcon());
+                    menuBasicInfo.setPath(menu.getPath());
+                    menuBasicInfo.setRedirect(menu.getRedirect());
+                    menuBasicInfo.setComponent(menu.getComponent());
+                    menuBasicInfo.setComponentName(menu.getComponentName());
+                    menuBasicInfo.setHidden(menu.isHidden());
+                    menuBasicInfo.setNoKeepAlive(menu.isNoKeepAlive());
+                    menuBasicInfo.setParentId(menu.getParentId());
+                    menuBasicInfo.setSortValue(menu.getSortValue());
+                    menuBasicInfos.add(menuBasicInfo);
+                });
+                return TreeUtils.buildTree(menuBasicInfos);
+            }
         }
         return Lists.newArrayList();
     }

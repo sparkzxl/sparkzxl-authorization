@@ -64,7 +64,7 @@ public class MybatisPlusGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://47.114.40.129:3306/sparkzxl_authorization?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://47.114.40.129:3306/authorization_server?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root");

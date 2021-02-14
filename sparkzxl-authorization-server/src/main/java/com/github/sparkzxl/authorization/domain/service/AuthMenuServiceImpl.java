@@ -41,8 +41,7 @@ public class AuthMenuServiceImpl extends AbstractSuperCacheServiceImpl<AuthMenuM
     @Override
     public List<MenuBasicInfo> routers() {
         Long userId = BaseContextHandler.getUserId(Long.TYPE);
-        List<MenuBasicInfo> authMenuList = authMenuRepository.getAuthMenuList(userId);
-        return TreeUtils.buildTree(authMenuList);
+        return authMenuRepository.getAuthMenuList(userId);
     }
 
     @Override

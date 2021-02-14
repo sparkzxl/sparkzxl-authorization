@@ -1,16 +1,16 @@
 package com.github.sparkzxl.authorization.infrastructure.mapper;
 
+import com.github.sparkzxl.authorization.infrastructure.entity.IdSegment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
 import org.springframework.stereotype.Repository;
 
 /**
- * description: 租户 Mapper 接口
+ * description: id序列Mapper 接口
  *
  * @author: zhouxinlei
- * @date: 2021-02-02 16:09:50
+ * @date: 2021-02-14 10:34:04
  */
 @Repository
-public interface SpTenantMapper extends BaseMapper<SpTenant> {
+public interface IdSegmentMapper extends BaseMapper<IdSegment> {
 
 }
