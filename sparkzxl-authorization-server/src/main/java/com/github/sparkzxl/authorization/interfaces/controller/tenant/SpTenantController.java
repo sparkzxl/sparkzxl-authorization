@@ -8,8 +8,11 @@ import com.github.sparkzxl.authorization.interfaces.dto.station.StationPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantUpdateDTO;
+import com.github.sparkzxl.database.dto.DeleteDTO;
+import com.github.sparkzxl.web.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
  * @date: 2021-02-02 16:21:52
 */
 @RestController
+@ResponseResult
 @Api(tags = "租户管理")
 @RequestMapping("/tenant")
 public class SpTenantController {
@@ -35,16 +39,22 @@ public class SpTenantController {
         return tenantService.getTenantPageList(tenantPageDTO);
     }
 
-    @ApiOperation("新增租户列表")
+    @ApiOperation("新增租户信息")
     @PostMapping("/tenant")
-    public boolean saveTenant(@RequestBody TenantSaveDTO tenantSaveDTO) {
+    public boolean saveTenant(@Validated @RequestBody TenantSaveDTO tenantSaveDTO) {
         return tenantService.saveTenant(tenantSaveDTO);
     }
 
-    @ApiOperation("修改租户列表")
+    @ApiOperation("修改租户信息")
     @PutMapping("/tenant")
-    public boolean updateTenant(@RequestBody TenantUpdateDTO tenantUpdateDTO) {
+    public boolean updateTenant(@Validated @RequestBody TenantUpdateDTO tenantUpdateDTO) {
         return tenantService.updateTenant(tenantUpdateDTO);
+    }
+
+    @ApiOperation("删除租户信息")
+    @DeleteMapping("/tenant")
+    public boolean deleteTenant(@RequestBody DeleteDTO deleteDTO) {
+        return tenantService.deleteTenant(deleteDTO);
     }
 
 }

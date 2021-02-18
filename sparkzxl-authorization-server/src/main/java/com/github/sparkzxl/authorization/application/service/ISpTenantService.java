@@ -6,6 +6,7 @@ import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantUpdateDTO;
+import com.github.sparkzxl.database.dto.DeleteDTO;
 
 /**
  * description: 租户信息 服务类
@@ -38,4 +39,12 @@ public interface ISpTenantService extends IService<SpTenant> {
      * @return boolean
      */
     boolean updateTenant(TenantUpdateDTO tenantUpdateDTO);
+
+    /**
+     * 删除租户
+     *
+     * @param deleteDTO 删除实体类
+     * @return boolean
+     */
+    boolean deleteTenant(DeleteDTO deleteDTO);
 }

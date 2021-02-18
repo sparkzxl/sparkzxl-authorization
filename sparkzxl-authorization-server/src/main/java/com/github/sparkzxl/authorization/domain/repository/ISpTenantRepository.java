@@ -3,6 +3,8 @@ package com.github.sparkzxl.authorization.domain.repository;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
 
+import java.util.List;
+
 /**
  * description: 租户仓储类
  *
@@ -37,4 +39,12 @@ public interface ISpTenantRepository {
      * @return boolean
      */
     boolean updateTenant(SpTenant tenant);
+
+    /**
+     * 删除租户信息
+     *
+     * @param ids 租户id列表
+     * @return boolean
+     */
+    boolean deleteTenant(List<Long> ids);
 }

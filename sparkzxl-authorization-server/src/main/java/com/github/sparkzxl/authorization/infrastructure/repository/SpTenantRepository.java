@@ -71,4 +71,9 @@ public class SpTenantRepository implements ISpTenantRepository {
     public boolean updateTenant(SpTenant tenant) {
         return tenantMapper.updateById(tenant) != 0;
     }
+
+    @Override
+    public boolean deleteTenant(List<Long> ids) {
+        return tenantMapper.deleteBatchIds(ids) != 0;
+    }
 }

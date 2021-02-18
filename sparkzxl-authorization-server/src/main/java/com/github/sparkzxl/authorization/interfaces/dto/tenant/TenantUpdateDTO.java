@@ -28,8 +28,8 @@ public class TenantUpdateDTO {
     @ApiModelProperty(value = "类型CREATE:创建;REGISTER:注册")
     private String type;
 
-    @ApiModelProperty(value = "状态NORMAL:正常;FORBIDDEN:禁用;WAITING:待审核;REFUSE:拒绝")
-    private String status;
+    @ApiModelProperty(value = "状态")
+    private Boolean status;
 
     @ApiModelProperty(value = "是否内置")
     private Boolean readonly;

@@ -36,9 +36,9 @@ public class SpTenant extends Entity<Long> {
     @TableField("type")
     private String type;
 
-    @ApiModelProperty(value = "状态NORMAL:正常;FORBIDDEN:禁用;WAITING:待审核;REFUSE:拒绝")
+    @ApiModelProperty(value = "状态")
     @TableField("status")
-    private String status;
+    private Boolean status;
 
     @ApiModelProperty(value = "是否内置")
     @TableField("readonly")
