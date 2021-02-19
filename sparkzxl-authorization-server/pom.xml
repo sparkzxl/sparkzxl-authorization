@@ -17,6 +17,11 @@
     </properties>
 
     <dependencies>
+        <!-- Micrometer 对 Prometheus 的支持 -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.github.sparkzxl</groupId>
             <artifactId>sparkzxl-distributed-cloud-starter</artifactId>
