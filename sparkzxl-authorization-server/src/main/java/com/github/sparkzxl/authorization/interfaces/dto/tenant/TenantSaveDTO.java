@@ -21,20 +21,17 @@ public class TenantSaveDTO {
     @NotEmpty(message = "租户名称不能为空")
     private String name;
 
-    @ApiModelProperty(value = "类型CREATE:创建;REGISTER:注册")
-    private String type;
+    @ApiModelProperty(value = "logo地址")
+    private String logo;
+
+    @ApiModelProperty(value = "有效期为空表示永久")
+    private LocalDateTime expirationTime;
 
     @ApiModelProperty(value = "状态")
     private Boolean status;
 
     @ApiModelProperty(value = "是否内置")
     private Boolean readonly;
-
-    @ApiModelProperty(value = "有效期为空表示永久")
-    private LocalDateTime expirationTime;
-
-    @ApiModelProperty(value = "logo地址")
-    private String logo;
 
     @ApiModelProperty(value = "租户简介")
     private String describe;

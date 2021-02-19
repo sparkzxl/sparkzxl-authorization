@@ -44,7 +44,7 @@ public class SpTenantRepository implements ISpTenantRepository {
         if (StringUtils.isNotEmpty(name)) {
             tenantLambdaQueryWrapper.likeLeft(SpTenant::getName, name);
         }
-        tenantLambdaQueryWrapper.orderByDesc(SuperEntity::getCreateTime);
+        tenantLambdaQueryWrapper.orderByAsc(SpTenant::getCode);
         PageHelper.startPage(pageNum, pageSize);
         List<SpTenant> tenantList = tenantMapper.selectList(tenantLambdaQueryWrapper);
         return PageInfoUtils.pageInfo(tenantList);

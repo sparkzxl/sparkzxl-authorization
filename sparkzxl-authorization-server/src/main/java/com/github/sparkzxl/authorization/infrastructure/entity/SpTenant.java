@@ -32,10 +32,6 @@ public class SpTenant extends Entity<Long> {
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "类型CREATE:创建;REGISTER:注册")
-    @TableField("type")
-    private String type;
-
     @ApiModelProperty(value = "状态")
     @TableField("status")
     private Boolean status;
