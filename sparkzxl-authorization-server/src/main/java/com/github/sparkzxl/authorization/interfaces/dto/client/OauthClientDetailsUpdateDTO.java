@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * description: 应用客户端更新DTO
  *
@@ -15,6 +17,7 @@ import lombok.Data;
 public class OauthClientDetailsUpdateDTO {
 
     @ApiModelProperty(value = "主键")
+    @NotNull(message = "主键不能为空")
     private Long id;
 
     @ApiModelProperty("客户端id")

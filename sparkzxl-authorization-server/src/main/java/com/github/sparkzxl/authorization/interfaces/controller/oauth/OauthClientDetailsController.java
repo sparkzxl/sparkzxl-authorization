@@ -12,6 +12,7 @@ import com.github.sparkzxl.web.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -31,13 +32,13 @@ public class OauthClientDetailsController{
 
     @ApiOperation("保存客户端信息")
     @PostMapping("/saveClient")
-    public boolean saveOauthClientDetails(@RequestBody OauthClientDetailsSaveDTO oauthClientDetailsSaveDTO) {
+    public boolean saveOauthClientDetails(@Validated @RequestBody OauthClientDetailsSaveDTO oauthClientDetailsSaveDTO) {
         return clientDetailsService.saveOauthClientDetails(oauthClientDetailsSaveDTO);
     }
 
     @ApiOperation("更新客户端信息")
     @PutMapping("/updateClient")
-    public boolean updateOauthClientDetails(@RequestBody OauthClientDetailsUpdateDTO oauthClientDetailsUpdateDTO) {
+    public boolean updateOauthClientDetails(@Validated @RequestBody OauthClientDetailsUpdateDTO oauthClientDetailsUpdateDTO) {
         return clientDetailsService.updateOauthClientDetails(oauthClientDetailsUpdateDTO);
     }
 

@@ -4,6 +4,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * description: 应用客户端保存DTO
  *
@@ -15,6 +18,7 @@ import lombok.Data;
 public class OauthClientDetailsSaveDTO {
 
     @ApiModelProperty("客户端id")
+    @NotEmpty(message = "客户端id不能为空")
     private String clientId;
 
     @ApiModelProperty("资源保护id列表")
@@ -27,6 +31,7 @@ public class OauthClientDetailsSaveDTO {
     private String scope;
 
     @ApiModelProperty("授权认证类型")
+    @NotEmpty(message = "授权模式不能为空")
     private String authorizedGrantTypes;
 
     @ApiModelProperty("授权回调地址")
@@ -36,9 +41,11 @@ public class OauthClientDetailsSaveDTO {
     private String authorities;
 
     @ApiModelProperty("token有效期")
+    @NotNull(message = "令牌时效不能为空")
     private Integer accessTokenValidity;
 
     @ApiModelProperty("刷新token有效期")
+    @NotNull(message = "刷新时效不能为空")
     private Integer refreshTokenValidity;
 
     @ApiModelProperty("自定义信息")
