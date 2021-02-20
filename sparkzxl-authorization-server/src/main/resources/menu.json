@@ -16,7 +16,27 @@
         "icon": "",
         "componentName": "Tenant",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "tenant:page",
+            "name": "租户分页查询",
+            "describe": "",
+            "requestUrl": "/tenant/tenants"
+          },
+          {
+            "code": "tenant:operation",
+            "name": "租户操作",
+            "describe": "",
+            "requestUrl": "/tenant/tenant"
+          },
+          {
+            "code": "tenant:list",
+            "name": "租户列表查询",
+            "describe": "",
+            "requestUrl": "/tenant/list"
+          }
+        ]
       },
       {
         "label": "客户端管理",
@@ -30,7 +50,33 @@
         "componentName": "Relam",
         "component": "relam/clientList",
         "describe": "",
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "client:save",
+            "name": "客户端信息保存",
+            "describe": "",
+            "requestUrl": "/client/saveClient"
+          },
+          {
+            "code": "client:update",
+            "name": "客户端信息更新",
+            "describe": "",
+            "requestUrl": "/client/updateClient"
+          },
+          {
+            "code": "client:delete",
+            "name": "客户端信息删除",
+            "describe": "",
+            "requestUrl": "/client/deleteClient"
+          },
+          {
+            "code": "client:page",
+            "name": "客户端分页查询",
+            "describe": "",
+            "requestUrl": "/client/listPage"
+          }
+        ]
       }
     ],
     "label": "租户中心",
@@ -60,7 +106,63 @@
         "icon": null,
         "componentName": "Menu",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "menu:resource",
+            "name": "菜单资源分页",
+            "describe": "菜单资源分页",
+            "requestUrl": "/resource/page"
+          },
+          {
+            "code": "menu:tree",
+            "name": "菜单tree查询",
+            "describe": "菜单tree查询",
+            "requestUrl": "/menu/tree"
+          },
+          {
+            "code": "menu:delete",
+            "name": "菜单删除",
+            "describe": "",
+            "requestUrl": "/menu/deleteMenu"
+          },
+          {
+            "code": "menu:resourceSave",
+            "name": "菜单资源保存",
+            "describe": "",
+            "requestUrl": "/resource/save"
+          },
+          {
+            "code": "menu:deleteresource",
+            "name": "菜单资源删除",
+            "describe": "",
+            "requestUrl": "/resource/deleteResource"
+          },
+          {
+            "code": "menu:resourceUpdate",
+            "name": "菜单资源修改",
+            "describe": "",
+            "requestUrl": "/resource/update"
+          },
+          {
+            "code": "menu:update",
+            "name": "菜单修改",
+            "describe": "",
+            "requestUrl": "/menu/update"
+          },
+          {
+            "code": "resource:list",
+            "name": "菜单资源查询",
+            "describe": "查询菜单资源",
+            "requestUrl": "/resource/list"
+          },
+          {
+            "code": "menu:save",
+            "name": "菜单保存",
+            "describe": "",
+            "requestUrl": "/menu/save"
+          }
+        ]
       },
       {
         "path": "/permission/role",
@@ -74,7 +176,63 @@
         "icon": null,
         "componentName": "Role",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "role:save",
+            "name": "角色保存",
+            "describe": "角色保存",
+            "requestUrl": "/role/save"
+          },
+          {
+            "code": "role:page",
+            "name": "角色分页",
+            "describe": "角色分页",
+            "requestUrl": "/role/page"
+          },
+          {
+            "code": "role:update",
+            "name": "角色更新",
+            "describe": "角色更新",
+            "requestUrl": "/role/update"
+          },
+          {
+            "code": "role:delete",
+            "name": "角色删除",
+            "describe": "角色删除",
+            "requestUrl": "/role/delete"
+          },
+          {
+            "code": "role:user",
+            "name": "角色用户查询",
+            "describe": "角色用户查询",
+            "requestUrl": "/role/roleUserList"
+          },
+          {
+            "code": "role:saveRoleUser",
+            "name": "角色用户保存",
+            "describe": "角色用户保存",
+            "requestUrl": "/role/saveRoleUser"
+          },
+          {
+            "code": "role:deleteRoleUser",
+            "name": "角色用户删除",
+            "describe": "角色用户删除",
+            "requestUrl": "/role/deleteRoleUser"
+          },
+          {
+            "code": "role:resource",
+            "name": "角色资源查询",
+            "describe": "角色资源查询",
+            "requestUrl": "/role/getRoleResource"
+          },
+          {
+            "code": "role:saveResource",
+            "name": "角色资源保存",
+            "describe": "角色资源保存",
+            "requestUrl": "/role/authority/batch"
+          }
+        ]
       }
     ],
     "label": "权限管理",
