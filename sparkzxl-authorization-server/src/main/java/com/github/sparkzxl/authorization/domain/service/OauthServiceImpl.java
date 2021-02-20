@@ -4,9 +4,9 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.sparkzxl.authorization.application.service.IAuthUserService;
-import com.github.sparkzxl.authorization.application.service.ISpTenantService;
+import com.github.sparkzxl.authorization.application.service.ITenantInfoService;
 import com.github.sparkzxl.authorization.infrastructure.constant.CacheConstant;
-import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
+import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
 import com.github.sparkzxl.cache.template.CacheTemplate;
 import com.github.sparkzxl.core.context.BaseContextConstants;
 import com.github.sparkzxl.core.entity.AuthUserInfo;
@@ -63,7 +63,7 @@ public class OauthServiceImpl implements OauthService {
     @Autowired
     private IAuthUserService authUserService;
     @Autowired
-    private ISpTenantService tenantService;
+    private ITenantInfoService tenantService;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -131,7 +131,7 @@ public class OauthServiceImpl implements OauthService {
         boolean success = true;
         String tenantCode = RequestContextHolderUtils.getHeader(BaseContextConstants.JWT_KEY_TENANT);
         if (StringUtils.isNotEmpty(tenantCode)) {
-            int count = tenantService.count(new LambdaQueryWrapper<SpTenant>().eq(SpTenant::getCode, tenantCode));
+            int count = tenantService.count(new LambdaQueryWrapper<TenantInfo>().eq(TenantInfo::getCode, tenantCode));
             success = count > 0;
         }
         if (!success) {

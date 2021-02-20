@@ -1,7 +1,7 @@
 package com.github.sparkzxl.authorization.infrastructure.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
+import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
  * @date: 2021-02-02 16:09:50
  */
 @Repository
-public interface SpTenantMapper extends BaseMapper<SpTenant> {
+public interface TenantInfoMapper extends BaseMapper<TenantInfo> {
 
 }

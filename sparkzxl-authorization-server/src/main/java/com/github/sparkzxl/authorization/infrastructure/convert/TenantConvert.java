@@ -1,6 +1,6 @@
 package com.github.sparkzxl.authorization.infrastructure.convert;
 
-import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
+import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantUpdateDTO;
 import org.mapstruct.Mapper;
@@ -23,7 +23,7 @@ public interface TenantConvert {
      * @param tenantSaveDTO 租户保存对象
      * @return SpTenant
      */
-    SpTenant convertTenant(TenantSaveDTO tenantSaveDTO);
+    TenantInfo convertTenant(TenantSaveDTO tenantSaveDTO);
 
     /**
      * tenantUpdateDTO转换为SpTenant
@@ -31,5 +31,5 @@ public interface TenantConvert {
      * @param tenantUpdateDTO 租户更新对象
      * @return SpTenant
      */
-    SpTenant convertTenant(TenantUpdateDTO tenantUpdateDTO);
+    TenantInfo convertTenant(TenantUpdateDTO tenantUpdateDTO);
 }

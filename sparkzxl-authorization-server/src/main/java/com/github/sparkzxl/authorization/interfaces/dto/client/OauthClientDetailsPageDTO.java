@@ -1,5 +1,6 @@
 package com.github.sparkzxl.authorization.interfaces.dto.client;
 
+import com.github.sparkzxl.database.dto.PageDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,12 +13,9 @@ import lombok.Data;
  */
 @Data
 @ApiModel("应用客户端分页DTO")
-public class OauthClientDetailsPageDTO {
+public class OauthClientDetailsPageDTO extends PageDTO {
 
     @ApiModelProperty("客户端id")
     private String clientId;
-
-    @ApiModelProperty("授权认证类型")
-    private String authorizedGrantTypes;
 
 }

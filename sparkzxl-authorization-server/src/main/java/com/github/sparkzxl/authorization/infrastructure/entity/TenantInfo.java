@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("sp_tenant")
-@ApiModel(value = "SpTenant对象", description = "")
-public class SpTenant extends Entity<Long> {
+@TableName("tenant_info")
+@ApiModel(value = "租户信息对象", description = "")
+public class TenantInfo extends Entity<Long> {
 
     private static final long serialVersionUID = -6955056237245642400L;
 

@@ -2,9 +2,8 @@ package com.github.sparkzxl.authorization.interfaces.controller.tenant;
 
 
 import com.github.pagehelper.PageInfo;
-import com.github.sparkzxl.authorization.application.service.ISpTenantService;
-import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
-import com.github.sparkzxl.authorization.interfaces.dto.station.StationPageDTO;
+import com.github.sparkzxl.authorization.application.service.ITenantInfoService;
+import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantUpdateDTO;
@@ -27,15 +26,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tenant")
 public class SpTenantController {
 
-    private final ISpTenantService tenantService;
+    private final ITenantInfoService tenantService;
 
-    public SpTenantController(ISpTenantService tenantService) {
+    public SpTenantController(ITenantInfoService tenantService) {
         this.tenantService = tenantService;
     }
 
     @ApiOperation("查询租户列表")
     @PostMapping("/tenants")
-    public PageInfo<SpTenant> getTenantPageList(@RequestBody TenantPageDTO tenantPageDTO) {
+    public PageInfo<TenantInfo> getTenantPageList(@RequestBody TenantPageDTO tenantPageDTO) {
         return tenantService.getTenantPageList(tenantPageDTO);
     }
 

@@ -3,13 +3,12 @@ package com.github.sparkzxl.authorization.infrastructure.repository;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.github.sparkzxl.authorization.domain.repository.ISpTenantRepository;
+import com.github.sparkzxl.authorization.domain.repository.ITenantInfoRepository;
 import com.github.sparkzxl.authorization.infrastructure.entity.IdSegment;
-import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
+import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
 import com.github.sparkzxl.authorization.infrastructure.mapper.IdSegmentMapper;
-import com.github.sparkzxl.authorization.infrastructure.mapper.SpTenantMapper;
+import com.github.sparkzxl.authorization.infrastructure.mapper.TenantInfoMapper;
 import com.github.sparkzxl.core.utils.DateUtils;
-import com.github.sparkzxl.database.entity.SuperEntity;
 import com.github.sparkzxl.database.utils.PageInfoUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -28,31 +26,31 @@ import java.util.List;
  * @date: 2021-02-14 10:13:48
  */
 @Repository
-public class SpTenantRepository implements ISpTenantRepository {
+public class TenantInfoRepository implements ITenantInfoRepository {
 
     @Autowired
-    private SpTenantMapper tenantMapper;
+    private TenantInfoMapper tenantMapper;
     @Autowired
     private IdSegmentMapper idSegmentMapper;
 
     @Override
-    public PageInfo<SpTenant> getTenantPageList(int pageNum, int pageSize, String code, String name) {
-        LambdaQueryWrapper<SpTenant> tenantLambdaQueryWrapper = new LambdaQueryWrapper<>();
+    public PageInfo<TenantInfo> getTenantPageList(int pageNum, int pageSize, String code, String name) {
+        LambdaQueryWrapper<TenantInfo> tenantLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotEmpty(code)) {
-            tenantLambdaQueryWrapper.eq(SpTenant::getCode, code);
+            tenantLambdaQueryWrapper.eq(TenantInfo::getCode, code);
         }
         if (StringUtils.isNotEmpty(name)) {
-            tenantLambdaQueryWrapper.likeLeft(SpTenant::getName, name);
+            tenantLambdaQueryWrapper.likeLeft(TenantInfo::getName, name);
         }
-        tenantLambdaQueryWrapper.orderByAsc(SpTenant::getCode);
+        tenantLambdaQueryWrapper.orderByAsc(TenantInfo::getCode);
         PageHelper.startPage(pageNum, pageSize);
-        List<SpTenant> tenantList = tenantMapper.selectList(tenantLambdaQueryWrapper);
+        List<TenantInfo> tenantList = tenantMapper.selectList(tenantLambdaQueryWrapper);
         return PageInfoUtils.pageInfo(tenantList);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveTenant(SpTenant tenant) {
+    public boolean saveTenant(TenantInfo tenant) {
         IdSegment idSegment = idSegmentMapper.selectOne(new LambdaQueryWrapper<IdSegment>().eq(IdSegment::getBusinessTag, "tenant_code"));
         BigDecimal maxIdDecimal = new BigDecimal(idSegment.getMaxId().toString());
         BigDecimal stepDecimal = new BigDecimal(idSegment.getStep().toString());
@@ -68,7 +66,7 @@ public class SpTenantRepository implements ISpTenantRepository {
     }
 
     @Override
-    public boolean updateTenant(SpTenant tenant) {
+    public boolean updateTenant(TenantInfo tenant) {
         return tenantMapper.updateById(tenant) != 0;
     }
 

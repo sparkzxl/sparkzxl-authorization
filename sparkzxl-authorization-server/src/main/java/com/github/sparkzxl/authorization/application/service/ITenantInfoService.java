@@ -2,7 +2,7 @@ package com.github.sparkzxl.authorization.application.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
-import com.github.sparkzxl.authorization.infrastructure.entity.SpTenant;
+import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantUpdateDTO;
@@ -14,15 +14,15 @@ import com.github.sparkzxl.database.dto.DeleteDTO;
  * @author: zhouxinlei
  * @date: 2021-02-02 16:20:51
  */
-public interface ISpTenantService extends IService<SpTenant> {
+public interface ITenantInfoService extends IService<TenantInfo> {
 
     /**
      * 分页查询租户列表
      *
      * @param tenantPageDTO 租户分页查询参数
-     * @return PageInfo<SpTenant>
+     * @return PageInfo<TenantInfo>
      */
-    PageInfo<SpTenant> getTenantPageList(TenantPageDTO tenantPageDTO);
+    PageInfo<TenantInfo> getTenantPageList(TenantPageDTO tenantPageDTO);
 
     /**
      * 保存租户信息
