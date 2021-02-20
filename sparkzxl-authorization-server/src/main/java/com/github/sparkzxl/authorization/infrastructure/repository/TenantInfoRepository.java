@@ -1,27 +1,23 @@
 package com.github.sparkzxl.authorization.infrastructure.repository;
 
+import cn.hutool.core.io.resource.ResourceUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.github.sparkzxl.authorization.domain.repository.IAuthRoleRepository;
-import com.github.sparkzxl.authorization.domain.repository.IAuthUserRepository;
-import com.github.sparkzxl.authorization.domain.repository.ITenantInfoRepository;
+import com.github.sparkzxl.authorization.domain.repository.*;
+import com.github.sparkzxl.authorization.infrastructure.entity.AuthMenu;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthRole;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthUser;
-import com.github.sparkzxl.authorization.infrastructure.entity.IdSegment;
 import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
-import com.github.sparkzxl.authorization.infrastructure.mapper.IdSegmentMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.TenantInfoMapper;
 import com.github.sparkzxl.core.context.BaseContextHandler;
-import com.github.sparkzxl.core.utils.DateUtils;
 import com.github.sparkzxl.database.utils.PageInfoUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,11 +32,13 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     @Autowired
     private TenantInfoMapper tenantMapper;
     @Autowired
-    private IdSegmentMapper idSegmentMapper;
+    private IIdSegmentRepository segmentRepository;
     @Autowired
     private IAuthUserRepository authUserRepository;
     @Autowired
     private IAuthRoleRepository authRoleRepository;
+    @Autowired
+    private IAuthMenuRepository authMenuRepository;
 
     @Override
     public PageInfo<TenantInfo> getTenantPageList(int pageNum, int pageSize, String code, String name) {
@@ -60,17 +58,8 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveTenant(TenantInfo tenant) {
-        IdSegment idSegment = idSegmentMapper.selectOne(new LambdaQueryWrapper<IdSegment>().eq(IdSegment::getBusinessTag, "tenant_code"));
-        BigDecimal maxIdDecimal = new BigDecimal(idSegment.getMaxId().toString());
-        BigDecimal stepDecimal = new BigDecimal(idSegment.getStep().toString());
-        maxIdDecimal.add(stepDecimal);
-        BigDecimal sumDecimal = maxIdDecimal.add(stepDecimal);
-        String tenantCode = sumDecimal.toString();
+        String tenantCode = segmentRepository.getIdSegment("tenant_code").toString();
         tenant.setCode(tenantCode);
-        Long maxId = sumDecimal.longValue();
-        idSegment.setMaxId(maxId);
-        idSegment.setUpdateTime(DateUtils.toLocalDateTime(new Date()));
-        idSegmentMapper.updateById(idSegment);
         return tenantMapper.insert(tenant) != 0;
     }
 
@@ -89,6 +78,12 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         authRole.setReadonly(true);
         authRole.setDsType("ALL");
         authRoleRepository.saveRole(authRole);
+    }
+
+    private void initMenuData() {
+        String menuJsonStr = ResourceUtil.readUtf8Str("menu.json");
+        List<AuthMenu> authMenus = JSONArray.parseArray(menuJsonStr, AuthMenu.class);
+        boolean result = authMenuRepository.saveAuthMenus(authMenus);
     }
 
     @Override

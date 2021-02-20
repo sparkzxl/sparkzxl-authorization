@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.github.sparkzxl.authorization.domain.model.aggregates.MenuBasicInfo;
 import com.github.sparkzxl.authorization.domain.repository.IAuthMenuRepository;
+import com.github.sparkzxl.authorization.domain.repository.IIdSegmentRepository;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthMenu;
 import com.github.sparkzxl.authorization.infrastructure.entity.RoleAuthority;
 import com.github.sparkzxl.authorization.infrastructure.entity.UserRole;
@@ -36,6 +37,8 @@ public class AuthMenuRepository implements IAuthMenuRepository {
     private UserRoleMapper userRoleMapper;
     @Autowired
     private AuthMenuMapper authMenuMapper;
+    @Autowired
+    private IIdSegmentRepository segmentRepository;
 
 
     @Override
@@ -75,5 +78,32 @@ public class AuthMenuRepository implements IAuthMenuRepository {
             }
         }
         return Lists.newArrayList();
+    }
+
+
+    @Override
+    public boolean saveAuthMenus(List<AuthMenu> authMenus) {
+        authMenus.forEach(authMenu -> {
+            if (authMenu.getParentId().equals(0L)) {
+                long id = segmentRepository.getIdSegment("auth_menu").longValue();
+                authMenu.setId(id);
+                authMenuMapper.insert(authMenu);
+                saveNodeMenu(id, authMenu.getChildren());
+            }
+        });
+        return false;
+    }
+
+    private void saveNodeMenu(Long parentId, List<AuthMenu> authMenus) {
+        if (CollectionUtils.isNotEmpty(authMenus)) {
+            for (AuthMenu authMenu : authMenus) {
+                authMenu.setParentId(parentId);
+                long id = segmentRepository.getIdSegment("auth_menu").longValue();
+                authMenu.setId(id);
+                authMenuMapper.insert(authMenu);
+                Long nodeParentId = authMenu.getId();
+                saveNodeMenu(nodeParentId, authMenu.getChildren());
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.github.sparkzxl.authorization.domain.repository;
 
 
 import com.github.sparkzxl.authorization.domain.model.aggregates.MenuBasicInfo;
+import com.github.sparkzxl.authorization.infrastructure.entity.AuthMenu;
 
 import java.util.List;
 
@@ -20,4 +21,12 @@ public interface IAuthMenuRepository {
      * @return List<MenuBasicInfo>
      */
     List<MenuBasicInfo> getAuthMenuList(Long userId);
+
+    /**
+     * 保存菜单信息
+     *
+     * @param authMenus 菜单集合
+     * @return boolean
+     */
+    boolean saveAuthMenus(List<AuthMenu> authMenus);
 }
