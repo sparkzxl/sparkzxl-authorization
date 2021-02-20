@@ -23,22 +23,26 @@ public interface OauthClientDetailsMapper extends SuperMapper<OauthClientDetails
      *
      * @param tenantCode 租户code
      * @param clientId   客户端id
-     * @return
+     * @return List<OauthClientDetails>
      */
     @Select("<script> " +
-            "SELECT ocd.*,tc.original_client_secret originalClientSecret,ti.name tenantName " +
+            "SELECT ocd.*," +
+            "tc.id, " +
+            "tc.tenant_code tenantCode, " +
+            "tc.original_client_secret originalClientSecret," +
+            "ti.name tenantName " +
             "FROM oauth_client_details ocd " +
             "INNER JOIN tenant_client tc ON ocd.client_id = tc.client_id " +
             "INNER JOIN tenant_info ti ON ti.code = tc.tenant_code " +
-            "<where>"
-            + " <if test=\"tenantCode != null and tenantCode != ''\">"
-            + "    and tc.tenant_code = #{tenantCode}"
-            + " </if>"
-            + " <if test=\"clientId != null and clientId != ''\">"
-            + "    and ocd.client_id = #{clientId}"
-            + " </if>"
-            +"</where>"
-            +"</script>")
+            "<where>" +
+            " <if test=\"tenantCode != null and tenantCode != ''\">" +
+            "    and tc.tenant_code = #{tenantCode}" +
+            " </if>" +
+            " <if test=\"clientId != null and clientId != ''\">" +
+            "    and ocd.client_id = #{clientId}" +
+            " </if>" +
+            "</where>" +
+            "</script>")
     List<OauthClientDetails> listPage(@Param("tenantCode") String tenantCode, @Param("clientId") String clientId);
 
 }

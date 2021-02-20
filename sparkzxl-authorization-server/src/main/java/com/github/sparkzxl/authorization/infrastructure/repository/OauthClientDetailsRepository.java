@@ -1,5 +1,6 @@
 package com.github.sparkzxl.authorization.infrastructure.repository;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.domain.repository.IOauthClientDetailsRepository;
@@ -16,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * description: 应用客户端 仓储实现类
@@ -41,12 +44,14 @@ public class OauthClientDetailsRepository implements IOauthClientDetailsReposito
         if (StringUtils.isEmpty(tenantCode)) {
             SparkZxlExceptionAssert.businessFail("租户信息为空");
         }
+        String clientSecret = oauthClientDetails.getClientSecret();
         TenantClient tenantClient = new TenantClient();
         tenantClient.setClientId(oauthClientDetails.getClientId());
         tenantClient.setTenantCode(tenantCode);
+        tenantClient.setOriginalClientSecret(clientSecret);
         tenantClientMapper.insert(tenantClient);
-        String clientSecret = passwordEncoder.encode(oauthClientDetails.getClientSecret());
-        oauthClientDetails.setClientSecret(clientSecret);
+        String encryptClientSecret = passwordEncoder.encode(clientSecret);
+        oauthClientDetails.setClientSecret(encryptClientSecret);
         return clientDetailsMapper.insert(oauthClientDetails) == 1;
     }
 
@@ -62,5 +67,31 @@ public class OauthClientDetailsRepository implements IOauthClientDetailsReposito
         PageHelper.startPage(pageNum, pageSize);
         List<OauthClientDetails> oauthClientDetailsList = clientDetailsMapper.listPage(tenantCode, clientId);
         return PageInfoUtils.pageInfo(oauthClientDetailsList);
+    }
+
+    @Override
+    public boolean deleteClient(List<Long> ids) {
+        List<TenantClient> tenantClients = tenantClientMapper.selectList(new LambdaQueryWrapper<TenantClient>().in(TenantClient::getId, ids));
+        List<Serializable> clientIds = tenantClients.stream().map(TenantClient::getClientId).collect(Collectors.toList());
+        tenantClientMapper.deleteBatchIds(ids);
+        return clientDetailsMapper.deleteBatchIds(clientIds) > 0;
+    }
+
+    @Override
+    public boolean updateOauthClientDetails(Long id, OauthClientDetails oauthClientDetails) {
+        String tenantCode = BaseContextHandler.getTenant();
+        if (StringUtils.isEmpty(tenantCode)) {
+            SparkZxlExceptionAssert.businessFail("租户信息为空");
+        }
+        String clientSecret = oauthClientDetails.getClientSecret();
+        TenantClient tenantClient = new TenantClient();
+        tenantClient.setId(id);
+        tenantClient.setClientId(oauthClientDetails.getClientId());
+        tenantClient.setTenantCode(tenantCode);
+        tenantClient.setOriginalClientSecret(clientSecret);
+        tenantClientMapper.updateById(tenantClient);
+        String encryptClientSecret = passwordEncoder.encode(clientSecret);
+        oauthClientDetails.setClientSecret(encryptClientSecret);
+        return clientDetailsMapper.updateById(oauthClientDetails) == 1;
     }
 }

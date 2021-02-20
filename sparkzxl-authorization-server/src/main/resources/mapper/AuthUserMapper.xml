@@ -11,6 +11,7 @@
         INNER JOIN auth_role_authority aua ON aua.role_id = aur.role_id
         INNER JOIN auth_resource ar ON ar.id = aua.authority_id
         WHERE ar.request_url IS NOT NULL GROUP BY ar.request_url
+        ORDER BY ar.id asc
     </select>
 
     <select id="getById" resultType="com.github.sparkzxl.authorization.infrastructure.entity.AuthUser">

@@ -14,6 +14,9 @@ import lombok.Data;
 @ApiModel("应用客户端更新DTO")
 public class OauthClientDetailsUpdateDTO {
 
+    @ApiModelProperty(value = "主键")
+    private Long id;
+
     @ApiModelProperty("客户端id")
     private String clientId;
 

@@ -2,6 +2,7 @@ package com.github.sparkzxl.authorization.infrastructure.convert;
 
 import com.github.sparkzxl.authorization.infrastructure.entity.OauthClientDetails;
 import com.github.sparkzxl.authorization.interfaces.dto.client.OauthClientDetailsSaveDTO;
+import com.github.sparkzxl.authorization.interfaces.dto.client.OauthClientDetailsUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -23,4 +24,12 @@ public interface OauthClientDetailsConvert {
      * @return OauthClientDetails
      */
     OauthClientDetails convertBaseClientDetails(OauthClientDetailsSaveDTO oauthClientDetailsSaveDTO);
+
+    /**
+     * OauthClientDetailsUpdateDTO转换OauthClientDetails
+     *
+     * @param oauthClientDetailsUpdateDTO 应用客户端更新DTO
+     * @return OauthClientDetails
+     */
+    OauthClientDetails convertBaseClientDetails(OauthClientDetailsUpdateDTO oauthClientDetailsUpdateDTO);
 }

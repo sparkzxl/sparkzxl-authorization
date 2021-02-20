@@ -8,7 +8,9 @@ import com.github.sparkzxl.authorization.infrastructure.entity.OauthClientDetail
 import com.github.sparkzxl.authorization.infrastructure.mapper.OauthClientDetailsMapper;
 import com.github.sparkzxl.authorization.interfaces.dto.client.OauthClientDetailsPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.client.OauthClientDetailsSaveDTO;
+import com.github.sparkzxl.authorization.interfaces.dto.client.OauthClientDetailsUpdateDTO;
 import com.github.sparkzxl.database.base.service.impl.SuperServiceImpl;
+import com.github.sparkzxl.database.dto.DeleteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +37,16 @@ public class OauthClientDetailsServiceImpl extends SuperServiceImpl<OauthClientD
         return clientDetailsRepository.listPage(oauthClientDetailsPageDTO.getPageNum(),
                 oauthClientDetailsPageDTO.getPageSize(),
                 oauthClientDetailsPageDTO.getClientId());
+    }
+
+    @Override
+    public boolean deleteClient(DeleteDTO deleteDTO) {
+        return clientDetailsRepository.deleteClient(deleteDTO.getIds());
+    }
+
+    @Override
+    public boolean updateOauthClientDetails(OauthClientDetailsUpdateDTO oauthClientDetailsUpdateDTO) {
+        OauthClientDetails oauthClientDetails = OauthClientDetailsConvert.INSTANCE.convertBaseClientDetails(oauthClientDetailsUpdateDTO);
+        return clientDetailsRepository.updateOauthClientDetails(oauthClientDetailsUpdateDTO.getId(),oauthClientDetails);
     }
 }
