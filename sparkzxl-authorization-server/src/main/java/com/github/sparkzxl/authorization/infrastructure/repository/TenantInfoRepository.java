@@ -3,11 +3,16 @@ package com.github.sparkzxl.authorization.infrastructure.repository;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.sparkzxl.authorization.domain.repository.IAuthRoleRepository;
+import com.github.sparkzxl.authorization.domain.repository.IAuthUserRepository;
 import com.github.sparkzxl.authorization.domain.repository.ITenantInfoRepository;
+import com.github.sparkzxl.authorization.infrastructure.entity.AuthRole;
+import com.github.sparkzxl.authorization.infrastructure.entity.AuthUser;
 import com.github.sparkzxl.authorization.infrastructure.entity.IdSegment;
 import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
 import com.github.sparkzxl.authorization.infrastructure.mapper.IdSegmentMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.TenantInfoMapper;
+import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.core.utils.DateUtils;
 import com.github.sparkzxl.database.utils.PageInfoUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +37,10 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     private TenantInfoMapper tenantMapper;
     @Autowired
     private IdSegmentMapper idSegmentMapper;
+    @Autowired
+    private IAuthUserRepository authUserRepository;
+    @Autowired
+    private IAuthRoleRepository authRoleRepository;
 
     @Override
     public PageInfo<TenantInfo> getTenantPageList(int pageNum, int pageSize, String code, String name) {
@@ -63,6 +72,23 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         idSegment.setUpdateTime(DateUtils.toLocalDateTime(new Date()));
         idSegmentMapper.updateById(idSegment);
         return tenantMapper.insert(tenant) != 0;
+    }
+
+    private void initTenantData(String tenantCode) {
+        BaseContextHandler.setTenant(tenantCode);
+        AuthUser authUser = new AuthUser();
+        authUser.setAccount("admin");
+        authUser.setPassword("admin");
+        authUser.setName("管理员");
+        authUser.setTenantCode(tenantCode);
+        authUserRepository.saveAuthUserInfo(authUser);
+        AuthRole authRole = new AuthRole();
+        authRole.setCode("ADMIN");
+        authRole.setName("管理员");
+        authRole.setDescribe("内置管理员");
+        authRole.setReadonly(true);
+        authRole.setDsType("ALL");
+        authRoleRepository.saveRole(authRole);
     }
 
     @Override

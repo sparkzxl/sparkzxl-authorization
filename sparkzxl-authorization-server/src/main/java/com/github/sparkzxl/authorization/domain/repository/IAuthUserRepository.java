@@ -77,4 +77,11 @@ public interface IAuthUserRepository {
      * @return AuthUserBasicInfo
      */
     AuthUserBasicInfo getAuthUserBasicInfo(Long userId);
+
+    /**
+     * 保存用户信息
+     * @param authUser 用户信息
+     * @return boolean
+     */
+    boolean saveAuthUserInfo(AuthUser authUser);
 }

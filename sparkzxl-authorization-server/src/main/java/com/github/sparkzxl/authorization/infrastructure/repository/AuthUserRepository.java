@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -45,8 +46,8 @@ public class AuthUserRepository implements IAuthUserRepository {
     private final AuthRoleMapper authRoleMapper;
     private final RoleAuthorityMapper roleAuthorityMapper;
     private final AuthResourceMapper authResourceMapper;
-    private final AuthMenuMapper authMenuMapper;
     private final CoreOrgMapper coreOrgMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AuthUser selectById(Long id) {
@@ -175,5 +176,11 @@ public class AuthUserRepository implements IAuthUserRepository {
             authUserBasicInfo.setResourceBasicInfos(resourceBasicInfos);
         }
         return authUserBasicInfo;
+    }
+
+    @Override
+    public boolean saveAuthUserInfo(AuthUser authUser) {
+        authUser.setPassword(passwordEncoder.encode(authUser.getPassword()));
+        return authUserMapper.insert(authUser) == 1;
     }
 }

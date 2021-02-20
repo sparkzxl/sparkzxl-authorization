@@ -1,6 +1,8 @@
 package com.github.sparkzxl.authorization.domain.repository;
 
 
+import com.github.sparkzxl.authorization.infrastructure.entity.AuthRole;
+
 import java.util.List;
 
 /**
@@ -17,4 +19,12 @@ public interface IAuthRoleRepository {
      * @param ids ids
      */
     void deleteAuthRoleRelation(List<Long> ids);
+
+    /**
+     * 保存角色
+     *
+     * @param authRole 角色信息
+     * @return boolean
+     */
+    boolean saveRole(AuthRole authRole);
 }
