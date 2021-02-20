@@ -661,6 +661,12 @@
             "name": "根据流程实例id挂起流程",
             "describe": "",
             "requestUrl": "/act/driver/suspendProcessByProcessInstanceId"
+          },
+          {
+            "code": "process:nextUserTask",
+            "name": "获取下一步任务详情",
+            "describe": "",
+            "requestUrl": "/act/driver/nextUserTask"
           }
         ]
       }
