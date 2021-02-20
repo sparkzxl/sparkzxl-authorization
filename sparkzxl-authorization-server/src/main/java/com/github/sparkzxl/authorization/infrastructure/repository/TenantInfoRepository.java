@@ -6,19 +6,21 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.domain.repository.*;
-import com.github.sparkzxl.authorization.infrastructure.entity.AuthMenu;
-import com.github.sparkzxl.authorization.infrastructure.entity.AuthRole;
-import com.github.sparkzxl.authorization.infrastructure.entity.AuthUser;
-import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
+import com.github.sparkzxl.authorization.infrastructure.entity.*;
 import com.github.sparkzxl.authorization.infrastructure.mapper.TenantInfoMapper;
 import com.github.sparkzxl.core.context.BaseContextHandler;
+import com.github.sparkzxl.database.entity.SuperEntity;
 import com.github.sparkzxl.database.utils.PageInfoUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * description: 租户仓储实现类
@@ -39,6 +41,12 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     private IAuthRoleRepository authRoleRepository;
     @Autowired
     private IAuthMenuRepository authMenuRepository;
+    @Autowired
+    private IAuthResourceRepository resourceRepository;
+    @Autowired
+    private IUserRoleRepository userRoleRepository;
+    @Autowired
+    private IRoleAuthorityRepository roleAuthorityRepository;
 
     @Override
     public PageInfo<TenantInfo> getTenantPageList(int pageNum, int pageSize, String code, String name) {
@@ -60,17 +68,22 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     public boolean saveTenant(TenantInfo tenant) {
         String tenantCode = segmentRepository.getIdSegment("tenant_code").toString();
         tenant.setCode(tenantCode);
-        return tenantMapper.insert(tenant) != 0;
+        tenantMapper.insert(tenant);
+        initTenantData(tenantCode);
+        return true;
     }
 
     private void initTenantData(String tenantCode) {
         BaseContextHandler.setTenant(tenantCode);
+        // 初始化管理员账户
         AuthUser authUser = new AuthUser();
         authUser.setAccount("admin");
         authUser.setPassword("admin");
         authUser.setName("管理员");
         authUser.setTenantCode(tenantCode);
         authUserRepository.saveAuthUserInfo(authUser);
+        Long userId = authUser.getId();
+        // 初始化管理员角色
         AuthRole authRole = new AuthRole();
         authRole.setCode("ADMIN");
         authRole.setName("管理员");
@@ -78,12 +91,22 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         authRole.setReadonly(true);
         authRole.setDsType("ALL");
         authRoleRepository.saveRole(authRole);
+        Long roleId = authRole.getId();
+        userRoleRepository.saveAuthRoleUser(roleId, Lists.newArrayList(userId));
+        // 初始化菜单资源
+        initMenuData();
+        List<AuthMenu> authMenuList = authMenuRepository.findAuthMenuList();
+        Set<Long> menuIds = authMenuList.stream().map(SuperEntity::getId).collect(Collectors.toSet());
+        List<AuthResource> authResources = resourceRepository.authResourceList();
+        Set<Long> resourceIds = authResources.stream().map(SuperEntity::getId).collect(Collectors.toSet());
+        roleAuthorityRepository.saveRoleAuthorityBatch(roleId, resourceIds, menuIds);
     }
 
-    private void initMenuData() {
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void initMenuData() {
         String menuJsonStr = ResourceUtil.readUtf8Str("menu.json");
         List<AuthMenu> authMenus = JSONArray.parseArray(menuJsonStr, AuthMenu.class);
-        boolean result = authMenuRepository.saveAuthMenus(authMenus);
+        authMenuRepository.saveAuthMenus(authMenus);
     }
 
     @Override

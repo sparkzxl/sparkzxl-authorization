@@ -26,7 +26,13 @@ public interface IAuthMenuRepository {
      * 保存菜单信息
      *
      * @param authMenus 菜单集合
-     * @return boolean
      */
-    boolean saveAuthMenus(List<AuthMenu> authMenus);
+    void saveAuthMenus(List<AuthMenu> authMenus);
+
+    /**
+     * 查询菜单列表
+     *
+     * @return List<AuthMenu>
+     */
+    List<AuthMenu> findAuthMenuList();
 }

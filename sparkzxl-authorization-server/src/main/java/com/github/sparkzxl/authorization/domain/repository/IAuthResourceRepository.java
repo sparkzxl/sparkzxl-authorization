@@ -37,4 +37,11 @@ public interface IAuthResourceRepository {
      * @return boolean
      */
     boolean deleteResource(Long resourceId);
+
+    /**
+     * 保存资源信息列表
+     * @param resourceList 资源信息列表
+     * @return boolean
+     */
+    boolean saveResourceList(List<AuthResource> resourceList);
 }

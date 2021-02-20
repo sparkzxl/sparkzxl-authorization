@@ -45,4 +45,9 @@ public class AuthResourceRepository implements IAuthResourceRepository {
         redisTemplate.opsForHash().delete(RESOURCE_ROLES_MAP, authResource.getRequestUrl());
         return authResourceMapper.deleteById(resourceId) == 1;
     }
+
+    @Override
+    public boolean saveResourceList(List<AuthResource> resourceList) {
+        return authResourceMapper.insertBatchSomeColumn(resourceList) > 0;
+    }
 }

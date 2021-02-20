@@ -262,7 +262,27 @@
         "icon": null,
         "componentName": "Org",
         "describe": null,
-        "isEnable": false
+        "isEnable": false,
+        "resourceList": [
+          {
+            "code": "org:tree",
+            "name": "组织树查询",
+            "describe": "组织树查询",
+            "requestUrl": "/org/orgs"
+          },
+          {
+            "code": "org:org",
+            "name": "组织保存,更新,删除",
+            "describe": "组织保存,更新,删除",
+            "requestUrl": "/org/org"
+          },
+          {
+            "code": "org:delete",
+            "name": "组织删除",
+            "describe": "组织删除",
+            "requestUrl": "/org/org/batch"
+          }
+        ]
       },
       {
         "path": "/user-center/station",
@@ -276,7 +296,39 @@
         "icon": null,
         "componentName": "Station",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "station:list",
+            "name": "岗位列表查询",
+            "describe": "查询所有岗位列表数据",
+            "requestUrl": "/station/stationList"
+          },
+          {
+            "code": "station:page",
+            "name": "岗位列表分页查询",
+            "describe": "岗位列表分页查询",
+            "requestUrl": "/station/stations"
+          },
+          {
+            "code": "station:update",
+            "name": "岗位修改",
+            "describe": "岗位修改",
+            "requestUrl": "/station/update"
+          },
+          {
+            "code": "station:save",
+            "name": "岗位新增",
+            "describe": "岗位新增",
+            "requestUrl": "/station/station"
+          },
+          {
+            "code": "station:view",
+            "name": "岗位查看",
+            "describe": "岗位查看",
+            "requestUrl": "/station/view"
+          }
+        ]
       },
       {
         "label": "用户管理",
@@ -290,7 +342,63 @@
         "componentName": "User",
         "component": "userCenter/userList",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "user:page",
+            "name": "用户分页",
+            "describe": "用户分页",
+            "requestUrl": "/user/listPage"
+          },
+          {
+            "code": "user:save",
+            "name": "用户保存",
+            "describe": "用户保存",
+            "requestUrl": "/user/saveAuthUser"
+          },
+          {
+            "code": "user:update",
+            "name": "用户更新",
+            "describe": "用户更新",
+            "requestUrl": "/user/updateAuthUser"
+          },
+          {
+            "code": "user:delete",
+            "name": "用户删除",
+            "describe": "用户删除",
+            "requestUrl": "/user/deleteAuthUser"
+          },
+          {
+            "code": "user:list",
+            "name": "用户列表查询",
+            "describe": "用户列表查询",
+            "requestUrl": "/user/list"
+          },
+          {
+            "code": "user:routers",
+            "name": "用户菜单",
+            "describe": "",
+            "requestUrl": "/user/routers"
+          },
+          {
+            "code": "user:import",
+            "name": "用户导入Excel",
+            "describe": "",
+            "requestUrl": "/user/importUserData"
+          },
+          {
+            "code": "user:export",
+            "name": "用户导出Excel",
+            "describe": "",
+            "requestUrl": "/user/exportUserData"
+          },
+          {
+            "code": "user:currentUser",
+            "name": "用户信息查询",
+            "describe": "",
+            "requestUrl": "/user/currentUser"
+          }
+        ]
       }
     ],
     "label": "用户中心",
@@ -320,7 +428,57 @@
         "icon": null,
         "componentName": "Dictionary",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "dictionary:page",
+            "name": "字典分页",
+            "describe": "",
+            "requestUrl": "/common/dictionary/page"
+          },
+          {
+            "code": "dictionaryItem:itemList",
+            "name": "字典项列表查询",
+            "describe": "",
+            "requestUrl": "/common/dictionaryItem/dictionaryItemList"
+          },
+          {
+            "code": "dictionary:save",
+            "name": "字典保存",
+            "describe": "",
+            "requestUrl": "/common/dictionary/save"
+          },
+          {
+            "code": "dictionary:delete",
+            "name": "字典删除",
+            "describe": "",
+            "requestUrl": "/common/dictionary/delete"
+          },
+          {
+            "code": "dictionary:update",
+            "name": "字典更新",
+            "describe": "",
+            "requestUrl": "/common/dictionary/update"
+          },
+          {
+            "code": "dictionaryItem:delete",
+            "name": "字典项删除",
+            "describe": "",
+            "requestUrl": "/common/dictionaryItem/delete"
+          },
+          {
+            "code": "dictionaryItem:save",
+            "name": "字典项新增",
+            "describe": "",
+            "requestUrl": "/common/dictionaryItem/save"
+          },
+          {
+            "code": "dictionaryItem:update",
+            "name": "字典项更新",
+            "describe": "",
+            "requestUrl": "/common/dictionaryItem/update"
+          }
+        ]
       },
       {
         "path": "/base/area",
@@ -334,7 +492,27 @@
         "icon": null,
         "componentName": "Area",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "area:tree",
+            "name": "地区树查询",
+            "describe": "",
+            "requestUrl": "/common/area/tree"
+          },
+          {
+            "code": "area:update",
+            "name": "地区更新",
+            "describe": "",
+            "requestUrl": "/common/area/update"
+          },
+          {
+            "code": "area:save",
+            "name": "地区保存",
+            "describe": "",
+            "requestUrl": "/common/area/save"
+          }
+        ]
       }
     ],
     "label": "基础配置",
@@ -364,7 +542,51 @@
         "icon": null,
         "componentName": "ProcessList",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "process:page",
+            "name": "流程列表分页",
+            "describe": "流程列表分页",
+            "requestUrl": "/modeler/model/list"
+          },
+          {
+            "code": "process:rule_action",
+            "name": "流程节点规则查询",
+            "describe": "",
+            "requestUrl": "/process/rule/action"
+          },
+          {
+            "code": "process:detail",
+            "name": "查询流程详细",
+            "describe": "",
+            "requestUrl": "/process/detail/processDetail"
+          },
+          {
+            "code": "modeler:publish",
+            "name": "流程发布",
+            "describe": "",
+            "requestUrl": "/modeler/publish"
+          },
+          {
+            "code": "modeler:revokePublish",
+            "name": "流程撤销",
+            "describe": "",
+            "requestUrl": "/modeler/revokePublish"
+          },
+          {
+            "code": "modeler:deleteProcessInstance",
+            "name": "流程删除",
+            "describe": "",
+            "requestUrl": "/modeler/deleteProcessInstance"
+          },
+          {
+            "code": "processRule:operation",
+            "name": "流程规则操作",
+            "describe": "",
+            "requestUrl": "/process/rule/processTaskRule"
+          }
+        ]
       },
       {
         "path": "/process/instanceList",
@@ -378,7 +600,69 @@
         "icon": null,
         "componentName": "InstanceList",
         "describe": null,
-        "isEnable": true
+        "isEnable": true,
+        "resourceList": [
+          {
+            "code": "process:instance",
+            "name": "流程实例列表查询",
+            "describe": "流程实例列表查询",
+            "requestUrl": "/act/process/instances"
+          },
+          {
+            "code": "process:processHistory",
+            "name": "流程历史查询",
+            "describe": "",
+            "requestUrl": "act/process/processHistoryByProcessInstanceId"
+          },
+          {
+            "code": "process:processImg",
+            "name": "流程图查看",
+            "describe": "",
+            "requestUrl": "/act/process/history/processImg"
+          },
+          {
+            "code": "process:driverProcess",
+            "name": "驱动业务流程",
+            "describe": "",
+            "requestUrl": "/act/driver/driverProcess"
+          },
+          {
+            "code": "process:activitiData",
+            "name": "业务activiti任务数据查询",
+            "describe": "",
+            "requestUrl": "/act/driver/activitiData"
+          },
+          {
+            "code": "process:activitiDataList",
+            "name": "业务activiti任务数据批量查询",
+            "describe": "",
+            "requestUrl": "/act/driver/activitiDataList"
+          },
+          {
+            "code": "process:suspendProcess",
+            "name": "流程挂起",
+            "describe": "",
+            "requestUrl": "/act/driver/suspendProcess"
+          },
+          {
+            "code": "processInstance:delete",
+            "name": "流程实例删除",
+            "describe": "",
+            "requestUrl": "/act/driver/deleteProcessInstance"
+          },
+          {
+            "code": "process:deleteProcessByProcInsId",
+            "name": "根据流程实例id删除流程实例",
+            "describe": "",
+            "requestUrl": "/act/driver/deleteProcessByProcInsId"
+          },
+          {
+            "code": "process:suspendProcessByProcessInstanceId",
+            "name": "根据流程实例id挂起流程",
+            "describe": "",
+            "requestUrl": "/act/driver/suspendProcessByProcessInstanceId"
+          }
+        ]
       }
     ],
     "label": "流程中心",
@@ -396,48 +680,6 @@
     "component": "Layout",
     "redirect": null,
     "children": [
-      {
-        "path": "/developer/application",
-        "component": "zuihou/developer/application/Index",
-        "label": "应用管理",
-        "sortValue": 0,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "componentName": "Application",
-        "describe": null,
-        "isEnable": true
-      },
-      {
-        "path": "/developer/systemApi",
-        "component": "zuihou/developer/systemApi/Index",
-        "label": "接口查询",
-        "sortValue": 1,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "componentName": "SystemApi",
-        "describe": null,
-        "isEnable": true
-      },
-      {
-        "label": "数据库监控",
-        "sortValue": 2,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "path": "/developer/db",
-        "componentName": "Db",
-        "component": "zuihou/developer/db/Index",
-        "describe": null,
-        "isEnable": true
-      },
       {
         "label": "操作日志",
         "sortValue": 3,
@@ -463,91 +705,6 @@
         "path": "/developer/loginLog",
         "componentName": "LoginLog",
         "component": "zuihou/developer/loginLog/Index",
-        "describe": null,
-        "isEnable": true
-      },
-      {
-        "label": "接口文档",
-        "sortValue": 5,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "path": "http://127.0.0.1:8900/doc.html",
-        "componentName": "InterfaceDoc",
-        "component": "Layout",
-        "describe": null,
-        "isEnable": true
-      },
-      {
-        "updateTime": 1612430666000,
-        "label": "注册中心",
-        "sortValue": 6,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "path": "http://47.116.52.58:8086/nacos",
-        "componentName": "RegistrationCenter",
-        "component": "Layout",
-        "describe": null,
-        "isEnable": true
-      },
-      {
-        "label": "缓存监控",
-        "sortValue": 8,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "path": "http://www.baidu.com",
-        "componentName": "CacheMonitor",
-        "component": "Layout",
-        "describe": null,
-        "isEnable": true
-      },
-      {
-        "label": "服务器监控",
-        "sortValue": 9,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "path": "http://127.0.0.1:8762/zuihou-monitor",
-        "componentName": "ServerM",
-        "component": "Layout",
-        "describe": null,
-        "isEnable": true
-      },
-      {
-        "label": "定时调度中心",
-        "sortValue": 10,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "path": "http://127.0.0.1:8767/zuihou-jobs-server",
-        "componentName": "XXLJob",
-        "component": "Layout",
-        "describe": null,
-        "isEnable": true
-      },
-      {
-        "label": "链路调用监控",
-        "sortValue": 11,
-        "children": null,
-        "hidden": false,
-        "redirect": null,
-        "noKeepAlive": false,
-        "icon": null,
-        "path": "http://127.0.0.1:8772/zipkin",
-        "componentName": "Track",
-        "component": "Layout",
         "describe": null,
         "isEnable": true
       }

@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 /**
  * description: 菜单
  *
@@ -63,5 +65,9 @@ public class AuthMenu extends TreeEntity<AuthMenu, Long> {
     @ApiModelProperty(value = "租户code")
     @TableField("tenant_code")
     private String tenantCode;
+
+    @ApiModelProperty(value = "资源列表")
+    @TableField(exist = false)
+    private List<AuthResource> resourceList;
 
 }
