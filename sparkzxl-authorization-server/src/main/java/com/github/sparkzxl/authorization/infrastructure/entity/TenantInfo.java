@@ -64,4 +64,8 @@ public class TenantInfo extends Entity<Long> {
     @TableField("password_error_lock_time")
     private String passwordErrorLockTime;
 
+    @ApiModelProperty(value = "管理员账户")
+    @TableField(exist = false)
+    private AuthUser adminUser;
+
 }

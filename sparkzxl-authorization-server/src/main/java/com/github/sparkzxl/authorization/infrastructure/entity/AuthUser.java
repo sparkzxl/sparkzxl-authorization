@@ -114,4 +114,8 @@ public class AuthUser extends Entity<Long> {
     @TableField("tenant_code")
     private String tenantCode;
 
+    @ApiModelProperty(value = "密码")
+    @TableField(exist = false)
+    private String originalPassword;
+
 }

@@ -60,6 +60,12 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         tenantLambdaQueryWrapper.orderByAsc(TenantInfo::getCode);
         PageHelper.startPage(pageNum, pageSize);
         List<TenantInfo> tenantList = tenantMapper.selectList(tenantLambdaQueryWrapper);
+        // 初始化管理员账户
+        AuthUser authUser = new AuthUser();
+        authUser.setAccount("admin");
+        authUser.setOriginalPassword("123456");
+        authUser.setName("管理员");
+        tenantList.forEach(tenantInfo -> tenantInfo.setAdminUser(authUser));
         return PageInfoUtils.pageInfo(tenantList);
     }
 
