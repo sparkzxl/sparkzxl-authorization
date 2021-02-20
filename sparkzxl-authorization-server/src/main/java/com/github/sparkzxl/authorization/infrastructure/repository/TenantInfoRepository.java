@@ -78,7 +78,7 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         // 初始化管理员账户
         AuthUser authUser = new AuthUser();
         authUser.setAccount("admin");
-        authUser.setPassword("admin");
+        authUser.setPassword("123456");
         authUser.setName("管理员");
         authUser.setTenantCode(tenantCode);
         authUserRepository.saveAuthUserInfo(authUser);
