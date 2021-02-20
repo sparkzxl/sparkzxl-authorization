@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * description: 租户管理
  *
@@ -32,7 +34,13 @@ public class SpTenantController {
         this.tenantService = tenantService;
     }
 
-    @ApiOperation("查询租户列表")
+    @ApiOperation("租户列表查询")
+    @GetMapping("/list")
+    public List<TenantInfo> tenantList() {
+        return tenantService.list();
+    }
+
+    @ApiOperation("租户分页查询")
     @PostMapping("/tenants")
     public PageInfo<TenantInfo> getTenantPageList(@RequestBody TenantPageDTO tenantPageDTO) {
         return tenantService.getTenantPageList(tenantPageDTO);

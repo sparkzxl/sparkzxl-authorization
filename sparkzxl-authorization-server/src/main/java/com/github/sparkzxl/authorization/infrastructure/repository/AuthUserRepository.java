@@ -147,31 +147,33 @@ public class AuthUserRepository implements IAuthUserRepository {
         List<Long> roleIds =
                 userRoleMapper.selectList(new LambdaUpdateWrapper<UserRole>().eq(UserRole::getUserId, userId)).stream().map(UserRole::getRoleId)
                         .collect(Collectors.toList());
-        List<AuthRole> roleList = authRoleMapper.selectBatchIds(roleIds);
-        List<RoleBasicInfo> roleBasicInfos = AuthRoleConvert.INSTANCE.convertRoleBasicInfo(roleList);
-        authUserBasicInfo.setRoleBasicInfos(roleBasicInfos);
-        List<RoleAuthority> roleAuthorities =
-                roleAuthorityMapper.selectList(new LambdaQueryWrapper<RoleAuthority>().in(RoleAuthority::getRoleId, roleIds)
-                        .eq(RoleAuthority::getAuthorityType, "RESOURCE")
-                        .groupBy(RoleAuthority::getAuthorityId, RoleAuthority::getRoleId));
-        List<Long> authorityIds = roleAuthorities.stream().map(RoleAuthority::getAuthorityId).collect(Collectors.toList());
-        Map<Long, Long> roleAuthorityIdMap =
-                roleAuthorities.stream().collect(Collectors.toMap(RoleAuthority::getAuthorityId, RoleAuthority::getRoleId));
-        List<ResourceBasicInfo> resourceBasicInfos = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(authorityIds)){
-            // 获取用户资源列表
-            List<AuthResource> resourceList = authResourceMapper.selectBatchIds(authorityIds);
-            if (CollectionUtils.isNotEmpty(resourceList)) {
-                resourceList.forEach(resource -> {
-                    ResourceBasicInfo resourceBasicInfo = new ResourceBasicInfo();
-                    resourceBasicInfo.setCode(resource.getCode());
-                    resourceBasicInfo.setName(resource.getName());
-                    resourceBasicInfo.setRoleId(roleAuthorityIdMap.get(resource.getId()));
-                    resourceBasicInfos.add(resourceBasicInfo);
-                });
+        if (CollectionUtils.isNotEmpty(roleIds)) {
+            List<AuthRole> roleList = authRoleMapper.selectBatchIds(roleIds);
+            List<RoleBasicInfo> roleBasicInfos = AuthRoleConvert.INSTANCE.convertRoleBasicInfo(roleList);
+            authUserBasicInfo.setRoleBasicInfos(roleBasicInfos);
+            List<RoleAuthority> roleAuthorities =
+                    roleAuthorityMapper.selectList(new LambdaQueryWrapper<RoleAuthority>().in(RoleAuthority::getRoleId, roleIds)
+                            .eq(RoleAuthority::getAuthorityType, "RESOURCE")
+                            .groupBy(RoleAuthority::getAuthorityId, RoleAuthority::getRoleId));
+            List<Long> authorityIds = roleAuthorities.stream().map(RoleAuthority::getAuthorityId).collect(Collectors.toList());
+            Map<Long, Long> roleAuthorityIdMap =
+                    roleAuthorities.stream().collect(Collectors.toMap(RoleAuthority::getAuthorityId, RoleAuthority::getRoleId));
+            List<ResourceBasicInfo> resourceBasicInfos = Lists.newArrayList();
+            if (CollectionUtils.isNotEmpty(authorityIds)) {
+                // 获取用户资源列表
+                List<AuthResource> resourceList = authResourceMapper.selectBatchIds(authorityIds);
+                if (CollectionUtils.isNotEmpty(resourceList)) {
+                    resourceList.forEach(resource -> {
+                        ResourceBasicInfo resourceBasicInfo = new ResourceBasicInfo();
+                        resourceBasicInfo.setCode(resource.getCode());
+                        resourceBasicInfo.setName(resource.getName());
+                        resourceBasicInfo.setRoleId(roleAuthorityIdMap.get(resource.getId()));
+                        resourceBasicInfos.add(resourceBasicInfo);
+                    });
+                }
             }
+            authUserBasicInfo.setResourceBasicInfos(resourceBasicInfos);
         }
-        authUserBasicInfo.setResourceBasicInfos(resourceBasicInfos);
         return authUserBasicInfo;
     }
 }

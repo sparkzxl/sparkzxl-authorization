@@ -43,33 +43,35 @@ public class AuthMenuRepository implements IAuthMenuRepository {
         List<Long> roleIds =
                 userRoleMapper.selectList(new LambdaUpdateWrapper<UserRole>().eq(UserRole::getUserId, userId)).stream().map(UserRole::getRoleId)
                         .collect(Collectors.toList());
-        List<RoleAuthority> roleAuthorities =
-                roleAuthorityMapper.selectList(new LambdaQueryWrapper<RoleAuthority>().in(RoleAuthority::getRoleId, roleIds)
-                        .groupBy(RoleAuthority::getAuthorityId, RoleAuthority::getAuthorityType, RoleAuthority::getRoleId));
-        List<Long> menuIds = roleAuthorities.stream().filter(x -> "MENU".equals(x.getAuthorityType()))
-                .map(RoleAuthority::getAuthorityId).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(roleIds)) {
+            List<RoleAuthority> roleAuthorities =
+                    roleAuthorityMapper.selectList(new LambdaQueryWrapper<RoleAuthority>().in(RoleAuthority::getRoleId, roleIds)
+                            .groupBy(RoleAuthority::getAuthorityId, RoleAuthority::getAuthorityType, RoleAuthority::getRoleId));
+            List<Long> menuIds = roleAuthorities.stream().filter(x -> "MENU".equals(x.getAuthorityType()))
+                    .map(RoleAuthority::getAuthorityId).collect(Collectors.toList());
 
-        if (CollectionUtils.isNotEmpty(menuIds)) {
-            List<AuthMenu> menuList = authMenuMapper.selectBatchIds(menuIds);
-            menuList = menuList.stream().sorted(Comparator.comparing(AuthMenu::getSortValue)).collect(Collectors.toList());
-            List<MenuBasicInfo> menuBasicInfos = Lists.newArrayList();
-            if (CollectionUtils.isNotEmpty(menuList)) {
-                menuList.forEach(menu -> {
-                    MenuBasicInfo menuBasicInfo = new MenuBasicInfo();
-                    menuBasicInfo.setId(menu.getId());
-                    menuBasicInfo.setLabel(menu.getLabel());
-                    menuBasicInfo.setIcon(menu.getIcon());
-                    menuBasicInfo.setPath(menu.getPath());
-                    menuBasicInfo.setRedirect(menu.getRedirect());
-                    menuBasicInfo.setComponent(menu.getComponent());
-                    menuBasicInfo.setComponentName(menu.getComponentName());
-                    menuBasicInfo.setHidden(menu.isHidden());
-                    menuBasicInfo.setNoKeepAlive(menu.isNoKeepAlive());
-                    menuBasicInfo.setParentId(menu.getParentId());
-                    menuBasicInfo.setSortValue(menu.getSortValue());
-                    menuBasicInfos.add(menuBasicInfo);
-                });
-                return TreeUtils.buildTree(menuBasicInfos);
+            if (CollectionUtils.isNotEmpty(menuIds)) {
+                List<AuthMenu> menuList = authMenuMapper.selectBatchIds(menuIds);
+                menuList = menuList.stream().sorted(Comparator.comparing(AuthMenu::getSortValue)).collect(Collectors.toList());
+                List<MenuBasicInfo> menuBasicInfos = Lists.newArrayList();
+                if (CollectionUtils.isNotEmpty(menuList)) {
+                    menuList.forEach(menu -> {
+                        MenuBasicInfo menuBasicInfo = new MenuBasicInfo();
+                        menuBasicInfo.setId(menu.getId());
+                        menuBasicInfo.setLabel(menu.getLabel());
+                        menuBasicInfo.setIcon(menu.getIcon());
+                        menuBasicInfo.setPath(menu.getPath());
+                        menuBasicInfo.setRedirect(menu.getRedirect());
+                        menuBasicInfo.setComponent(menu.getComponent());
+                        menuBasicInfo.setComponentName(menu.getComponentName());
+                        menuBasicInfo.setHidden(menu.isHidden());
+                        menuBasicInfo.setNoKeepAlive(menu.isNoKeepAlive());
+                        menuBasicInfo.setParentId(menu.getParentId());
+                        menuBasicInfo.setSortValue(menu.getSortValue());
+                        menuBasicInfos.add(menuBasicInfo);
+                    });
+                    return TreeUtils.buildTree(menuBasicInfos);
+                }
             }
         }
         return Lists.newArrayList();
