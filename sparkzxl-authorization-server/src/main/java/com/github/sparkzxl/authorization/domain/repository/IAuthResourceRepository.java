@@ -29,4 +29,12 @@ public interface IAuthResourceRepository {
      * @return List<AuthResource>
      */
     List<AuthResource> findVisibleResource(Long userId, Long menuId);
+
+    /**
+     * 删除资源
+     *
+     * @param resourceId 资源id
+     * @return boolean
+     */
+    boolean deleteResource(Long resourceId);
 }

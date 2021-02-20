@@ -24,4 +24,10 @@ public interface IAuthResourceService extends SuperCacheService<AuthResource> {
      */
     List<AuthResource> findVisibleResource(Long userId, ResourceQueryDTO resource);
 
+    /**
+     * 删除资源
+     * @param resourceId 资源id
+     * @return boolean
+     */
+    boolean deleteResource(Long resourceId);
 }

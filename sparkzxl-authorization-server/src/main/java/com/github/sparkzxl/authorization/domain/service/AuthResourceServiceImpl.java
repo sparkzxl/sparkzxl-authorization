@@ -44,4 +44,9 @@ public class AuthResourceServiceImpl extends AbstractSuperCacheServiceImpl<AuthR
         });
         return null;
     }
+
+    @Override
+    public boolean deleteResource(Long resourceId) {
+        return authResourceRepository.deleteResource(resourceId);
+    }
 }

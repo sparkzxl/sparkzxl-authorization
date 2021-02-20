@@ -55,6 +55,6 @@ public class AuthResourceController extends SuperCacheController<IAuthResourceSe
     @ApiOperation("删除资源")
     @DeleteMapping("/deleteResource")
     public boolean deleteResource(@RequestParam("id") Long resourceId) {
-        return baseService.removeById(resourceId);
+        return baseService.deleteResource(resourceId);
     }
 }
