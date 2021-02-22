@@ -8,6 +8,7 @@ import com.github.sparkzxl.authorization.infrastructure.entity.AuthUser;
 import com.github.sparkzxl.authorization.infrastructure.entity.UserRole;
 import com.github.sparkzxl.authorization.infrastructure.mapper.AuthUserMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.UserRoleMapper;
+import com.github.sparkzxl.core.context.BaseContextHandler;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
@@ -40,6 +41,7 @@ public class UserRoleRepository implements IUserRoleRepository {
                 UserRole userRole = new UserRole();
                 userRole.setRoleId(roleId);
                 userRole.setUserId(userId);
+                userRole.setTenantCode(BaseContextHandler.getTenant());
                 userRoles.add(userRole);
             });
             userRoleMapper.insertBatchSomeColumn(userRoles);

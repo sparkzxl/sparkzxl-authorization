@@ -186,6 +186,6 @@ public class AuthUserRepository implements IAuthUserRepository {
 
     @Override
     public void deleteTenantUser(String tenantCode) {
-        authUserMapper.delete(new LambdaQueryWrapper<AuthUser>().eq(AuthUser::getTenantCode, tenantCode));
+        authUserMapper.deleteTenantUser(tenantCode);
     }
 }

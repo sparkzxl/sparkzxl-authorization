@@ -5,6 +5,7 @@ import com.github.sparkzxl.authorization.infrastructure.entity.AuthUser;
 import com.github.sparkzxl.authorization.infrastructure.entity.RoleResource;
 import com.github.sparkzxl.database.annonation.InjectionResult;
 import com.github.sparkzxl.database.base.mapper.SuperMapper;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -53,4 +54,13 @@ public interface AuthUserMapper extends SuperMapper<AuthUser> {
      */
     @InjectionResult
     AuthUser getById(@Param("id") Long id);
+
+    /**
+     * 根据租户code删除用户
+     *
+     * @param tenantCode 租户code
+     */
+    @Delete("delete from auth_user where tenant_code = #{tenantCode}")
+    @InterceptorIgnore(tenantLine = "true")
+    void deleteTenantUser(String tenantCode);
 }

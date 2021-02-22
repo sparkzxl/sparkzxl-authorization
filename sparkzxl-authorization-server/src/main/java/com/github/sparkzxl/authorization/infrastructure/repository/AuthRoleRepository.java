@@ -48,5 +48,6 @@ public class AuthRoleRepository implements IAuthRoleRepository {
         userRoleMapper.deleteUserRole(tenantCode);
         roleOrgMapper.deleteRoleOrg(tenantCode);
         roleAuthorityMapper.deleteRoleAuthority(tenantCode);
+        authRoleMapper.deleteAuthRole(tenantCode);
     }
 }

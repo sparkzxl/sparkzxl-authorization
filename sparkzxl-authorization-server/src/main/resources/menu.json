@@ -5,40 +5,6 @@
     "redirect": null,
     "children": [
       {
-        "path": "/relam/tenantList",
-        "component": "relam/tenantList",
-        "label": "租户管理",
-        "sortValue": 1,
-        "children": null,
-        "hidden": true,
-        "redirect": null,
-        "noKeepAlive": true,
-        "icon": "",
-        "componentName": "Tenant",
-        "describe": null,
-        "isEnable": true,
-        "resourceList": [
-          {
-            "code": "tenant:page",
-            "name": "租户分页查询",
-            "describe": "",
-            "requestUrl": "/tenant/tenants"
-          },
-          {
-            "code": "tenant:operation",
-            "name": "租户操作",
-            "describe": "",
-            "requestUrl": "/tenant/tenant"
-          },
-          {
-            "code": "tenant:list",
-            "name": "租户列表查询",
-            "describe": "",
-            "requestUrl": "/tenant/list"
-          }
-        ]
-      },
-      {
         "label": "客户端管理",
         "sortValue": 2,
         "children": null,

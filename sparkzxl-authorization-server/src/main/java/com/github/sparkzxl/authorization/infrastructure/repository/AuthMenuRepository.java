@@ -90,6 +90,7 @@ public class AuthMenuRepository implements IAuthMenuRepository {
             if (authMenu.getParentId().equals(0L)) {
                 long id = segmentRepository.getIdSegment("auth_menu").longValue();
                 authMenu.setId(id);
+                authMenu.setIsEnable(true);
                 authMenuMapper.insert(authMenu);
                 saveNodeMenu(id, authMenu.getChildren());
             }
@@ -102,10 +103,11 @@ public class AuthMenuRepository implements IAuthMenuRepository {
                 authMenu.setParentId(parentId);
                 long id = segmentRepository.getIdSegment("auth_menu").longValue();
                 authMenu.setId(id);
+                authMenu.setIsEnable(true);
                 authMenuMapper.insert(authMenu);
                 List<AuthResource> resourceList = authMenu.getResourceList();
-                resourceList.forEach(resource-> resource.setMenuId(id));
                 if (CollectionUtils.isNotEmpty(resourceList)) {
+                    resourceList.forEach(resource-> resource.setMenuId(id));
                     authResourceRepository.saveResourceList(resourceList);
                 }
                 Long nodeParentId = authMenu.getId();

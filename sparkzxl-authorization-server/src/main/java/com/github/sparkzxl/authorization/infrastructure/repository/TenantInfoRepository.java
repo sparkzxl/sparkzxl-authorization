@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.domain.repository.*;
 import com.github.sparkzxl.authorization.infrastructure.entity.*;
+import com.github.sparkzxl.authorization.infrastructure.enums.SexEnum;
 import com.github.sparkzxl.authorization.infrastructure.mapper.*;
 import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.database.entity.SuperEntity;
@@ -92,7 +93,7 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         return true;
     }
 
-    private void initTenantData(String tenantCode) {
+    public void initTenantData(String tenantCode) {
         BaseContextHandler.setTenant(tenantCode);
         // 初始化管理员账户
         AuthUser authUser = new AuthUser();
@@ -100,6 +101,8 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         authUser.setPassword("123456");
         authUser.setName("管理员");
         authUser.setTenantCode(tenantCode);
+        authUser.setSex(SexEnum.MAN);
+        authUser.setStatus(true);
         authUserRepository.saveAuthUserInfo(authUser);
         Long userId = authUser.getId();
         // 初始化管理员角色
@@ -109,6 +112,7 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         authRole.setDescribe("内置管理员");
         authRole.setReadonly(true);
         authRole.setDsType("ALL");
+        authRole.setStatus(true);
         authRoleRepository.saveRole(authRole);
         Long roleId = authRole.getId();
         userRoleRepository.saveAuthRoleUser(roleId, Lists.newArrayList(userId));
