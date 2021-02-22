@@ -60,8 +60,8 @@ public class SpTenantController {
 
     @ApiOperation("删除租户信息")
     @DeleteMapping("/tenant")
-    public boolean deleteTenant(@RequestBody DeleteDTO deleteDTO) {
-        return tenantService.deleteTenant(deleteDTO);
+    public boolean deleteTenant(@RequestParam(value = "tenantId") Long tenantId) {
+        return tenantService.deleteTenant(tenantId);
     }
 
 }

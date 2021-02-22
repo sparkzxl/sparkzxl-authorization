@@ -118,4 +118,9 @@ public class AuthMenuRepository implements IAuthMenuRepository {
     public List<AuthMenu> findAuthMenuList() {
         return authMenuMapper.selectList(null);
     }
+
+    @Override
+    public void deleteTenantMenu(String tenantCode) {
+        authMenuMapper.deleteTenantMenu(tenantCode);
+    }
 }

@@ -43,8 +43,8 @@ public interface ITenantInfoService extends IService<TenantInfo> {
     /**
      * 删除租户
      *
-     * @param deleteDTO 删除实体类
+     * @param tenantId 租户id
      * @return boolean
      */
-    boolean deleteTenant(DeleteDTO deleteDTO);
+    boolean deleteTenant(Long tenantId);
 }

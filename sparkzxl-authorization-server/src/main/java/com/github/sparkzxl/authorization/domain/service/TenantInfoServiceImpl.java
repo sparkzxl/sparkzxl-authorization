@@ -10,9 +10,6 @@ import com.github.sparkzxl.authorization.infrastructure.mapper.TenantInfoMapper;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantUpdateDTO;
-import com.github.sparkzxl.core.support.SparkZxlExceptionAssert;
-import com.github.sparkzxl.database.dto.DeleteDTO;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +27,7 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
 
     @Override
     public PageInfo<TenantInfo> getTenantPageList(TenantPageDTO tenantPageDTO) {
-        return tenantRepository.getTenantPageList(tenantPageDTO.getPageNum(),tenantPageDTO.getPageSize(),tenantPageDTO.getCode(),
+        return tenantRepository.getTenantPageList(tenantPageDTO.getPageNum(), tenantPageDTO.getPageSize(), tenantPageDTO.getCode(),
                 tenantPageDTO.getName());
     }
 
@@ -47,10 +44,7 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
     }
 
     @Override
-    public boolean deleteTenant(DeleteDTO deleteDTO) {
-        if (CollectionUtils.isEmpty(deleteDTO.getIds())){
-            SparkZxlExceptionAssert.businessFail(400,"id不能为空");
-        }
-        return tenantRepository.deleteTenant(deleteDTO.getIds());
+    public boolean deleteTenant(Long tenantId) {
+        return tenantRepository.deleteTenant(tenantId);
     }
 }

@@ -43,8 +43,8 @@ public interface ITenantInfoRepository {
     /**
      * 删除租户信息
      *
-     * @param ids 租户id列表
+     * @param tenantId 租户id
      * @return boolean
      */
-    boolean deleteTenant(List<Long> ids);
+    boolean deleteTenant(Long tenantId);
 }

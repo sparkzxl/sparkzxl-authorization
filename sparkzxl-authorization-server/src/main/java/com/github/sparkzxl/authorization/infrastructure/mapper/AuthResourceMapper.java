@@ -1,7 +1,9 @@
 package com.github.sparkzxl.authorization.infrastructure.mapper;
 
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthResource;
 import com.github.sparkzxl.database.base.mapper.SuperMapper;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -30,4 +32,13 @@ public interface AuthResourceMapper extends SuperMapper<AuthResource> {
             + " where ur.user_id = #{userId, jdbcType=BIGINT} and r.`status` = true "
             + " and ra.authority_type = 'RESOURCE')")
     List<AuthResource> findVisibleResource(Long userId, Long menuId);
+
+    /**
+     * 根据租户code删除资源
+     *
+     * @param tenantCode 租户code
+     */
+    @Delete("delete from auth_resource where tenant_code = #{tenantCode}")
+    @InterceptorIgnore(tenantLine = "true")
+    void deleteTenantResource(String tenantCode);
 }

@@ -50,4 +50,9 @@ public class AuthResourceRepository implements IAuthResourceRepository {
     public boolean saveResourceList(List<AuthResource> resourceList) {
         return authResourceMapper.insertBatchSomeColumn(resourceList) > 0;
     }
+
+    @Override
+    public void deleteTenantResource(String tenantCode) {
+        authResourceMapper.deleteTenantResource(tenantCode);
+    }
 }

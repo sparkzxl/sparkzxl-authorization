@@ -1,7 +1,10 @@
 package com.github.sparkzxl.authorization.infrastructure.mapper;
 
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.github.sparkzxl.authorization.infrastructure.entity.UserRole;
 import com.github.sparkzxl.database.base.mapper.SuperMapper;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,4 +16,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRoleMapper extends SuperMapper<UserRole> {
 
+    /**
+     * 根据租户code删除用户角色关系
+     *
+     * @param tenantCode 租户code
+     */
+    @Delete("delete from auth_user_role where tenant_code = #{tenantCode}")
+    @InterceptorIgnore(tenantLine = "true")
+    void deleteUserRole(@Param("tenantCode") String tenantCode);
 }

@@ -73,6 +73,7 @@ public interface IAuthUserRepository {
 
     /**
      * 根据用户id获取用户全量信息
+     *
      * @param userId 用户id
      * @return AuthUserBasicInfo
      */
@@ -80,8 +81,15 @@ public interface IAuthUserRepository {
 
     /**
      * 保存用户信息
+     *
      * @param authUser 用户信息
-     * @return boolean
      */
-    boolean saveAuthUserInfo(AuthUser authUser);
+    void saveAuthUserInfo(AuthUser authUser);
+
+    /**
+     * 根据租户code删除用户
+     *
+     * @param tenantCode 租户code
+     */
+    void deleteTenantUser(String tenantCode);
 }

@@ -44,4 +44,10 @@ public interface IAuthResourceRepository {
      * @return boolean
      */
     boolean saveResourceList(List<AuthResource> resourceList);
+
+    /**
+     * 根据租户code删除资源
+     * @param tenantCode 租户code
+     */
+    void deleteTenantResource(String tenantCode);
 }

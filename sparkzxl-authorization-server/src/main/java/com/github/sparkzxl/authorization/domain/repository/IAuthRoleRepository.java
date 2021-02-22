@@ -24,7 +24,12 @@ public interface IAuthRoleRepository {
      * 保存角色
      *
      * @param authRole 角色信息
-     * @return boolean
      */
-    boolean saveRole(AuthRole authRole);
+    void saveRole(AuthRole authRole);
+
+    /**
+     * 根据租户code删除角色信息
+     * @param tenantCode 租户code
+     */
+    void deleteAuthRole(String tenantCode);
 }

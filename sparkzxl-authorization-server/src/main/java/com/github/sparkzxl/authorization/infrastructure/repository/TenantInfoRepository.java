@@ -7,11 +7,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.domain.repository.*;
 import com.github.sparkzxl.authorization.infrastructure.entity.*;
-import com.github.sparkzxl.authorization.infrastructure.mapper.TenantInfoMapper;
+import com.github.sparkzxl.authorization.infrastructure.mapper.*;
 import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.database.entity.SuperEntity;
 import com.github.sparkzxl.database.utils.PageInfoUtils;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -47,6 +48,18 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     private IUserRoleRepository userRoleRepository;
     @Autowired
     private IRoleAuthorityRepository roleAuthorityRepository;
+    @Autowired
+    private TenantClientMapper tenantClientMapper;
+    @Autowired
+    private OauthClientDetailsMapper oauthClientDetailsMapper;
+    @Autowired
+    private CoreStationMapper stationMapper;
+    @Autowired
+    private CoreOrgMapper orgMapper;
+    @Autowired
+    private CommonDictionaryMapper dictionaryMapper;
+    @Autowired
+    private CommonDictionaryItemMapper dictionaryItemMapper;
 
     @Override
     public PageInfo<TenantInfo> getTenantPageList(int pageNum, int pageSize, String code, String name) {
@@ -121,7 +134,24 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     }
 
     @Override
-    public boolean deleteTenant(List<Long> ids) {
-        return tenantMapper.deleteBatchIds(ids) != 0;
+    public boolean deleteTenant(Long tenantId) {
+        TenantInfo tenantInfo = tenantMapper.selectById(tenantId);
+        String tenantCode = tenantInfo.getCode();
+        authUserRepository.deleteTenantUser(tenantCode);
+        authRoleRepository.deleteAuthRole(tenantCode);
+        resourceRepository.deleteTenantResource(tenantCode);
+        authMenuRepository.deleteTenantMenu(tenantCode);
+        List<TenantClient> tenantClientList = tenantClientMapper.selectList(new LambdaQueryWrapper<TenantClient>()
+                .eq(TenantClient::getTenantCode, tenantCode));
+        if (CollectionUtils.isNotEmpty(tenantClientList)) {
+            List<String> clientIdList = tenantClientList.stream().map(TenantClient::getClientId).collect(Collectors.toList());
+            oauthClientDetailsMapper.deleteBatchIds(clientIdList);
+        }
+        tenantClientMapper.deleteTenantClient(tenantCode);
+        stationMapper.deleteTenantStation(tenantCode);
+        orgMapper.deleteTenantOrg(tenantCode);
+        dictionaryMapper.deleteTenantDictionary(tenantCode);
+        dictionaryItemMapper.deleteTenantDictionaryItem(tenantCode);
+        return tenantMapper.deleteById(tenantId) != 0;
     }
 }

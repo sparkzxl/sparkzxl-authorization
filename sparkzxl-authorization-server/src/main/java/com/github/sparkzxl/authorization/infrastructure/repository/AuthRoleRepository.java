@@ -39,7 +39,14 @@ public class AuthRoleRepository implements IAuthRoleRepository {
     }
 
     @Override
-    public boolean saveRole(AuthRole authRole) {
-        return authRoleMapper.insert(authRole) == 1;
+    public void saveRole(AuthRole authRole) {
+        authRoleMapper.insert(authRole);
+    }
+
+    @Override
+    public void deleteAuthRole(String tenantCode) {
+        userRoleMapper.deleteUserRole(tenantCode);
+        roleOrgMapper.deleteRoleOrg(tenantCode);
+        roleAuthorityMapper.deleteRoleAuthority(tenantCode);
     }
 }

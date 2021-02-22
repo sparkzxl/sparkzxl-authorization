@@ -2,6 +2,7 @@ package com.github.sparkzxl.authorization.infrastructure.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.sparkzxl.authorization.infrastructure.entity.TenantClient;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,4 +14,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TenantClientMapper extends BaseMapper<TenantClient> {
 
+    /**
+     * 根据租户code删除租户客户端
+     *
+     * @param tenantCode 租户code
+     */
+    @Delete("delete from tenant_client where tenant_code = #{tenantCode}")
+    void deleteTenantClient(String tenantCode);
 }

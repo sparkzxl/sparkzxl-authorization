@@ -179,8 +179,13 @@ public class AuthUserRepository implements IAuthUserRepository {
     }
 
     @Override
-    public boolean saveAuthUserInfo(AuthUser authUser) {
+    public void saveAuthUserInfo(AuthUser authUser) {
         authUser.setPassword(passwordEncoder.encode(authUser.getPassword()));
-        return authUserMapper.insert(authUser) == 1;
+        authUserMapper.insert(authUser);
+    }
+
+    @Override
+    public void deleteTenantUser(String tenantCode) {
+        authUserMapper.delete(new LambdaQueryWrapper<AuthUser>().eq(AuthUser::getTenantCode, tenantCode));
     }
 }
