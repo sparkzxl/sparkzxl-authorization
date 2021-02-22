@@ -117,7 +117,7 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         Long roleId = authRole.getId();
         userRoleRepository.saveAuthRoleUser(roleId, Lists.newArrayList(userId));
         // 初始化菜单资源
-        initMenuData();
+        initMenuData(tenantCode);
         List<AuthMenu> authMenuList = authMenuRepository.findAuthMenuList();
         Set<Long> menuIds = authMenuList.stream().map(SuperEntity::getId).collect(Collectors.toSet());
         List<AuthResource> authResources = resourceRepository.authResourceList();
@@ -126,10 +126,10 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    public void initMenuData() {
+    public void initMenuData(String tenantCode) {
         String menuJsonStr = ResourceUtil.readUtf8Str("menu.json");
         List<AuthMenu> authMenus = JSONArray.parseArray(menuJsonStr, AuthMenu.class);
-        authMenuRepository.saveAuthMenus(authMenus);
+        authMenuRepository.saveAuthMenus(authMenus,tenantCode);
     }
 
     @Override

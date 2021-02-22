@@ -13,6 +13,7 @@ import com.github.sparkzxl.authorization.infrastructure.entity.UserRole;
 import com.github.sparkzxl.authorization.infrastructure.mapper.AuthMenuMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.RoleAuthorityMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.UserRoleMapper;
+import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.core.tree.TreeUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
@@ -85,19 +86,19 @@ public class AuthMenuRepository implements IAuthMenuRepository {
 
 
     @Override
-    public void saveAuthMenus(List<AuthMenu> authMenus) {
+    public void saveAuthMenus(List<AuthMenu> authMenus,String tenantCode) {
         authMenus.forEach(authMenu -> {
             if (authMenu.getParentId().equals(0L)) {
                 long id = segmentRepository.getIdSegment("auth_menu").longValue();
                 authMenu.setId(id);
                 authMenu.setIsEnable(true);
                 authMenuMapper.insert(authMenu);
-                saveNodeMenu(id, authMenu.getChildren());
+                saveNodeMenu(id, authMenu.getChildren(),tenantCode);
             }
         });
     }
 
-    private void saveNodeMenu(Long parentId, List<AuthMenu> authMenus) {
+    private void saveNodeMenu(Long parentId, List<AuthMenu> authMenus,String tenantCode) {
         if (CollectionUtils.isNotEmpty(authMenus)) {
             for (AuthMenu authMenu : authMenus) {
                 authMenu.setParentId(parentId);
@@ -107,11 +108,14 @@ public class AuthMenuRepository implements IAuthMenuRepository {
                 authMenuMapper.insert(authMenu);
                 List<AuthResource> resourceList = authMenu.getResourceList();
                 if (CollectionUtils.isNotEmpty(resourceList)) {
-                    resourceList.forEach(resource-> resource.setMenuId(id));
+                    resourceList.forEach(resource-> {
+                        resource.setMenuId(id);
+                        resource.setTenantCode(tenantCode);
+                    });
                     authResourceRepository.saveResourceList(resourceList);
                 }
                 Long nodeParentId = authMenu.getId();
-                saveNodeMenu(nodeParentId, authMenu.getChildren());
+                saveNodeMenu(nodeParentId, authMenu.getChildren(),tenantCode);
             }
         }
     }
