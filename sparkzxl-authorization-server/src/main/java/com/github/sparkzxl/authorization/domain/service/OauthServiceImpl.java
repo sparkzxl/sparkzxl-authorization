@@ -11,16 +11,12 @@ import com.github.sparkzxl.cache.template.CacheTemplate;
 import com.github.sparkzxl.core.context.BaseContextConstants;
 import com.github.sparkzxl.core.entity.AuthUserInfo;
 import com.github.sparkzxl.core.entity.CaptchaInfo;
-import com.github.sparkzxl.core.spring.SpringContextUtils;
 import com.github.sparkzxl.core.support.ResponseResultStatus;
 import com.github.sparkzxl.core.support.SparkZxlExceptionAssert;
 import com.github.sparkzxl.core.utils.BuildKeyUtils;
 import com.github.sparkzxl.core.utils.RequestContextHolderUtils;
-import com.github.sparkzxl.oauth.entity.AuthorizationRequest;
-import com.github.sparkzxl.oauth.entity.LoginStatus;
-import com.github.sparkzxl.oauth.enums.GrantTypeEnum;
-import com.github.sparkzxl.oauth.event.LoginEvent;
-import com.github.sparkzxl.oauth.service.OauthService;
+import com.github.sparkzxl.open.entity.AuthorizationRequest;
+import com.github.sparkzxl.open.service.OauthService;
 import com.google.common.collect.Maps;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.ChineseCaptcha;
@@ -85,16 +81,12 @@ public class OauthServiceImpl implements OauthService {
         String grantType = authorizationRequest.getGrantType();
         if (!oAuth2AccessTokenResponseEntity.getStatusCode().isError()) {
             OAuth2AccessToken oAuth2AccessToken = oAuth2AccessTokenResponseEntity.getBody();
-            if (GrantTypeEnum.PASSWORD.getType().equals(grantType)) {
+            if ("password".equals(grantType)) {
                 String username = authorizationRequest.getUsername();
                 assert oAuth2AccessToken != null;
                 accessToken(username, oAuth2AccessToken);
-                SpringContextUtils.publishEvent(new LoginEvent(LoginStatus.success(null, username)));
             }
             return oAuth2AccessToken;
-        }
-        if (GrantTypeEnum.PASSWORD.getType().equals(grantType)) {
-            SpringContextUtils.publishEvent(new LoginEvent(LoginStatus.fail(null, authorizationRequest.getUsername(), "授权登录失败")));
         }
         SparkZxlExceptionAssert.businessFail(ResponseResultStatus.AUTHORIZED_FAIL);
         return null;

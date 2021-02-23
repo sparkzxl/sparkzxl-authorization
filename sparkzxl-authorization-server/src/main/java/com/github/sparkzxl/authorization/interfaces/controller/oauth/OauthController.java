@@ -2,8 +2,8 @@ package com.github.sparkzxl.authorization.interfaces.controller.oauth;
 
 import com.github.sparkzxl.core.entity.CaptchaInfo;
 import com.github.sparkzxl.log.annotation.WebLog;
-import com.github.sparkzxl.oauth.entity.AuthorizationRequest;
-import com.github.sparkzxl.oauth.service.OauthService;
+import com.github.sparkzxl.open.entity.AuthorizationRequest;
+import com.github.sparkzxl.open.service.OauthService;
 import com.github.sparkzxl.web.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

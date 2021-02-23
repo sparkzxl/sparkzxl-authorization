@@ -12,7 +12,6 @@
     <modules>
         <module>sparkzxl-authorization-server</module>
         <module>sparkzxl-code-generator</module>
-        <module>sparkzxl-gateway</module>
     </modules>
 
     <properties>

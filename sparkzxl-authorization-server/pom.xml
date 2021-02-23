@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.sparkzxl</groupId>
-            <artifactId>sparkzxl-oauth2-server-starter</artifactId>
+            <artifactId>sparkzxl-oauth2-open-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.javafaker</groupId>
