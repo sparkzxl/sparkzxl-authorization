@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>sparkzxl统一登录平台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=11">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" href="/images/logo.png" />
+    <link rel="stylesheet" href="/layui/layui/css/layui.css" media="all">
+    <!-- 皮肤 -->
+    <link rel="stylesheet" href="/layui/layui/css/modules/skin.css" media="all">
+    <style type="text/css">
+        html, body {
+            background: url("/images/background.jpg") top center no-repeat;
+            background-size: cover;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .loginMain {
+            position: relative;
+            width: 600px;
+            height: 300px;
+            left: 54%;
+            top: 35%;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" id="contextPath" name="contextPath" th:value="${#request.getContextPath()}">
+<div class="loginMain">
+    <div class="layui-card"
+         style="border: 1px #c7c7c7 solid;border-top: 3px solid #1890ff;border-radius:6px;width: 100%;">
+        <div class="layui-card-body" style="height: 350px;">
+            <div style="text-align: center;font-weight: bold;font-family: fangsong;font-size: 30px;margin-top: 5%;">
+                sparkzxl统一登录平台
+            </div>
+            <div style="margin-left: 120px;margin-top: 40px;">
+                <form action="/authentication/form" method="post" class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            租户code
+                        </label>
+                        <div class="layui-input-inline" style="width: 50%;">
+                            <input type="text" id="tenantCode" name="tenantCode" class="layui-input"
+                                   placeholder="请输入租户code">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            用户名
+                        </label>
+                        <div class="layui-input-inline" style="width: 50%;">
+                            <input type="text" id="username" name="username" class="layui-input" lay-verify="required"
+                                   placeholder="请输入用户名">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            密码
+                        </label>
+                        <div class="layui-input-inline" style="width: 50%;">
+                            <input type="password" id="password" name="password" class="layui-input"
+                                   lay-verify="required" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div style="text-align: center;width:75%;margin-top: 5%;">
+                        <button class="layui-btn" lay-submit lay-filter="login" type="submit">登录</button>
+                        <button type="reset" class="layui-btn layui-btn-warm">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/jquery/jquery.min.js"></script>
+<script src="/layui/layui/layui.js" charset="utf-8"></script>
+<!-- ExtJs-->
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        layui.use('form', function () {
+            const form = layui.form;
+            form.on('submit(login)', function (data) {
+                alert(data);
+                return true;
+            });
+        });
+    })
+</script>
+</html>

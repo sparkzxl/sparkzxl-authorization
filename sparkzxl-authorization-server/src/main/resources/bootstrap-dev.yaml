@@ -10,6 +10,12 @@ spring:
     name: sparkzxl-authorization-server
   lifecycle:
     timeout-per-shutdown-phase: 30s
+  thymeleaf:
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
   cloud:
     nacos:
       discovery:
