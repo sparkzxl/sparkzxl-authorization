@@ -1,6 +1,7 @@
 package com.github.sparkzxl.authorization.domain.service;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.sparkzxl.authorization.application.service.IAuthUserService;
@@ -14,8 +15,10 @@ import com.github.sparkzxl.core.entity.CaptchaInfo;
 import com.github.sparkzxl.core.support.ResponseResultStatus;
 import com.github.sparkzxl.core.support.SparkZxlExceptionAssert;
 import com.github.sparkzxl.core.utils.BuildKeyUtils;
+import com.github.sparkzxl.core.utils.ListUtils;
 import com.github.sparkzxl.core.utils.RequestContextHolderUtils;
 import com.github.sparkzxl.open.entity.AuthorizationRequest;
+import com.github.sparkzxl.open.properties.OpenProperties;
 import com.github.sparkzxl.open.service.OauthService;
 import com.google.common.collect.Maps;
 import com.wf.captcha.ArithmeticCaptcha;
@@ -32,11 +35,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.endpoint.CustomTokenGrantService;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static io.vavr.API.$;
@@ -62,6 +71,12 @@ public class OauthServiceImpl implements OauthService {
     private ITenantInfoService tenantService;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private ClientDetailsService clientDetailsService;
+    @Autowired
+    private OpenProperties openProperties;
+    @Autowired
+    private CustomTokenGrantService customTokenGrantService;
 
     @SneakyThrows
     @Override
@@ -81,11 +96,8 @@ public class OauthServiceImpl implements OauthService {
         String grantType = authorizationRequest.getGrantType();
         if (!oAuth2AccessTokenResponseEntity.getStatusCode().isError()) {
             OAuth2AccessToken oAuth2AccessToken = oAuth2AccessTokenResponseEntity.getBody();
-            if ("password".equals(grantType)) {
-                String username = authorizationRequest.getUsername();
-                assert oAuth2AccessToken != null;
-                accessToken(username, oAuth2AccessToken);
-            }
+            assert oAuth2AccessToken != null;
+            buildGlobalUserInfo(oAuth2AccessToken);
             return oAuth2AccessToken;
         }
         SparkZxlExceptionAssert.businessFail(ResponseResultStatus.AUTHORIZED_FAIL);
@@ -109,10 +121,11 @@ public class OauthServiceImpl implements OauthService {
     /**
      * 设置accessToken缓存
      *
-     * @param username          账户名
      * @param oAuth2AccessToken 认证token
      */
-    private void accessToken(String username, OAuth2AccessToken oAuth2AccessToken) {
+    private void buildGlobalUserInfo(OAuth2AccessToken oAuth2AccessToken) {
+        Map<String, Object> additionalInformation = oAuth2AccessToken.getAdditionalInformation();
+        String username = (String) additionalInformation.get("username");
         AuthUserInfo<Long> authUserInfo = authUserService.getAuthUserInfo(username);
         String authUserInfoKey = BuildKeyUtils.generateKey(BaseContextConstants.AUTH_USER_TOKEN, authUserInfo.getId());
         redisTemplate.opsForHash().put(authUserInfoKey, oAuth2AccessToken.getValue(), authUserInfo);
@@ -143,6 +156,7 @@ public class OauthServiceImpl implements OauthService {
         parameters.put("scope", authorizationRequest.getScope());
         Option.of(authorizationRequest.getCode()).peek(value -> parameters.put("code", value));
         Option.of(authorizationRequest.getClientId()).peek(value -> parameters.put("client_id", value));
+        Option.of(authorizationRequest.getClientSecret()).peek(value -> parameters.put("client_secret", value));
         Option.of(authorizationRequest.getRedirectUri()).peek(value -> parameters.put("redirect_uri", value));
         Option.of(authorizationRequest.getRefreshToken()).peek(value -> parameters.put("refresh_token", value));
         Option.of(authorizationRequest.getUsername()).peek(value -> parameters.put("username", value));
@@ -186,5 +200,33 @@ public class OauthServiceImpl implements OauthService {
         }
         cacheTemplate.remove(cacheKey);
         return true;
+    }
+
+    @Override
+    public String getAuthorizeUrl() {
+        String state = RandomUtil.randomString(6);
+        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(openProperties.getAppId());
+        HttpServletRequest request = RequestContextHolderUtils.getRequest();
+        String serverUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        return serverUrl.concat(StrUtil.format(OAUTH_AUTHORIZE_URL, clientDetails.getClientId(), clientDetails.getRegisteredRedirectUri(), state));
+    }
+
+    @SneakyThrows
+    @Override
+    public OAuth2AccessToken callBack(String authorizationCode) {
+        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(openProperties.getAppId());
+        Map<String, String> parameters = Maps.newHashMap();
+        parameters.put("grant_type", "authorization_code");
+        Set<String> detailsScope = clientDetails.getScope();
+        String scope = String.join(",", detailsScope);
+        parameters.put("scope", scope);
+        parameters.put("code", authorizationCode);
+        parameters.put("client_id", clientDetails.getClientId());
+        parameters.put("client_secret", clientDetails.getClientSecret());
+        List<String> redirectUriList = ListUtils.setToList(clientDetails.getRegisteredRedirectUri());
+        parameters.put("redirect_uri", redirectUriList.get(0));
+        OAuth2AccessToken oAuth2AccessToken = customTokenGrantService.getAccessToken(parameters);
+        buildGlobalUserInfo(oAuth2AccessToken);
+        return oAuth2AccessToken;
     }
 }

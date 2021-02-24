@@ -1,6 +1,7 @@
 package com.github.sparkzxl.authorization.interfaces.controller.oauth;
 
 import com.github.sparkzxl.core.entity.CaptchaInfo;
+import com.github.sparkzxl.core.utils.RequestContextHolderUtils;
 import com.github.sparkzxl.log.annotation.WebLog;
 import com.github.sparkzxl.open.entity.AuthorizationRequest;
 import com.github.sparkzxl.open.service.OauthService;
@@ -72,6 +73,16 @@ public class OauthController {
     @GetMapping(value = "/oauth/check")
     public boolean checkCaptcha(@RequestParam(value = "key") String key, @RequestParam(value = "code") String code) {
         return oauthService.checkCaptcha(key, code);
+    }
+
+    @GetMapping("/oauth/getAuthorizeUrl")
+    public String getAuthorizeUrl() {
+        return oauthService.getAuthorizeUrl();
+    }
+
+    @GetMapping("/oauth/callBack")
+    public OAuth2AccessToken callBack(String code) {
+        return oauthService.callBack(code);
     }
 
 }
