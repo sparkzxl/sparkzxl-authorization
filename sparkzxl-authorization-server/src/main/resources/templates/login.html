@@ -6,38 +6,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=11">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="icon" href="/images/logo.png" />
-    <link rel="stylesheet" href="/layui/layui/css/layui.css" media="all">
+    <link rel="icon" th:href="@{/images/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" media="all">
+    <link rel="stylesheet" th:href="@{/layui/layui/css/layui.css}" media="all">
     <!-- 皮肤 -->
-    <link rel="stylesheet" href="/layui/layui/css/modules/skin.css" media="all">
-    <style type="text/css">
-        html, body {
-            background: url("/images/background.jpg") top center no-repeat;
-            background-size: cover;
-            height: 100%;
-            width: 100%;
-            text-align: center;
-        }
-
-        .loginMain {
-            position: relative;
-            width: 600px;
-            height: 300px;
-            left: 54%;
-            top: 35%;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/layui/layui/css/modules/skin.css}" media="all">
 </head>
 <body>
 <input type="hidden" id="contextPath" name="contextPath" th:value="${#request.getContextPath()}">
-<div class="loginMain">
-    <div class="layui-card"
-         style="border: 1px #c7c7c7 solid;border-top: 3px solid #1890ff;border-radius:6px;width: 100%;">
-        <div class="layui-card-body" style="height: 350px;">
-            <div style="text-align: center;font-weight: bold;font-family: fangsong;font-size: 30px;margin-top: 5%;">
+<div class="login-main">
+    <div class="layui-card login-card">
+        <div class="layui-card-body" style="height: 370px;">
+            <div class="login-title">
                 sparkzxl统一登录平台
             </div>
-            <div style="margin-left: 120px;margin-top: 40px;">
+            <div class="login-form">
                 <form action="/authentication/form" method="post" class="layui-form layui-form-pane">
                     <div class="layui-form-item">
                         <label class="layui-form-label">
@@ -66,7 +49,20 @@
                                    lay-verify="required" placeholder="请输入密码">
                         </div>
                     </div>
-                    <div style="text-align: center;width:75%;margin-top: 5%;">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            验证码
+                        </label>
+                        <div class="login-form-line" style="width: 50%;">
+                            <input type="hidden" id="captchaKey" name="captchaKey">
+                            <input type="text" id="captchaCode" name="captchaCode" class="layui-input"
+                                   lay-verify="required" placeholder="验证码">
+                        </div>
+                        <div class="login-form-line">
+                            <img id="captchaImg" onclick="refreshCaptcha();"/>
+                        </div>
+                    </div>
+                    <div class="login-button">
                         <button class="layui-btn" lay-submit lay-filter="login" type="submit">登录</button>
                         <button type="reset" class="layui-btn layui-btn-warm">重置</button>
                     </div>
@@ -75,21 +71,32 @@
         </div>
     </div>
 </div>
-</body>
-<script src="/jquery/jquery.min.js"></script>
-<script src="/layui/layui/layui.js" charset="utf-8"></script>
+<script th:src="@{/jquery/jquery.min.js}"></script>
+<script th:src="@{/layui/layui/layui.js}" charset="utf-8"></script>
 <!-- ExtJs-->
-<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
-<script type="text/javascript" src="/extjs/ext-all.js"></script>
-<script type="text/javascript" th:inline="javascript">
-    $(function () {
-        layui.use('form', function () {
-            const form = layui.form;
-            form.on('submit(login)', function (data) {
-                alert(data);
-                return true;
-            });
+<script type="text/javascript" th:src="@{/extjs/adapter/ext/ext-base.js}"></script>
+<script type="text/javascript" th:src="@{/extjs/ext-all.js}"></script>
+<script type="text/javascript" th:src="@{/js/loadingAjax.js}"></script>
+<script>
+    const contextPath = $("#contextPath").val();
+    const url = contextPath + '/oauth/captcha?type=arithmetic';
+    var form;
+    layui.use('form', function () {
+        form = layui.form;
+        refreshCaptcha();
+        form.on('submit(login)', function (data) {
+            alert(data);
+            return true;
         });
-    })
+    });
+
+    function refreshCaptcha() {
+        const url = contextPath + '/oauth/captcha?type=arithmetic';
+        const data = loadingAjaxJsonData('get', url, null);
+        const captchaData = data.data;
+        $("#captchaKey").val(captchaData.key);
+        $("#captchaImg").attr("src", captchaData.data);
+    }
 </script>
+</body>
 </html>
