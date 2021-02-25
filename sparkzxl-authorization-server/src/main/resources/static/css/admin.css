@@ -43,6 +43,12 @@ img {
     display: inline-block;
     float: left;
     text-align: center;
+    margin-left: -1px;
+}
+.login-form .login-form-line-img {
+    display: inline-block;
+    float: left;
+    text-align: center;
 }
 
 

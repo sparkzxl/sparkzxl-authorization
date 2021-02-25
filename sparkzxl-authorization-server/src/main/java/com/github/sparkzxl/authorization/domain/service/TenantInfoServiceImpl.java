@@ -1,5 +1,6 @@
 package com.github.sparkzxl.authorization.domain.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.application.service.ITenantInfoService;
@@ -46,5 +47,10 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
     @Override
     public boolean deleteTenant(Long tenantId) {
         return tenantRepository.deleteTenant(tenantId);
+    }
+
+    @Override
+    public boolean checkTenantCode(String tenantCode) {
+        return count(new LambdaQueryWrapper<TenantInfo>().eq(TenantInfo::getCode, tenantCode)) == 1;
     }
 }

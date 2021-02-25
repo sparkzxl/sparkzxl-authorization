@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
     <title>sparkzxl统一登录平台</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=11">
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="icon" th:href="@{/images/logo.png}"/>
-    <link rel="stylesheet" th:href="@{/css/admin.css}" media="all">
-    <link rel="stylesheet" th:href="@{/layui/layui/css/layui.css}" media="all">
-    <!-- 皮肤 -->
-    <link rel="stylesheet" th:href="@{/layui/layui/css/modules/skin.css}" media="all">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}" media="all">
+    <link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}" media="all">
 </head>
 <body>
 <input type="hidden" id="contextPath" name="contextPath" th:value="${#request.getContextPath()}">
@@ -58,13 +58,14 @@
                             <input type="text" id="captchaCode" name="captchaCode" class="layui-input"
                                    lay-verify="required" placeholder="验证码">
                         </div>
-                        <div class="login-form-line">
+                        <div class="login-form-line-img">
                             <img id="captchaImg" onclick="refreshCaptcha();"/>
                         </div>
                     </div>
                     <div class="login-button">
-                        <button class="layui-btn" lay-submit lay-filter="login" type="submit">登录</button>
-                        <button type="reset" class="layui-btn layui-btn-warm">重置</button>
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="login" type="submit">登录
+                        </button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
                 </form>
             </div>
@@ -72,10 +73,7 @@
     </div>
 </div>
 <script th:src="@{/jquery/jquery.min.js}"></script>
-<script th:src="@{/layui/layui/layui.js}" charset="utf-8"></script>
-<!-- ExtJs-->
-<script type="text/javascript" th:src="@{/extjs/adapter/ext/ext-base.js}"></script>
-<script type="text/javascript" th:src="@{/extjs/ext-all.js}"></script>
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
 <script type="text/javascript" th:src="@{/js/loadingAjax.js}"></script>
 <script>
     const contextPath = $("#contextPath").val();
@@ -85,14 +83,31 @@
         form = layui.form;
         refreshCaptcha();
         form.on('submit(login)', function (data) {
-            alert(data);
+            // 校验租户信息
+            const url = contextPath + '/oauth/checkTenant';
+            const param = 'tenantCode=' + data.field.tenantCode;
+            const responseData = loadingAjaxJsonData('get', url, param);
+            if (responseData.code !== 200) {
+                layer.alert('租户不存在，请重新输入！', {icon: 5});
+                return false;
+            }
+            // 校验验证码
+            const sendCaptchaUrl = contextPath + '/oauth/checkCaptcha';
+            const captchaParam = 'key=' + data.field.captchaKey + '&code=' + data.field.captchaCode;
+            const captchaResponseData = loadingAjaxJsonData('get', sendCaptchaUrl, captchaParam);
+            if (captchaResponseData.code !== 200) {
+                layer.alert(captchaResponseData.msg, {icon: 5});
+                refreshCaptcha();
+                return false;
+            }
             return true;
         });
     });
 
     function refreshCaptcha() {
-        const url = contextPath + '/oauth/captcha?type=arithmetic';
-        const data = loadingAjaxJsonData('get', url, null);
+        const url = contextPath + '/oauth/captcha';
+        const param = 'type=arithmetic';
+        const data = loadingAjaxJsonData('get', url, param);
         const captchaData = data.data;
         $("#captchaKey").val(captchaData.key);
         $("#captchaImg").attr("src", captchaData.data);

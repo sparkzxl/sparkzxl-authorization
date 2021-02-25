@@ -208,7 +208,8 @@ public class OauthServiceImpl implements OauthService {
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(openProperties.getAppId());
         HttpServletRequest request = RequestContextHolderUtils.getRequest();
         String serverUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        return serverUrl.concat(StrUtil.format(OAUTH_AUTHORIZE_URL, clientDetails.getClientId(), clientDetails.getRegisteredRedirectUri(), state));
+        List<String> redirectUriList = ListUtils.setToList(clientDetails.getRegisteredRedirectUri());
+        return serverUrl.concat("/").concat(StrUtil.format(OAUTH_AUTHORIZE_URL, clientDetails.getClientId(), redirectUriList.get(0), state));
     }
 
     @SneakyThrows

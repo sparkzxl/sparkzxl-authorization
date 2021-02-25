@@ -1,7 +1,7 @@
 package com.github.sparkzxl.authorization.interfaces.controller.oauth;
 
+import com.github.sparkzxl.authorization.application.service.ITenantInfoService;
 import com.github.sparkzxl.core.entity.CaptchaInfo;
-import com.github.sparkzxl.core.utils.RequestContextHolderUtils;
 import com.github.sparkzxl.log.annotation.WebLog;
 import com.github.sparkzxl.open.entity.AuthorizationRequest;
 import com.github.sparkzxl.open.service.OauthService;
@@ -33,11 +33,14 @@ import java.security.Principal;
 public class OauthController {
 
     private final OauthService oauthService;
+    private final ITenantInfoService tenantInfoService;
 
-    public OauthController(OauthService oauthService) {
+    public OauthController(OauthService oauthService, ITenantInfoService tenantInfoService) {
         this.oauthService = oauthService;
+        this.tenantInfoService = tenantInfoService;
     }
 
+    @ApiOperation(value = "GET授权登录端口", notes = "GET授权登录端口")
     @GetMapping("/oauth/token")
     @ApiImplicitParams(
             @ApiImplicitParam(name = "Authorization", value = "Basic Auth", paramType = "header", defaultValue = "Basic c3Bhcmt6eGw6MTIzNDU2")
@@ -51,6 +54,7 @@ public class OauthController {
     }
 
 
+    @ApiOperation(value = "POST授权登录端口", notes = "POST授权登录端口")
     @PostMapping("/oauth/token")
     @ApiImplicitParams(
             @ApiImplicitParam(name = "Authorization", value = "Basic Auth", paramType = "header", defaultValue = "Basic c3Bhcmt6eGw6MTIzNDU2")
@@ -70,16 +74,24 @@ public class OauthController {
     }
 
     @ApiOperation(value = "验证验证码", notes = "验证验证码")
-    @GetMapping(value = "/oauth/check")
+    @GetMapping(value = "/oauth/checkCaptcha")
     public boolean checkCaptcha(@RequestParam(value = "key") String key, @RequestParam(value = "code") String code) {
         return oauthService.checkCaptcha(key, code);
     }
 
+    @ApiOperation(value = "校验租户信息", notes = "校验租户信息")
+    @GetMapping(value = "/oauth/checkTenant")
+    public boolean checkTenantCode(@RequestParam(value = "tenantCode") String tenantCode) {
+        return tenantInfoService.checkTenantCode(tenantCode);
+    }
+
+    @ApiOperation(value = "获取授权登录地址", notes = "获取授权登录地址")
     @GetMapping("/oauth/getAuthorizeUrl")
     public String getAuthorizeUrl() {
         return oauthService.getAuthorizeUrl();
     }
 
+    @ApiOperation(value = "授权成功回调接口", notes = "授权成功回调接口")
     @GetMapping("/oauth/callBack")
     public OAuth2AccessToken callBack(String code) {
         return oauthService.callBack(code);

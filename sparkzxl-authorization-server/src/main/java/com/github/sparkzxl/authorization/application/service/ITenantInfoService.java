@@ -1,12 +1,15 @@
 package com.github.sparkzxl.authorization.application.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.infrastructure.entity.TenantInfo;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantUpdateDTO;
+import com.github.sparkzxl.core.support.SparkZxlExceptionAssert;
 import com.github.sparkzxl.database.dto.DeleteDTO;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * description: 租户信息 服务类
@@ -47,4 +50,6 @@ public interface ITenantInfoService extends IService<TenantInfo> {
      * @return boolean
      */
     boolean deleteTenant(Long tenantId);
+
+    boolean checkTenantCode(String tenantCode);
 }

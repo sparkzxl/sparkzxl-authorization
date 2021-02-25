@@ -39,5 +39,3 @@ logging:
   level:
     com.github.sparkzxl.authentication.infrastructure.client: debug
     com.github.sparkzxl.authorization.infrastructure.mapper: debug
-security:
-  pre-handle-filter: tenantCaptchaFilter

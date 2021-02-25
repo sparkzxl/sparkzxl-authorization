@@ -28,7 +28,6 @@ import com.github.sparkzxl.authorization.interfaces.dto.user.AuthUserSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.user.AuthUserUpdateDTO;
 import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.core.entity.AuthUserInfo;
-import com.github.sparkzxl.core.utils.RequestContextHolderUtils;
 import com.github.sparkzxl.database.base.service.impl.AbstractSuperCacheServiceImpl;
 import com.github.sparkzxl.database.entity.RemoteData;
 import com.github.sparkzxl.database.utils.PageInfoUtils;
@@ -119,8 +118,6 @@ public class AuthUserServiceImpl extends AbstractSuperCacheServiceImpl<AuthUserM
 
     @Override
     public AuthUser getByAccount(String username) {
-        String tenantCode = RequestContextHolderUtils.getRequest().getParameter("tenantCode");
-        BaseContextHandler.setTenant(tenantCode);
         return authUserRepository.selectByAccount(username);
     }
 
