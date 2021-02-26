@@ -2,7 +2,6 @@ html, body {
     text-align: center;
     background: url("/images/background.jpg") no-repeat;
     background-size: cover;
-    background-attachment: fixed;
     width: 100%;
     height: 100%;
     position: fixed;
@@ -10,6 +9,7 @@ html, body {
     left: 0;
     right: 0;
     bottom: 0;
+    overflow: auto;
 }
 
 img {
@@ -61,7 +61,7 @@ img {
 .login-form-line-img {
     position: absolute;
     left: 55%;
-    bottom: 18%;
+    bottom: 21%;
 }
 
 
