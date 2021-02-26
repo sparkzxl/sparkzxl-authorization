@@ -52,6 +52,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .requestMatchers()
-                .antMatchers("/user/**");
+                .antMatchers(
+                        "/menu/**", "/resource/**",
+                        "/role/**", "/user/**",
+                        "/common/**", "/org/**",
+                        "/station/**", "/client/**",
+                        "/tenant/**");
     }
 }

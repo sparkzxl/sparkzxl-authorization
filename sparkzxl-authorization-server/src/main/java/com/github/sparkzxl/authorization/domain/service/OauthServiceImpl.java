@@ -36,6 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -205,7 +206,7 @@ public class OauthServiceImpl implements OauthService {
     }
 
     @Override
-    public String getAuthorizeUrl() {
+    public String getAuthorizeUrl(String frontUrl) {
         String state = RandomUtil.randomString(6);
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(openProperties.getAppId());
         HttpServletRequest request = RequestContextHolderUtils.getRequest();
@@ -220,12 +221,19 @@ public class OauthServiceImpl implements OauthService {
                 .addQuery("response_type", "code")
                 .addQuery("state", state)
                 .build();
+        String frontStateKey = BuildKeyUtils.generateKey(CacheConstant.FRONT_STATE, state);
+        cacheTemplate.set(frontStateKey, StringUtils.isEmpty(frontUrl) ? "/index" : frontUrl);
         return EscapeUtil.safeUnescape(authorizeUrl);
     }
 
     @SneakyThrows
     @Override
-    public OAuth2AccessToken callBack(String authorizationCode) {
+    public OAuth2AccessToken callBack(String authorizationCode, String loginState) {
+        String frontStateKey = BuildKeyUtils.generateKey(CacheConstant.FRONT_STATE, loginState);
+        String frontUrl = cacheTemplate.get(frontStateKey);
+        if (StringUtils.isEmpty(frontUrl)) {
+            return null;
+        }
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(openProperties.getAppId());
         Map<String, String> parameters = Maps.newHashMap();
         parameters.put("grant_type", "authorization_code");
@@ -237,8 +245,11 @@ public class OauthServiceImpl implements OauthService {
         parameters.put("client_secret", clientDetails.getClientSecret());
         List<String> redirectUriList = ListUtils.setToList(clientDetails.getRegisteredRedirectUri());
         parameters.put("redirect_uri", redirectUriList.get(0));
-        OAuth2AccessToken oAuth2AccessToken = customTokenGrantService.getAccessToken(parameters);
+        DefaultOAuth2AccessToken oAuth2AccessToken = (DefaultOAuth2AccessToken) customTokenGrantService.getAccessToken(parameters);
         buildGlobalUserInfo(oAuth2AccessToken);
+        Map<String, Object> additionalInformation = oAuth2AccessToken.getAdditionalInformation();
+        additionalInformation.put("frontUrl", frontUrl);
+        oAuth2AccessToken.setAdditionalInformation(additionalInformation);
         return oAuth2AccessToken;
     }
 }

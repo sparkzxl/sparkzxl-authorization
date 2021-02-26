@@ -148,4 +148,7 @@ public class CacheConstant {
 
     public static String OAUTH_CLIENT_DETAILS = "oauth_client_details";
 
+
+    public static String FRONT_STATE = "front_state";
+
 }

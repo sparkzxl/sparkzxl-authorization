@@ -1,5 +1,6 @@
 package com.github.sparkzxl.authorization.infrastructure.netty;
 
+import com.github.sparkzxl.core.spring.SpringContextUtils;
 import com.github.sparkzxl.open.service.OauthService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -18,17 +19,15 @@ public class NettyServer {
 
     private final int port;
     private final String websocketPath;
-    private final OauthService oauthService;
 
-    public NettyServer(int port, String websocketPath, OauthService oauthService) {
+    public NettyServer(int port, String websocketPath) {
         this.port = port;
         this.websocketPath = websocketPath;
-        this.oauthService = oauthService;
     }
 
     public void start() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
-
+        OauthService oauthService = SpringContextUtils.getBean(OauthService.class);
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             ServerBootstrap sb = new ServerBootstrap();

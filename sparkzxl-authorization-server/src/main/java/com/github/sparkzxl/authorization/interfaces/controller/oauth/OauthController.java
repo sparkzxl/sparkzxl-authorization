@@ -87,14 +87,14 @@ public class OauthController {
 
     @ApiOperation(value = "获取授权登录地址", notes = "获取授权登录地址")
     @GetMapping("/oauth/getAuthorizeUrl")
-    public String getAuthorizeUrl() {
-        return oauthService.getAuthorizeUrl();
+    public String getAuthorizeUrl(@RequestParam(value = "frontUrl", required = false) String frontUrl) {
+        return oauthService.getAuthorizeUrl(frontUrl);
     }
 
     @ApiOperation(value = "授权成功回调接口", notes = "授权成功回调接口")
     @GetMapping("/oauth/callBack")
-    public OAuth2AccessToken callBack(String code) {
-        return oauthService.callBack(code);
+    public OAuth2AccessToken callBack(@RequestParam("code") String code, @RequestParam("state") String state) {
+        return oauthService.callBack(code, state);
     }
 
 }
