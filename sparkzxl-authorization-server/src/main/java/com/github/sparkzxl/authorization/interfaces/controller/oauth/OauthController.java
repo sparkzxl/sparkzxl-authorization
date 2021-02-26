@@ -47,7 +47,7 @@ public class OauthController {
             @ApiImplicitParam(name = "Authorization", value = "Basic Auth", paramType = "header", defaultValue = "Basic c3Bhcmt6eGw6MTIzNDU2")
     )
     public OAuth2AccessToken getAccessToken(@RequestHeader(value = "Authorization") String authorization,
-                                            Principal principal,
+                                            @ApiIgnore Principal principal,
                                             @RequestParam AuthorizationRequest authorizationRequest)
             throws HttpRequestMethodNotSupportedException {
         log.info("Authorization = {}", authorization);
