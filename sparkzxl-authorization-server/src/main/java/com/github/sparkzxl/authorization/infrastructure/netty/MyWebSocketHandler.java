@@ -1,10 +1,14 @@
 package com.github.sparkzxl.authorization.infrastructure.netty;
 
 import com.alibaba.fastjson.JSON;
+import com.github.sparkzxl.core.jackson.JsonUtil;
+import com.github.sparkzxl.open.service.OauthService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +20,12 @@ import java.util.Map;
  * @date: 2021-02-25 17:16:46
  */
 public class MyWebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+
+    private final OauthService oauthService;
+
+    public MyWebSocketHandler(OauthService oauthService) {
+        this.oauthService = oauthService;
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -51,8 +61,14 @@ public class MyWebSocketHandler extends SimpleChannelInboundHandler<TextWebSocke
         } else if (msg instanceof TextWebSocketFrame) {
             //正常的TEXT消息类型
             TextWebSocketFrame frame = (TextWebSocketFrame) msg;
-            System.out.println("客户端收到服务器数据：" + frame.text());
-            sendAllMessage(frame.text());
+            String text = frame.text();
+            System.out.println("客户端收到服务器数据：" + text);
+            String replyMsg = "";
+            if (StringUtils.isNotEmpty(text)){
+                OAuth2AccessToken oAuth2AccessToken = oauthService.callBack(text);
+                replyMsg = JsonUtil.toJson(oAuth2AccessToken);
+            }
+            sendAllMessage(replyMsg);
         }
         super.channelRead(ctx, msg);
     }

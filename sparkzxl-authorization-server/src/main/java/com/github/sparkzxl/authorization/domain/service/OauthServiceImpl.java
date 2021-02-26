@@ -1,5 +1,7 @@
 package com.github.sparkzxl.authorization.domain.service;
 
+import cn.hutool.core.net.url.UrlBuilder;
+import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -207,9 +209,18 @@ public class OauthServiceImpl implements OauthService {
         String state = RandomUtil.randomString(6);
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(openProperties.getAppId());
         HttpServletRequest request = RequestContextHolderUtils.getRequest();
-        String serverUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         List<String> redirectUriList = ListUtils.setToList(clientDetails.getRegisteredRedirectUri());
-        return serverUrl.concat("/").concat(StrUtil.format(OAUTH_AUTHORIZE_URL, clientDetails.getClientId(), redirectUriList.get(0), state));
+        String authorizeUrl = UrlBuilder.create()
+                .setScheme(request.getScheme())
+                .setHost(request.getServerName())
+                .setPort(request.getServerPort())
+                .addPath("/oauth/authorize")
+                .addQuery("client_id", clientDetails.getClientId())
+                .addQuery("redirect_uri", redirectUriList.get(0))
+                .addQuery("response_type", "code")
+                .addQuery("state", state)
+                .build();
+        return EscapeUtil.safeUnescape(authorizeUrl);
     }
 
     @SneakyThrows

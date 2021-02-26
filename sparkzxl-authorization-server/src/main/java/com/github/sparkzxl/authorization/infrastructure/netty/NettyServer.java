@@ -1,5 +1,6 @@
 package com.github.sparkzxl.authorization.infrastructure.netty;
 
+import com.github.sparkzxl.open.service.OauthService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -17,10 +18,12 @@ public class NettyServer {
 
     private final int port;
     private final String websocketPath;
+    private final OauthService oauthService;
 
-    public NettyServer(int port, String websocketPath) {
+    public NettyServer(int port, String websocketPath, OauthService oauthService) {
         this.port = port;
         this.websocketPath = websocketPath;
+        this.oauthService = oauthService;
     }
 
     public void start() throws Exception {
@@ -39,14 +42,14 @@ public class NettyServer {
                     // 绑定客户端连接时候触发操作
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
+                        protected void initChannel(SocketChannel ch) {
                             System.out.println("收到新连接");
                             //websocket协议本身是基于http协议的，所以这边也要使用http解编码器
                             ch.pipeline().addLast(new HttpServerCodec());
                             //以块的方式来写的处理器
                             ch.pipeline().addLast(new ChunkedWriteHandler());
                             ch.pipeline().addLast(new HttpObjectAggregator(8192));
-                            ch.pipeline().addLast(new MyWebSocketHandler());
+                            ch.pipeline().addLast(new MyWebSocketHandler(oauthService));
                             ch.pipeline().addLast(new WebSocketServerProtocolHandler(websocketPath, null, true, 65536 * 10));
                         }
                     });
