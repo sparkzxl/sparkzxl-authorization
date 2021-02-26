@@ -42,8 +42,10 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.endpoint.CustomTokenGrantService;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
@@ -80,6 +82,8 @@ public class OauthServiceImpl implements OauthService {
     private OpenProperties openProperties;
     @Autowired
     private CustomTokenGrantService customTokenGrantService;
+    @Autowired
+    private TokenStore tokenStore;
 
     @SneakyThrows
     @Override
@@ -222,7 +226,7 @@ public class OauthServiceImpl implements OauthService {
                 .addQuery("state", state)
                 .build();
         String frontStateKey = BuildKeyUtils.generateKey(CacheConstant.FRONT_STATE, state);
-        cacheTemplate.set(frontStateKey, StringUtils.isEmpty(frontUrl) ? "/index" : frontUrl);
+        cacheTemplate.set(frontStateKey, StringUtils.isEmpty(frontUrl) ? "/index" : frontUrl, 6L, TimeUnit.MINUTES);
         return EscapeUtil.safeUnescape(authorizeUrl);
     }
 
@@ -251,5 +255,26 @@ public class OauthServiceImpl implements OauthService {
         additionalInformation.put("frontUrl", frontUrl);
         oAuth2AccessToken.setAdditionalInformation(additionalInformation);
         return oAuth2AccessToken;
+    }
+
+
+    @Override
+    public boolean logout(HttpServletRequest request) {
+        try {
+            request.logout();
+            String token = request.getHeader("token");
+            token = StringUtils.removeStartIgnoreCase(token, BaseContextConstants.BEARER_TOKEN);
+            if (token != null) {
+                OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
+                if (accessToken != null) {
+                    tokenStore.removeAccessToken(accessToken);
+                    tokenStore.removeRefreshToken(accessToken.getRefreshToken());
+                }
+            }
+            return true;
+        } catch (ServletException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

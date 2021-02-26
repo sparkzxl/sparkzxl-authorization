@@ -16,6 +16,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 
@@ -95,6 +96,13 @@ public class OauthController {
     @GetMapping("/oauth/callBack")
     public OAuth2AccessToken callBack(@RequestParam("code") String code, @RequestParam("state") String state) {
         return oauthService.callBack(code, state);
+    }
+
+
+    @ApiOperation(value = "退出登录", notes = "退出登录")
+    @GetMapping("customLogout")
+    public Integer logout(HttpServletRequest request) {
+        return oauthService.logout(request) ? 1 : 0;
     }
 
 }

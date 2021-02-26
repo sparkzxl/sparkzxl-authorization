@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import java.util.List;
 
@@ -28,8 +27,6 @@ import java.util.List;
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired
-    private LogoutSuccessHandler logoutSuccessHandler;
-    @Autowired
     private SecurityProperties securityProperties;
 
     @Override
@@ -41,8 +38,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             excludeStaticPatterns = Lists.newArrayList();
         }
         excludeStaticPatterns.addAll(SwaggerStaticResource.EXCLUDE_STATIC_PATTERNS);
-        http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler)
-                .and().authorizeRequests()
+        http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .antMatchers(ListUtils.listToArray(excludeStaticPatterns)).permitAll()
                 .anyRequest().authenticated()
