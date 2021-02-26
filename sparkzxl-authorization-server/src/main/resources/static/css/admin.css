@@ -1,54 +1,67 @@
 html, body {
-    background: url("/images/background.jpg") top center no-repeat;
-    background-size: cover;
-    height: 100%;
-    width: 100%;
     text-align: center;
+    background: url("/images/background.jpg") no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
+
 img {
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .login-main {
     position: absolute;
-    width: 600px;
-    height: 50%;
+    width: 400px;
     right: 6%;
-    top: 25%;
+    top: 40%;
     z-index: 9999;
+    height: 415px;
 }
+
 .login-title {
     text-align: center;
     font-weight: bold;
-    font-family: fangsong;
-    font-size: 30px;
+    font-family: "Microsoft YaHei UI";
+    font-size: 22px;
     margin-top: 5%;
 }
+
 .login-form {
-    margin-left: 120px;
-    margin-top: 40px;
+    margin-top: 20px;
 }
+
+.login-item {
+    margin-right: 45px;
+}
+
+.login-input {
+    width: 260px !important;
+    background-color: #F7F7F7 !important;
+}
+
 .login-button {
-    width:75%;
     text-align: center;
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .login-card {
     border: 1px #c7c7c7 solid;
-    border-top: 3px solid #1890ff;
-    border-radius:6px !important;
+    border-radius: 6px !important;
     width: 100%;
 }
 
-.login-form .login-form-line {
-    display: inline-block;
-    float: left;
-    text-align: center;
-    margin-left: -1px;
-}
-.login-form .login-form-line-img {
-    display: inline-block;
-    float: left;
-    text-align: center;
+.login-form-line-img {
+    position: absolute;
+    left: 55%;
+    bottom: 18%;
 }
 
 
