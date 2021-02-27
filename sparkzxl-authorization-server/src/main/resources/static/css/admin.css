@@ -26,11 +26,11 @@ img {
 }
 
 .login-title {
-    text-align: center;
+    font-family: Microsoft YaHei UI;
     font-weight: bold;
-    font-family: "Microsoft YaHei UI";
     font-size: 22px;
     margin-top: 5%;
+    text-align: center;
 }
 
 .login-form {
