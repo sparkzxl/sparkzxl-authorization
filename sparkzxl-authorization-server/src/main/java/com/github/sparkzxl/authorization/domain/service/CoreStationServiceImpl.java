@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.application.service.ICoreStationService;
 import com.github.sparkzxl.authorization.domain.repository.ICoreStationRepository;
+import com.github.sparkzxl.authorization.domain.repository.IIdSegmentRepository;
 import com.github.sparkzxl.authorization.infrastructure.constant.CacheConstant;
 import com.github.sparkzxl.authorization.infrastructure.convert.CoreStationConvert;
 import com.github.sparkzxl.authorization.infrastructure.entity.CoreStation;
@@ -28,6 +29,9 @@ public class CoreStationServiceImpl extends AbstractSuperCacheServiceImpl<CoreSt
     @Autowired
     private ICoreStationRepository coreStationRepository;
 
+    @Autowired
+    private IIdSegmentRepository segmentRepository;
+
     @Override
     public PageInfo<CoreStation> getStationPageList(StationPageDTO stationPageDTO) {
         return PageInfoUtils.pageInfo(coreStationRepository.getStationPageList(stationPageDTO.getPageNum(),
@@ -38,6 +42,8 @@ public class CoreStationServiceImpl extends AbstractSuperCacheServiceImpl<CoreSt
     @Override
     public boolean saveCoreStation(StationSaveDTO stationSaveDTO) {
         CoreStation coreStation = CoreStationConvert.INSTANCE.convertCoreStation(stationSaveDTO);
+        long id = segmentRepository.getIdSegment("core_station").longValue();
+        coreStation.setId(id);
         return save(coreStation);
     }
 

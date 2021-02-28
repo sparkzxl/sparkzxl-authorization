@@ -1,11 +1,14 @@
 package com.github.sparkzxl.authorization.domain.service;
 
+import cn.hutool.core.convert.Convert;
 import com.github.sparkzxl.authorization.application.service.IAuthMenuService;
 import com.github.sparkzxl.authorization.domain.model.aggregates.MenuBasicInfo;
 import com.github.sparkzxl.authorization.infrastructure.constant.CacheConstant;
+import com.github.sparkzxl.authorization.infrastructure.convert.AuthMenuConvert;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthMenu;
 import com.github.sparkzxl.authorization.infrastructure.mapper.AuthMenuMapper;
 import com.github.sparkzxl.authorization.infrastructure.repository.AuthMenuRepository;
+import com.github.sparkzxl.authorization.interfaces.dto.menu.AuthMenuSaveDTO;
 import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.core.tree.TreeUtils;
 import com.github.sparkzxl.database.base.service.impl.AbstractSuperCacheServiceImpl;
@@ -26,6 +29,7 @@ public class AuthMenuServiceImpl extends AbstractSuperCacheServiceImpl<AuthMenuM
 
     @Autowired
     private AuthMenuRepository authMenuRepository;
+
     @Override
     public List<AuthMenu> findMenuTree() {
         List<AuthMenu> authMenuList = list();
@@ -42,6 +46,16 @@ public class AuthMenuServiceImpl extends AbstractSuperCacheServiceImpl<AuthMenuM
     public List<MenuBasicInfo> routers() {
         Long userId = BaseContextHandler.getUserId(Long.TYPE);
         return authMenuRepository.getAuthMenuList(userId);
+    }
+
+    @Override
+    public boolean saveMenu(AuthMenuSaveDTO authMenuSaveDTO) {
+        authMenuSaveDTO.setIsEnable(Convert.toBool(authMenuSaveDTO.getIsEnable(), true));
+        authMenuSaveDTO.setHidden(Convert.toBool(authMenuSaveDTO.getHidden(), true));
+        authMenuSaveDTO.setNoKeepAlive(Convert.toBool(authMenuSaveDTO.getNoKeepAlive(), true));
+        authMenuSaveDTO.setParentId(Convert.toLong(authMenuSaveDTO.getParentId(), 0L));
+        AuthMenu authMenu = AuthMenuConvert.INSTANCE.convertAuthMenu(authMenuSaveDTO);
+        return authMenuRepository.saveMenu(authMenu);
     }
 
     @Override

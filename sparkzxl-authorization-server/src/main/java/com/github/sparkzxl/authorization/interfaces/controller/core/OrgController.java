@@ -44,8 +44,8 @@ public class OrgController {
 
     @ApiOperation("新增组织")
     @PostMapping("/org")
-    public boolean saveCoreOrg(@ApiIgnore AuthUserInfo<Long> authUserInfo, @Validated @RequestBody OrgSaveDTO orgSaveDTO) {
-        return coreOrgService.saveCoreOrg(authUserInfo.getId(), orgSaveDTO);
+    public boolean saveCoreOrg(@Validated @RequestBody OrgSaveDTO orgSaveDTO) {
+        return coreOrgService.saveCoreOrg(orgSaveDTO);
     }
 
     @ApiOperation("修改组织")
