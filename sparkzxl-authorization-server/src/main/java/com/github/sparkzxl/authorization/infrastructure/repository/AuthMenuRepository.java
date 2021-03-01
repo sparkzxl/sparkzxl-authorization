@@ -86,19 +86,19 @@ public class AuthMenuRepository implements IAuthMenuRepository {
 
 
     @Override
-    public void saveAuthMenus(List<AuthMenu> authMenus,String tenantCode) {
+    public void saveAuthMenus(List<AuthMenu> authMenus, String tenantCode) {
         authMenus.forEach(authMenu -> {
             if (authMenu.getParentId().equals(0L)) {
                 long id = segmentRepository.getIdSegment("auth_menu").longValue();
                 authMenu.setId(id);
                 authMenu.setIsEnable(true);
                 authMenuMapper.insert(authMenu);
-                saveNodeMenu(id, authMenu.getChildren(),tenantCode);
+                saveNodeMenu(id, authMenu.getChildren(), tenantCode);
             }
         });
     }
 
-    private void saveNodeMenu(Long parentId, List<AuthMenu> authMenus,String tenantCode) {
+    private void saveNodeMenu(Long parentId, List<AuthMenu> authMenus, String tenantCode) {
         if (CollectionUtils.isNotEmpty(authMenus)) {
             for (AuthMenu authMenu : authMenus) {
                 authMenu.setParentId(parentId);
@@ -108,16 +108,23 @@ public class AuthMenuRepository implements IAuthMenuRepository {
                 authMenuMapper.insert(authMenu);
                 List<AuthResource> resourceList = authMenu.getResourceList();
                 if (CollectionUtils.isNotEmpty(resourceList)) {
-                    resourceList.forEach(resource-> {
+                    resourceList.forEach(resource -> {
                         resource.setMenuId(id);
                         resource.setTenantCode(tenantCode);
                     });
                     authResourceRepository.saveResourceList(resourceList);
                 }
                 Long nodeParentId = authMenu.getId();
-                saveNodeMenu(nodeParentId, authMenu.getChildren(),tenantCode);
+                saveNodeMenu(nodeParentId, authMenu.getChildren(), tenantCode);
             }
         }
+    }
+
+    @Override
+    public boolean saveMenu(AuthMenu authMenu) {
+        long id = segmentRepository.getIdSegment("auth_menu").longValue();
+        authMenu.setId(id);
+        return authMenuMapper.insert(authMenu) == 1;
     }
 
     @Override

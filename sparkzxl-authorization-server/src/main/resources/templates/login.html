@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <title>sparkzxl统一登录平台</title>
+    <meta charset="utf-8"/>
+    <title>sparkzxl登录平台</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="icon" th:href="@{/images/logo.png}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}" media="all">
     <link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}" media="all">
@@ -16,51 +15,49 @@
 <input type="hidden" id="contextPath" name="contextPath" th:value="${#request.getContextPath()}">
 <div class="login-main">
     <div class="layui-card login-card">
-        <div class="layui-card-body" style="height: 370px;">
+        <div class="layui-card-body">
             <div class="login-title">
-                sparkzxl统一登录平台
+                <img width="40px" th:src="@{/images/logo.png}"/> sparkzxl登录平台
             </div>
             <div class="login-form">
-                <form action="/authentication/form" method="post" class="layui-form layui-form-pane">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            租户code
-                        </label>
-                        <div class="layui-input-inline" style="width: 50%;">
-                            <input type="text" id="tenantCode" name="tenantCode" class="layui-input"
-                                   placeholder="请输入租户code">
+                <form action="/authentication/form" method="post" class="layui-form">
+                    <div class="layui-form-item login-item">
+                        <div class="layui-inline">
+
+                            <div class="layui-input-inline">
+                                <input type="text" id="tenantCode" name="tenantCode" class="layui-input login-input"
+                                       placeholder="租户编码">
+                            </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            用户名
-                        </label>
-                        <div class="layui-input-inline" style="width: 50%;">
-                            <input type="text" id="username" name="username" class="layui-input" lay-verify="required"
-                                   placeholder="请输入用户名">
+                    <div class="layui-form-item login-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" id="username" name="username" class="layui-input login-input" lay-verify="required"
+                                       placeholder="账户/手机号">
+                            </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            密码
-                        </label>
-                        <div class="layui-input-inline" style="width: 50%;">
-                            <input type="password" id="password" name="password" class="layui-input"
-                                   lay-verify="required" placeholder="请输入密码">
+                    <div class="layui-form-item login-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="password" id="password" name="password" class="layui-input login-input"
+                                       lay-verify="required" placeholder="密码">
+                            </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            验证码
-                        </label>
-                        <div class="login-form-line" style="width: 50%;">
-                            <input type="hidden" id="captchaKey" name="captchaKey">
-                            <input type="text" id="captchaCode" name="captchaCode" class="layui-input"
-                                   lay-verify="required" placeholder="验证码">
+                    <div class="layui-form-item login-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="hidden" id="captchaKey" name="captchaKey">
+                                <input type="text" id="captchaCode" name="captchaCode" class="layui-input"
+                                       style="width: 145px;background-color: #F7F7F7"
+                                       lay-verify="required" placeholder="验证码">
+                            </div>
                         </div>
-                        <div class="login-form-line-img">
-                            <img id="captchaImg" onclick="refreshCaptcha();"/>
-                        </div>
+                    </div>
+                    <div class="login-form-line-img">
+                        <img id="captchaImg" onclick="refreshCaptcha();"/>
                     </div>
                     <div class="login-button">
                         <button class="layui-btn layui-btn-normal" lay-submit lay-filter="login" type="submit">登录

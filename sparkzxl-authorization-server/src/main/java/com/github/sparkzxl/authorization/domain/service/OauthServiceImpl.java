@@ -210,9 +210,10 @@ public class OauthServiceImpl implements OauthService {
     }
 
     @Override
-    public String getAuthorizeUrl(String frontUrl) {
+    public String getAuthorizeUrl(String clientId, String frontUrl) {
         String state = RandomUtil.randomString(6);
-        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(openProperties.getAppId());
+        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(StringUtils.isNotEmpty(clientId) ? clientId
+                : openProperties.getAppId());
         HttpServletRequest request = RequestContextHolderUtils.getRequest();
         List<String> redirectUriList = ListUtils.setToList(clientDetails.getRegisteredRedirectUri());
         String authorizeUrl = UrlBuilder.create()

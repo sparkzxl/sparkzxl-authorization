@@ -36,11 +36,10 @@ public interface ICoreOrgService extends SuperCacheService<CoreOrg> {
     /**
      * 新增组织
      *
-     * @param userId     用户id
      * @param orgSaveDTO 组织保存DTO
      * @return boolean
      */
-    boolean saveCoreOrg(Long userId, OrgSaveDTO orgSaveDTO);
+    boolean saveCoreOrg(OrgSaveDTO orgSaveDTO);
 
     /**
      * 修改组织

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.sparkzxl.authorization.application.service.IAuthUserService;
 import com.github.sparkzxl.authorization.application.service.ICoreOrgService;
 import com.github.sparkzxl.authorization.application.service.IRoleOrgService;
+import com.github.sparkzxl.authorization.domain.repository.IIdSegmentRepository;
 import com.github.sparkzxl.authorization.infrastructure.constant.CacheConstant;
 import com.github.sparkzxl.authorization.infrastructure.convert.CoreOrgConvert;
 import com.github.sparkzxl.authorization.infrastructure.entity.CoreOrg;
@@ -34,6 +35,9 @@ public class CoreOrgServiceImpl extends AbstractSuperCacheServiceImpl<CoreOrgMap
     @Autowired
     private IAuthUserService authUserService;
 
+    @Autowired
+    private IIdSegmentRepository segmentRepository;
+
     @Override
     public List<CoreOrg> getCoreOrgList(String name, Boolean status) {
         LambdaQueryWrapper<CoreOrg> orgQueryWrapper = new LambdaQueryWrapper<>();
@@ -52,10 +56,10 @@ public class CoreOrgServiceImpl extends AbstractSuperCacheServiceImpl<CoreOrgMap
     }
 
     @Override
-    public boolean saveCoreOrg(Long userId, OrgSaveDTO orgSaveDTO) {
+    public boolean saveCoreOrg(OrgSaveDTO orgSaveDTO) {
         CoreOrg coreOrg = CoreOrgConvert.INSTANCE.convertCoreOrg(orgSaveDTO);
-        coreOrg.setCreateUser(userId);
-        coreOrg.setUpdateUser(userId);
+        long id = segmentRepository.getIdSegment("core_org").longValue();
+        coreOrg.setId(id);
         return save(coreOrg);
     }
 
