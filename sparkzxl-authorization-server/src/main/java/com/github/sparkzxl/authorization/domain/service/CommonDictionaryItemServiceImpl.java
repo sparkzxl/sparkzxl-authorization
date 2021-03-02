@@ -9,6 +9,7 @@ import com.github.sparkzxl.authorization.infrastructure.mapper.CommonDictionaryI
 import com.github.sparkzxl.authorization.interfaces.dto.dictionary.DictionaryItemQueryDTO;
 import com.github.sparkzxl.core.utils.MapHelper;
 import com.github.sparkzxl.database.base.service.impl.AbstractSuperCacheServiceImpl;
+import com.github.sparkzxl.database.properties.CustomMybatisProperties;
 import com.github.sparkzxl.database.properties.InjectionProperties;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.ObjectUtils;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 public class CommonDictionaryItemServiceImpl extends AbstractSuperCacheServiceImpl<CommonDictionaryItemMapper, CommonDictionaryItem> implements ICommonDictionaryItemService {
 
     @Autowired
-    private InjectionProperties injectionProperties;
+    private CustomMybatisProperties customMybatisProperties;
 
     @Override
     public Map<Serializable, Object> findDictionaryItem(Set<Serializable> codes) {
@@ -38,9 +39,9 @@ public class CommonDictionaryItemServiceImpl extends AbstractSuperCacheServiceIm
             return Collections.emptyMap();
         }
         Set<String> types = codes.stream().filter(Objects::nonNull)
-                .map((item) -> StrUtil.split(String.valueOf(item), injectionProperties.getDictSeparator())[0]).collect(Collectors.toSet());
+                .map((item) -> StrUtil.split(String.valueOf(item), customMybatisProperties.getInjection().getDictSeparator())[0]).collect(Collectors.toSet());
         Set<String> newCodes = codes.stream().filter(Objects::nonNull)
-                .map((item) -> StrUtil.split(String.valueOf(item), injectionProperties.getDictSeparator())[1]).collect(Collectors.toSet());
+                .map((item) -> StrUtil.split(String.valueOf(item), customMybatisProperties.getInjection().getDictSeparator())[1]).collect(Collectors.toSet());
 
         // 1. 根据 字典编码查询可用的字典列表
         LambdaQueryWrapper<CommonDictionaryItem> dictionaryItemLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -52,7 +53,7 @@ public class CommonDictionaryItemServiceImpl extends AbstractSuperCacheServiceIm
 
         // 2. 将 list 转换成 Map，Map的key是字典编码，value是字典名称
         ImmutableMap<String, String> typeMap = MapHelper.uniqueIndex(list,
-                (item) -> StrUtil.join(injectionProperties.getDictSeparator(), item.getDictionaryType(), item.getCode())
+                (item) -> StrUtil.join(customMybatisProperties.getInjection().getDictSeparator(), item.getDictionaryType(), item.getCode())
                 , CommonDictionaryItem::getName);
 
         // 3. 将 Map<String, String> 转换成 Map<Serializable, Object>
