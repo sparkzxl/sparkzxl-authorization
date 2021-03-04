@@ -74,7 +74,7 @@
         $('#login').click(function (e) {
             // 校验租户信息
             const url = contextPath + '/oauth/checkTenant';
-            const  tenantCode = $("#tenantCode").val()
+            const tenantCode = $("#tenantCode").val()
             const param = 'tenantCode=' + tenantCode;
             const responseData = loadingAjaxJsonData('get', url, param);
             if (responseData.code !== 200) {

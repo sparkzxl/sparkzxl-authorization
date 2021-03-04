@@ -10,7 +10,6 @@ import com.github.sparkzxl.authorization.interfaces.dto.dictionary.DictionaryIte
 import com.github.sparkzxl.core.utils.MapHelper;
 import com.github.sparkzxl.database.base.service.impl.AbstractSuperCacheServiceImpl;
 import com.github.sparkzxl.database.properties.CustomMybatisProperties;
-import com.github.sparkzxl.database.properties.InjectionProperties;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;

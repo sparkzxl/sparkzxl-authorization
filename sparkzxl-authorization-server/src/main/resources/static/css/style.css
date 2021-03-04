@@ -43,8 +43,9 @@ a {
     overflow: hidden;
     width: 768px;
     max-width: 100%;
-    min-height: 500px;
-    top: 60px;
+    min-height: calc(100vh - 50vh);
+    top: calc(100vh - 80vh);
+    height: calc(100vh - 40vh);
 }
 
 .form-container form {
