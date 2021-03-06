@@ -28,8 +28,7 @@ import java.util.stream.Collectors;
 @Repository
 public class RoleAuthorityRepository implements IRoleAuthorityRepository {
 
-    @Autowired
-    private RoleAuthorityMapper roleAuthorityMapper;
+    private final RoleAuthorityMapper roleAuthorityMapper;
 
     @Override
     public boolean saveRoleAuthorityBatch(Long roleId, Set<Long> resourceIds, Set<Long> menuIds) {

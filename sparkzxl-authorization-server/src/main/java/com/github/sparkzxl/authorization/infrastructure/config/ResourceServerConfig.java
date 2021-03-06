@@ -52,7 +52,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/menu/**", "/resource/**",
                         "/role/**", "/user/**",
                         "/common/**", "/org/**",
-                        "/station/**", "/client/**",
+                        "/station/**", "/application/**",
                         "/tenant/**");
     }
 }

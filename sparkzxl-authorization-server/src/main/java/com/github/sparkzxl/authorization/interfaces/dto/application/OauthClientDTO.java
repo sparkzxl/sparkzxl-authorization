@@ -1,24 +1,19 @@
-package com.github.sparkzxl.authorization.interfaces.dto.client;
+package com.github.sparkzxl.authorization.interfaces.dto.application;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 
 /**
- * description: 应用客户端更新DTO
+ * description: 应用客户端DTO
  *
  * @author: zhouxinlei
  * @date: 2021-02-02 14:53:04
  */
 @Data
-@ApiModel("应用客户端更新DTO")
-public class OauthClientDetailsUpdateDTO {
-
-    @ApiModelProperty(value = "主键")
-    @NotNull(message = "主键不能为空")
-    private Long id;
+@ApiModel("应用客户端DTO")
+public class OauthClientDTO {
 
     @ApiModelProperty("客户端id")
     private String clientId;

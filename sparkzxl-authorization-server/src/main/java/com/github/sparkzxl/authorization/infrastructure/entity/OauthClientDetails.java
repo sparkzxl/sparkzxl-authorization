@@ -69,20 +69,4 @@ public class OauthClientDetails implements Serializable {
     @TableField("autoapprove")
     private String autoApprove;
 
-    @ApiModelProperty(value = "主键")
-    @TableField(exist = false)
-    private Long id;
-
-    @ApiModelProperty(value = "租户code")
-    @TableField(exist = false)
-    private String tenantCode;
-
-    @ApiModelProperty(value = "租户名称")
-    @TableField(exist = false)
-    private String tenantName;
-
-    @ApiModelProperty("客户端原始密钥")
-    @TableField(exist = false)
-    private String originalClientSecret;
-
 }

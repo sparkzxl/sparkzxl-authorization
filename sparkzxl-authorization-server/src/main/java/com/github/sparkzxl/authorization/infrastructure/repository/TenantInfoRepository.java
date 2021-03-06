@@ -50,7 +50,7 @@ public class TenantInfoRepository implements ITenantInfoRepository {
     @Autowired
     private IRoleAuthorityRepository roleAuthorityRepository;
     @Autowired
-    private TenantClientMapper tenantClientMapper;
+    private AuthApplicationMapper tenantClientMapper;
     @Autowired
     private OauthClientDetailsMapper oauthClientDetailsMapper;
     @Autowired
@@ -145,10 +145,10 @@ public class TenantInfoRepository implements ITenantInfoRepository {
         authRoleRepository.deleteAuthRole(tenantCode);
         resourceRepository.deleteTenantResource(tenantCode);
         authMenuRepository.deleteTenantMenu(tenantCode);
-        List<TenantClient> tenantClientList = tenantClientMapper.selectList(new LambdaQueryWrapper<TenantClient>()
-                .eq(TenantClient::getTenantCode, tenantCode));
+        List<AuthApplication> tenantClientList = tenantClientMapper.selectList(new LambdaQueryWrapper<AuthApplication>()
+                .eq(AuthApplication::getTenantCode, tenantCode));
         if (CollectionUtils.isNotEmpty(tenantClientList)) {
-            List<String> clientIdList = tenantClientList.stream().map(TenantClient::getClientId).collect(Collectors.toList());
+            List<String> clientIdList = tenantClientList.stream().map(AuthApplication::getClientId).collect(Collectors.toList());
             oauthClientDetailsMapper.deleteBatchIds(clientIdList);
         }
         tenantClientMapper.deleteTenantClient(tenantCode);
