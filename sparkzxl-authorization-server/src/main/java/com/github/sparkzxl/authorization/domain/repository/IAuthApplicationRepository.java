@@ -28,7 +28,7 @@ public interface IAuthApplicationRepository {
      * @param pageNum  当前页
      * @param pageSize 分页大小
      * @param clientId 客户端id
-     * @param clientId 应用名称
+     * @param appName 应用名称
      * @return PageInfo<OauthClientDetails>
      */
     PageInfo<AuthApplication> listPage(int pageNum, int pageSize, String clientId, String appName);

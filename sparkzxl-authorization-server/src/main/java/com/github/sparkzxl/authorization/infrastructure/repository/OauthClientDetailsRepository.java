@@ -8,6 +8,8 @@ import com.github.sparkzxl.authorization.infrastructure.mapper.OauthClientDetail
 import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.core.support.SparkZxlExceptionAssert;
 import com.github.sparkzxl.database.utils.PageInfoUtils;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * description: 客户端 仓储实现类
@@ -63,7 +67,10 @@ public class OauthClientDetailsRepository implements IOauthClientDetailsReposito
 
     @Override
     public List<OauthClientDetails> findListByIdList(List<String> ids) {
-        return clientDetailsMapper.selectBatchIds(ids);
+        if (CollectionUtils.isNotEmpty(ids)) {
+            return clientDetailsMapper.selectBatchIds(ids);
+        }
+        return Lists.newArrayList();
     }
 
     @Override

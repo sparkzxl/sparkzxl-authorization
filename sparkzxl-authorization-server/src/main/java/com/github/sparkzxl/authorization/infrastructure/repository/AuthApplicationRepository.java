@@ -3,8 +3,10 @@ package com.github.sparkzxl.authorization.infrastructure.repository;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.sparkzxl.authorization.domain.repository.IAuthApplicationRepository;
+import com.github.sparkzxl.authorization.domain.repository.IDictionaryItemRepository;
 import com.github.sparkzxl.authorization.domain.repository.IOauthClientDetailsRepository;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthApplication;
+import com.github.sparkzxl.authorization.infrastructure.entity.CommonDictionaryItem;
 import com.github.sparkzxl.authorization.infrastructure.entity.OauthClientDetails;
 import com.github.sparkzxl.authorization.infrastructure.mapper.AuthApplicationMapper;
 import com.github.sparkzxl.core.context.BaseContextHandler;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -34,11 +37,13 @@ public class AuthApplicationRepository implements IAuthApplicationRepository {
     private AuthApplicationMapper authApplicationMapper;
     @Autowired
     private IOauthClientDetailsRepository oauthClientDetailsRepository;
+    @Autowired
+    private IDictionaryItemRepository dictionaryItemRepository;
 
     @Override
     public boolean saveAuthApplication(AuthApplication application) {
         if (application.getAppType().equals(SERVER_TYPE)) {
-            OauthClientDetails oauthClientDetails = application.getOauthClientDetails();
+            OauthClientDetails oauthClientDetails = application.getOauthClientDetail();
             application.setOriginalClientSecret(oauthClientDetails.getClientSecret());
             oauthClientDetailsRepository.saveOauthClientDetails(oauthClientDetails);
         }
@@ -61,16 +66,21 @@ public class AuthApplicationRepository implements IAuthApplicationRepository {
         List<AuthApplication> applicationList = authApplicationPageInfo.getList();
         if (CollectionUtils.isNotEmpty(applicationList)) {
             List<String> clientIds = applicationList.stream().map(AuthApplication::getClientId).filter(ObjectUtils::isNotEmpty).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(clientIds)) {
-                List<OauthClientDetails> oauthClientDetails = oauthClientDetailsRepository.findListByIdList(clientIds);
-                Map<String, OauthClientDetails> oauthClientDetailsMap = oauthClientDetails.stream().collect(Collectors.toMap(OauthClientDetails::getClientId, key -> key));
-                applicationList.forEach(application -> {
-                    if (StringUtils.isNotEmpty(application.getClientId())) {
-                        application.setOauthClientDetails(oauthClientDetailsMap.get(application.getClientId()));
-                    }
-                });
-                authApplicationPageInfo.setList(applicationList);
-            }
+            Set<String> appTypeCodes = applicationList.stream().map(AuthApplication::getAppType).filter(ObjectUtils::isNotEmpty).collect(Collectors.toSet());
+            Map<String, CommonDictionaryItem> dictionaryItemMap = dictionaryItemRepository.findDictionaryItemList("APPLICATION_TYPE",
+                    appTypeCodes);
+            List<OauthClientDetails> oauthClientDetails = oauthClientDetailsRepository.findListByIdList(clientIds);
+            Map<String, OauthClientDetails> oauthClientDetailsMap = oauthClientDetails.stream().collect(Collectors.toMap(OauthClientDetails::getClientId, key -> key));
+            applicationList.forEach(application -> {
+                if (StringUtils.isNotEmpty(application.getClientId())) {
+                    application.setOauthClientDetail(oauthClientDetailsMap.get(application.getClientId()));
+                }
+                CommonDictionaryItem commonDictionaryItem = dictionaryItemMap.get(application.getAppType());
+                if (ObjectUtils.isNotEmpty(commonDictionaryItem)) {
+                    application.setAppTypeName(commonDictionaryItem.getName());
+                }
+            });
+            authApplicationPageInfo.setList(applicationList);
         }
         return authApplicationPageInfo;
     }
@@ -86,7 +96,7 @@ public class AuthApplicationRepository implements IAuthApplicationRepository {
     @Override
     public boolean updateAuthApplication(AuthApplication application) {
         if (application.getAppType().equals(SERVER_TYPE)) {
-            OauthClientDetails oauthClientDetails = application.getOauthClientDetails();
+            OauthClientDetails oauthClientDetails = application.getOauthClientDetail();
             application.setOriginalClientSecret(oauthClientDetails.getClientSecret());
             oauthClientDetailsRepository.updateOauthClientDetails(oauthClientDetails);
         }

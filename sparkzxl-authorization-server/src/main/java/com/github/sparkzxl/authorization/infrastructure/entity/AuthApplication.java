@@ -43,6 +43,10 @@ public class AuthApplication extends Entity<Long> {
     @TableField("app_type")
     private String appType;
 
+    @ApiModelProperty(value = "类型 SERVER:服务应用;APP:手机应用;PC:PC网页应用;WAP:手机网页应用")
+    @TableField(exist = false)
+    private String appTypeName;
+
     @ApiModelProperty(value = "应用简介")
     @TableField("describe_")
     private String describe;
@@ -69,7 +73,7 @@ public class AuthApplication extends Entity<Long> {
 
     @ApiModelProperty(value = "应用客户端")
     @TableField(exist = false)
-    private OauthClientDetails oauthClientDetails;
+    private OauthClientDetails oauthClientDetail;
 
     @ApiModelProperty(value = "租户名称")
     @TableField(exist = false)

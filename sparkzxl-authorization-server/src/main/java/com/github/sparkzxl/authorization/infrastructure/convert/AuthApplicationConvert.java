@@ -25,7 +25,7 @@ public interface AuthApplicationConvert {
      * @param oauthClientDetailsSaveDTO 应用客户端保存DTO
      * @return AuthApplication
      */
-    @Mapping(source ="oauthClient",target = "oauthClientDetails")
+    @Mapping(source ="oauthClient",target = "oauthClientDetail")
     AuthApplication convertAuthApplication(AuthApplicationSaveDTO oauthClientDetailsSaveDTO);
 
     /**
@@ -34,6 +34,6 @@ public interface AuthApplicationConvert {
      * @param oauthClientDetailsUpdateDTO 应用客户端更新DTO
      * @return AuthApplication
      */
-    @Mapping(source ="oauthClient",target = "oauthClientDetails")
+    @Mapping(source ="oauthClient",target = "oauthClientDetail")
     AuthApplication convertAuthApplication(AuthApplicationUpdateDTO oauthClientDetailsUpdateDTO);
 }
