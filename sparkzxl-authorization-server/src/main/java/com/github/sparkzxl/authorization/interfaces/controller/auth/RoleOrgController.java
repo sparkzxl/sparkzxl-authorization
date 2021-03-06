@@ -8,7 +8,7 @@ import com.github.sparkzxl.authorization.interfaces.dto.role.RoleOrgSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.role.RoleOrgUpdateDTO;
 import com.github.sparkzxl.database.base.controller.SuperCacheController;
 import com.github.sparkzxl.log.annotation.WebLog;
-import com.github.sparkzxl.web.annotation.ResponseResult;
+import com.github.sparkzxl.core.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

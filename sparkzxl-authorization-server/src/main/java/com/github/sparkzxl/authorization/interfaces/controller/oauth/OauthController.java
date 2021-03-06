@@ -5,7 +5,7 @@ import com.github.sparkzxl.core.entity.CaptchaInfo;
 import com.github.sparkzxl.log.annotation.WebLog;
 import com.github.sparkzxl.open.entity.AuthorizationRequest;
 import com.github.sparkzxl.open.service.OauthService;
-import com.github.sparkzxl.web.annotation.ResponseResult;
+import com.github.sparkzxl.core.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

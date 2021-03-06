@@ -2,7 +2,7 @@ package com.github.sparkzxl.authorization.interfaces.controller.auth;
 
 import com.github.sparkzxl.authorization.application.service.ILoginLogService;
 import com.github.sparkzxl.log.annotation.WebLog;
-import com.github.sparkzxl.web.annotation.ResponseResult;
+import com.github.sparkzxl.core.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.DeleteMapping;

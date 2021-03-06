@@ -8,7 +8,7 @@ import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantPageDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.tenant.TenantUpdateDTO;
 import com.github.sparkzxl.database.dto.DeleteDTO;
-import com.github.sparkzxl.web.annotation.ResponseResult;
+import com.github.sparkzxl.core.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;

@@ -8,7 +8,7 @@ import com.github.sparkzxl.authorization.interfaces.dto.client.OauthClientDetail
 import com.github.sparkzxl.authorization.interfaces.dto.client.OauthClientDetailsSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.client.OauthClientDetailsUpdateDTO;
 import com.github.sparkzxl.database.dto.DeleteDTO;
-import com.github.sparkzxl.web.annotation.ResponseResult;
+import com.github.sparkzxl.core.annotation.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
