@@ -1,11 +1,9 @@
 package com.github.sparkzxl.authorization.infrastructure.convert;
 
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthApplication;
-import com.github.sparkzxl.authorization.infrastructure.entity.OauthClientDetails;
 import com.github.sparkzxl.authorization.interfaces.dto.application.AuthApplicationSaveDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.application.AuthApplicationUpdateDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -25,7 +23,6 @@ public interface AuthApplicationConvert {
      * @param oauthClientDetailsSaveDTO 应用客户端保存DTO
      * @return AuthApplication
      */
-    @Mapping(source ="oauthClient",target = "oauthClientDetail")
     AuthApplication convertAuthApplication(AuthApplicationSaveDTO oauthClientDetailsSaveDTO);
 
     /**
@@ -34,6 +31,5 @@ public interface AuthApplicationConvert {
      * @param oauthClientDetailsUpdateDTO 应用客户端更新DTO
      * @return AuthApplication
      */
-    @Mapping(source ="oauthClient",target = "oauthClientDetail")
     AuthApplication convertAuthApplication(AuthApplicationUpdateDTO oauthClientDetailsUpdateDTO);
 }

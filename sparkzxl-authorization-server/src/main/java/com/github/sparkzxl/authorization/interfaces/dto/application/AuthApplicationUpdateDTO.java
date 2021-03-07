@@ -44,6 +44,6 @@ public class AuthApplicationUpdateDTO {
     private String healthCheck;
 
     @ApiModelProperty("应用客户端")
-    private OauthClientDTO oauthClient;
+    private OauthClientDTO oauthClientDetail;
 
 }

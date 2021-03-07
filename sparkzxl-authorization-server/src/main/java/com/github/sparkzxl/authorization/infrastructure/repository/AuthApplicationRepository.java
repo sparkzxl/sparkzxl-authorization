@@ -57,9 +57,6 @@ public class AuthApplicationRepository implements IAuthApplicationRepository {
         if (StringUtils.isEmpty(tenantCode)) {
             SparkZxlExceptionAssert.businessFail("租户信息为空");
         }
-        if ("0000".equals(tenantCode)) {
-            tenantCode = null;
-        }
         PageHelper.startPage(pageNum, pageSize);
         List<AuthApplication> authApplications = authApplicationMapper.listPage(tenantCode, clientId, appName);
         PageInfo<AuthApplication> authApplicationPageInfo = PageInfoUtils.pageInfo(authApplications);

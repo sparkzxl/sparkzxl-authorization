@@ -1,5 +1,6 @@
 package com.github.sparkzxl.authorization.interfaces.dto.application;
 
+import com.github.sparkzxl.authorization.infrastructure.entity.OauthClientDetails;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -39,6 +40,6 @@ public class AuthApplicationSaveDTO {
     private String healthCheck;
 
     @ApiModelProperty("应用客户端")
-    private OauthClientDTO oauthClient;
+    private OauthClientDTO oauthClientDetail;
 
 }

@@ -51,5 +51,11 @@ public interface ITenantInfoService extends IService<TenantInfo> {
      */
     boolean deleteTenant(Long tenantId);
 
+    /**
+     * check 租户信息
+     *
+     * @param tenantCode 租户code
+     * @return boolean
+     */
     boolean checkTenantCode(String tenantCode);
 }
