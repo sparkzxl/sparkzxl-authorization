@@ -27,7 +27,7 @@ public interface IAuthMenuService extends SuperCacheService<AuthMenu> {
      * 根据菜单id删除菜单
      *
      * @param ids 菜单ids
-     * @return
+     * @return boolean
      */
     boolean deleteMenu(List<Long> ids);
 

@@ -2,6 +2,7 @@ package com.github.sparkzxl.authorization.application.service;
 
 
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthResource;
+import com.github.sparkzxl.authorization.interfaces.dto.resource.AuthResourceUpdateDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.resource.ResourceQueryDTO;
 import com.github.sparkzxl.database.base.service.SuperCacheService;
 
@@ -26,8 +27,17 @@ public interface IAuthResourceService extends SuperCacheService<AuthResource> {
 
     /**
      * 删除资源
+     *
      * @param resourceId 资源id
      * @return boolean
      */
     boolean deleteResource(Long resourceId);
+
+    /**
+     * 更新资源
+     *
+     * @param authResourceUpdateDTO 资源更新对象
+     * @return boolean
+     */
+    boolean updateResource(AuthResourceUpdateDTO authResourceUpdateDTO);
 }

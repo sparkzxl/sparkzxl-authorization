@@ -1,5 +1,6 @@
 package com.github.sparkzxl.authorization.application.event;
 
+import com.github.sparkzxl.authorization.infrastructure.constant.CacheConstant;
 import com.github.sparkzxl.authorization.infrastructure.entity.RoleResource;
 import com.github.sparkzxl.authorization.infrastructure.mapper.AuthUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,6 @@ import java.util.stream.Collectors;
 @Component
 public class InitRolePathApplicationRunner implements CommandLineRunner, Ordered {
 
-    public static final String RESOURCE_ROLES_MAP = "auth:resource_roles_map";
-
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
     @Autowired
@@ -33,7 +32,7 @@ public class InitRolePathApplicationRunner implements CommandLineRunner, Ordered
     public void run(String... args) {
         List<RoleResource> roleResources = authUserMapper.getRoleResourceList();
         Map<String, Object> roleResourceMap = roleResources.stream().collect(Collectors.toMap(RoleResource::getPath, RoleResource::getRoleCode));
-        redisTemplate.opsForHash().putAll(RESOURCE_ROLES_MAP, roleResourceMap);
+        redisTemplate.opsForHash().putAll(CacheConstant.RESOURCE_ROLES_MAP, roleResourceMap);
     }
 
     @Override

@@ -13,8 +13,8 @@ import com.github.sparkzxl.authorization.infrastructure.entity.UserRole;
 import com.github.sparkzxl.authorization.infrastructure.mapper.AuthMenuMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.RoleAuthorityMapper;
 import com.github.sparkzxl.authorization.infrastructure.mapper.UserRoleMapper;
-import com.github.sparkzxl.core.context.BaseContextHandler;
 import com.github.sparkzxl.core.tree.TreeUtils;
+import com.github.sparkzxl.database.entity.SuperEntity;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,5 +135,17 @@ public class AuthMenuRepository implements IAuthMenuRepository {
     @Override
     public void deleteTenantMenu(String tenantCode) {
         authMenuMapper.deleteTenantMenu(tenantCode);
+    }
+
+    @Override
+    public boolean deleteMenu(List<Long> ids) {
+        List<Long> authorityIds = Lists.newArrayList();
+        authorityIds.addAll(ids);
+        List<AuthResource> authResources = authResourceRepository.authResourceList(ids);
+        List<Long> resourceIds = authResources.stream().map(SuperEntity::getId).collect(Collectors.toList());
+        authorityIds.addAll(resourceIds);
+        resourceIds.forEach(resourceId -> authResourceRepository.deleteResource(resourceId));
+        roleAuthorityMapper.delete(new LambdaQueryWrapper<RoleAuthority>().in(RoleAuthority::getAuthorityId, authorityIds));
+        return authMenuMapper.deleteBatchIds(ids) > 0;
     }
 }

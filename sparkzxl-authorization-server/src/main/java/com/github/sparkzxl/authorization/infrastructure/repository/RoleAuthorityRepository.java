@@ -2,15 +2,18 @@ package com.github.sparkzxl.authorization.infrastructure.repository;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.github.sparkzxl.authorization.application.event.RoleResourceEvent;
+import com.github.sparkzxl.authorization.domain.model.aggregates.ResourceSource;
 import com.github.sparkzxl.authorization.domain.model.aggregates.RoleResource;
 import com.github.sparkzxl.authorization.domain.repository.IRoleAuthorityRepository;
 import com.github.sparkzxl.authorization.infrastructure.entity.RoleAuthority;
+import com.github.sparkzxl.authorization.infrastructure.enums.OperationEnum;
 import com.github.sparkzxl.authorization.infrastructure.mapper.RoleAuthorityMapper;
 import com.github.sparkzxl.core.context.BaseContextHandler;
+import com.github.sparkzxl.core.spring.SpringContextUtils;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,7 +39,7 @@ public class RoleAuthorityRepository implements IRoleAuthorityRepository {
         List<RoleAuthority> roleAuthorities = Lists.newLinkedList();
         roleAuthorityMapper.delete(new LambdaUpdateWrapper<RoleAuthority>()
                 .eq(RoleAuthority::getRoleId, roleId));
-        if (CollectionUtils.isNotEmpty(resourceIds)){
+        if (CollectionUtils.isNotEmpty(resourceIds)) {
             resourceIds.forEach(authorityId -> {
                 RoleAuthority roleAuthority = new RoleAuthority();
                 roleAuthority.setRoleId(roleId);
@@ -46,7 +49,7 @@ public class RoleAuthorityRepository implements IRoleAuthorityRepository {
                 roleAuthorities.add(roleAuthority);
             });
         }
-        if (CollectionUtils.isNotEmpty(menuIds)){
+        if (CollectionUtils.isNotEmpty(menuIds)) {
             menuIds.forEach(menuId -> {
                 RoleAuthority roleAuthority = new RoleAuthority();
                 roleAuthority.setRoleId(roleId);
@@ -56,9 +59,10 @@ public class RoleAuthorityRepository implements IRoleAuthorityRepository {
                 roleAuthorities.add(roleAuthority);
             });
         }
-        if (CollectionUtils.isNotEmpty(roleAuthorities)){
+        if (CollectionUtils.isNotEmpty(roleAuthorities)) {
             roleAuthorityMapper.insertBatchSomeColumn(roleAuthorities);
         }
+        SpringContextUtils.publishEvent(new RoleResourceEvent(new ResourceSource(OperationEnum.SAVE, null, null)));
         return true;
     }
 
@@ -72,12 +76,12 @@ public class RoleAuthorityRepository implements IRoleAuthorityRepository {
         List<Long> authResources = Lists.newArrayList();
         Map<String, List<RoleAuthority>> roleAuthorityMap = roleAuthorities.stream().collect(Collectors.groupingBy(RoleAuthority::getAuthorityType));
         List<RoleAuthority> resourceList = roleAuthorityMap.get("RESOURCE");
-        if (CollectionUtils.isNotEmpty(resourceList)){
+        if (CollectionUtils.isNotEmpty(resourceList)) {
             authResources = resourceList.stream().map(RoleAuthority::getAuthorityId).collect(Collectors.toList());
         }
         roleResource.setAuthResources(authResources);
         List<RoleAuthority> menuList = roleAuthorityMap.get("MENU");
-        if (CollectionUtils.isNotEmpty(menuList)){
+        if (CollectionUtils.isNotEmpty(menuList)) {
             authMenus = menuList.stream().map(RoleAuthority::getAuthorityId).collect(Collectors.toList());
         }
         roleResource.setAuthMenus(authMenus);

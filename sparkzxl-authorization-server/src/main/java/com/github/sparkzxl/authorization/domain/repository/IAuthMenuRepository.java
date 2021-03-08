@@ -51,4 +51,12 @@ public interface IAuthMenuRepository {
      * @return boolean
      */
     boolean saveMenu(AuthMenu authMenu);
+
+    /**
+     * 删除菜单
+     *
+     * @param ids 菜单id列表
+     * @return boolean
+     */
+    boolean deleteMenu(List<Long> ids);
 }

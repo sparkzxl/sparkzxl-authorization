@@ -38,8 +38,7 @@ public class AuthMenuServiceImpl extends AbstractSuperCacheServiceImpl<AuthMenuM
 
     @Override
     public boolean deleteMenu(List<Long> ids) {
-        removeByIds(ids);
-        return true;
+        return authMenuRepository.deleteMenu(ids);
     }
 
     @Override

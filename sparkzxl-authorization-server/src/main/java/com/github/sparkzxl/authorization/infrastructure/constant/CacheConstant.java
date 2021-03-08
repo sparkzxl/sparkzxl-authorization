@@ -151,4 +151,7 @@ public class CacheConstant {
 
     public static String FRONT_STATE = "front_state";
 
+
+    public static final String RESOURCE_ROLES_MAP = "auth:resource_roles_map";
+
 }

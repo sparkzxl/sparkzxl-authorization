@@ -22,10 +22,18 @@ public interface IAuthResourceRepository {
 
 
     /**
+     * 加载指定菜单所有资源
+     *
+     * @param menuIds 菜单id列表
+     * @return List<AuthResource>
+     */
+    List<AuthResource> authResourceList(List<Long> menuIds);
+
+    /**
      * 获取用户资源
      *
-     * @param userId
-     * @param menuId
+     * @param userId 用户id
+     * @param menuId 菜单id
      * @return List<AuthResource>
      */
     List<AuthResource> findVisibleResource(Long userId, Long menuId);
@@ -40,14 +48,23 @@ public interface IAuthResourceRepository {
 
     /**
      * 保存资源信息列表
+     *
      * @param resourceList 资源信息列表
-     * @return boolean
      */
-    boolean saveResourceList(List<AuthResource> resourceList);
+    void saveResourceList(List<AuthResource> resourceList);
 
     /**
      * 根据租户code删除资源
+     *
      * @param tenantCode 租户code
      */
     void deleteTenantResource(String tenantCode);
+
+    /**
+     * 更新资源
+     *
+     * @param authResource 资源
+     * @return boolean
+     */
+    boolean updateResource(AuthResource authResource);
 }

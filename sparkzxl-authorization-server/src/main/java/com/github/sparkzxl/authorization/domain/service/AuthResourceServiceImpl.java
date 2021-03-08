@@ -3,8 +3,10 @@ package com.github.sparkzxl.authorization.domain.service;
 import com.github.sparkzxl.authorization.application.service.IAuthResourceService;
 import com.github.sparkzxl.authorization.domain.repository.IAuthResourceRepository;
 import com.github.sparkzxl.authorization.infrastructure.constant.CacheConstant;
+import com.github.sparkzxl.authorization.infrastructure.convert.AuthResourceConvert;
 import com.github.sparkzxl.authorization.infrastructure.entity.AuthResource;
 import com.github.sparkzxl.authorization.infrastructure.mapper.AuthResourceMapper;
+import com.github.sparkzxl.authorization.interfaces.dto.resource.AuthResourceUpdateDTO;
 import com.github.sparkzxl.authorization.interfaces.dto.resource.ResourceQueryDTO;
 import com.github.sparkzxl.core.utils.BuildKeyUtils;
 import com.github.sparkzxl.database.base.service.impl.AbstractSuperCacheServiceImpl;
@@ -48,5 +50,11 @@ public class AuthResourceServiceImpl extends AbstractSuperCacheServiceImpl<AuthR
     @Override
     public boolean deleteResource(Long resourceId) {
         return authResourceRepository.deleteResource(resourceId);
+    }
+
+    @Override
+    public boolean updateResource(AuthResourceUpdateDTO authResourceUpdateDTO) {
+        AuthResource authResource = AuthResourceConvert.INSTANCE.convertAuthResourceDTO(authResourceUpdateDTO);
+        return authResourceRepository.updateResource(authResource);
     }
 }

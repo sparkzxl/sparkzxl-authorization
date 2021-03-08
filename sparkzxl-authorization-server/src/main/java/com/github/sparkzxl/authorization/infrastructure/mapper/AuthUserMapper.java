@@ -47,6 +47,15 @@ public interface AuthUserMapper extends SuperMapper<AuthUser> {
     List<RoleResource> getRoleResourceList();
 
     /**
+     * 根据请求路径查询角色
+     *
+     * @param requestUrl 请求路径
+     * @return RoleResource
+     */
+    @InterceptorIgnore(tenantLine = "true")
+    RoleResource getRoleResource(@Param("requestUrl") String requestUrl);
+
+    /**
      * 根据id查询用户信息
      *
      * @param id 主键
