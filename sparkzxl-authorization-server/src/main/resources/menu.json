@@ -5,42 +5,42 @@
     "redirect": null,
     "children": [
       {
-        "label": "客户端管理",
+        "label": "应用管理",
         "sortValue": 2,
         "children": null,
         "hidden": true,
         "redirect": null,
         "noKeepAlive": true,
         "icon": "",
-        "path": "/relam/clientList",
+        "path": "/relam/applicationList",
         "componentName": "Relam",
-        "component": "relam/clientList",
+        "component": "relam/applicationList",
         "describe": "",
         "isEnable": true,
         "resourceList": [
           {
             "code": "client:save",
-            "name": "客户端信息保存",
+            "name": "应用信息保存",
             "describe": "",
-            "requestUrl": "/client/saveClient"
+            "requestUrl": "/application/saveApplication"
           },
           {
-            "code": "client:update",
-            "name": "客户端信息更新",
+            "code": "application:update",
+            "name": "应用信息更新",
             "describe": "",
-            "requestUrl": "/client/updateClient"
+            "requestUrl": "/application/updateApplication"
           },
           {
-            "code": "client:delete",
-            "name": "客户端信息删除",
+            "code": "application:delete",
+            "name": "应用信息删除",
             "describe": "",
-            "requestUrl": "/client/deleteClient"
+            "requestUrl": "/application/deleteApplication"
           },
           {
-            "code": "client:page",
-            "name": "客户端分页查询",
+            "code": "application:page",
+            "name": "应用分页查询",
             "describe": "",
-            "requestUrl": "/client/listPage"
+            "requestUrl": "/application/listPage"
           }
         ]
       }
